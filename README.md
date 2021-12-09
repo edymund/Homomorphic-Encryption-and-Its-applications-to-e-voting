@@ -9,3 +9,8 @@ python -m pip install -r reqquirements.txt
 
 # To exit virtual environment
 deactivate
+
+# To run the application
+set FLASK_APP=run
+set FLASK_ENV=Development
+flask run
