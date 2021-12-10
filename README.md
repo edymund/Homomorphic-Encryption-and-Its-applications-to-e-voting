@@ -5,7 +5,7 @@
 venv\Scripts\activate
 
 # 2. To downlaoad all files in venv (Activate virtual environment first)
-python -m pip install -r reqquirements.txt
+python -m pip install -r requirements.txt
 
 # To exit virtual environment
 deactivate
