@@ -11,6 +11,6 @@ python -m pip install -r requirements.txt
 deactivate
 
 # To run the application
-set FLASK_APP=run
+set FLASK_APP=application
 set FLASK_ENV=development
 flask run

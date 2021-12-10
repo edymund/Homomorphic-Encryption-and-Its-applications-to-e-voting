@@ -1,5 +1,5 @@
 from .controllers.landingPageController import landingPageController
-from ..run import app, loginRequired
+from ..application import app, loginRequired
 from flask import request
 
 @app.route('/', methods=['GET'])
