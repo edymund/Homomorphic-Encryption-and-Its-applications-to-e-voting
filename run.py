@@ -4,7 +4,7 @@ from functools import wraps
 import sqlite3
 
 # Set templates and static directory
-template_dir = os.path.abspath('./app/templates')
+template_dir = os.path.abspath('./app/template')
 static_dir = os.path.abspath('./app/static')
 
 # Configure app to run from this file

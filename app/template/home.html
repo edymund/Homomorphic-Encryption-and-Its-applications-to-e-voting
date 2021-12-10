@@ -1,52 +1,54 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="stylesheet" href="home_page_style.css" />
-	</head>
+<!-- Extends the basic html template -->
+{% extends "baseTemplate.html" %}
 
-	<body>
-		<div class="top-left">
-			<a href="#"><img src="icon.png" /></a>
-		</div>
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/home.css') }}"/>
+{% endblock %} 
 
-		<div class="top-nav">
-			<a href="#">Decrypt Results</a>
-			<a href="#">Generate Keys</a>
-			<a href="#">Contact Us</a>
-			<a href="#">About Us</a>
-			<a href="#">Home</a>
-		</div>
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+	<div class="top-left">
+		<a href="#"><img src={{url_for('static', filename='images/icon.png')}} /></a>
+	</div>
 
-		<div class="top-right">
-			<button type="button" class="login">Sign up / Login</button>
-		</div>
+	<div class="top-nav">
+		<a href="#">Decrypt Results</a>
+		<a href="#">Generate Keys</a>
+		<a href="#">Contact Us</a>
+		<a href="#">About Us</a>
+		<a href="#">Home</a>
+	</div>
 
-		<div class="banner">
-			<img src="banner.jpg" />
-		</div>
+	<div class="top-right">
+		<button type="button" class="login">Sign up / Login</button>
+	</div>
 
-		<div class="content">
-			<p>Drop your content here</p>
-			<h3>Some text</h3>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-				eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-				enim ad minim veniam, quis nostrud exercitation ullamco laboris
-				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-				in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-				nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-				sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</p>
-			<p>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-				eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-				enim ad minim veniam, quis nostrud exercitation ullamco laboris
-				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-				in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-				nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-				sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</p>
-		</div>
-	</body>
-</html>
+	<div class="banner">
+		<img src= {{url_for('static', filename='images/banner.jpg')}} />
+	</div>
+
+	<div class="content">
+		<p>Drop your content here</p>
+		<h3>Some text</h3>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+			enim ad minim veniam, quis nostrud exercitation ullamco laboris
+			nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+			in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+			nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+			sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+			enim ad minim veniam, quis nostrud exercitation ullamco laboris
+			nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+			in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+			nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+			sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+{% endblock %}

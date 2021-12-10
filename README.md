@@ -12,5 +12,5 @@ deactivate
 
 # To run the application
 set FLASK_APP=run
-set FLASK_ENV=Development
+set FLASK_ENV=development
 flask run
