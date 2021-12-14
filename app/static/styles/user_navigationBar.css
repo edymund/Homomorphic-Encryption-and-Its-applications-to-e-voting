@@ -1,0 +1,36 @@
+/* Side Navigation bar */
+.sidenav {
+  width: 200px; /*338px*/
+  overflow-x: hidden;
+  padding-top: 20px;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+/* Side Navigation text*/
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #000000;
+  display: block;
+}
+
+/* Hover over Side Navigation */
+.sidenav a:hover {
+  background-color: #555;
+  color: white;
+}
+
+/* Active/current link */
+.sidenav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Links on mouse-over */
+.sidenav a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
