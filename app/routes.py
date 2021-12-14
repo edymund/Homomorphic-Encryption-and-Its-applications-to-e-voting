@@ -1,13 +1,13 @@
-from .controllers.landingPageController import landingPageController
-from app import application as app, loginRequired
+from .boundary.landingPageBoundary import landingPageBoundary
+from app import application as app, boundary, loginRequired
 from flask import request
 
 @app.route('/', methods=['GET'])
 def landingPage():
 	# Creates a controller object
-	controller = landingPageController()
+	boundary = landingPageBoundary()
 	if request.method == 'GET':
-		return controller.displayLandingPage()
+		return boundary.displayPage()
 
 	# # Create PublicUser_ExposureStatusBoundary Object
 	# publicUser_exposureStatusBoundary = PublicUser_ExposureStatusUI()

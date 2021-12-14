@@ -1,5 +1,5 @@
 from flask import render_template
-class landingPageView:
+class landingPageBoundary:
 	# Constructor
 	def __init__(self):
 		pass
