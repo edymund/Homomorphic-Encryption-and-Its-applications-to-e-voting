@@ -1,30 +1,13 @@
 <!-- Extends the basic html template -->
-{% extends "baseTemplate.html" %}
+{% extends "guest_baseTemplate.html" %}
 
 <!-- Updates the <head> of the webpage -->
 {% block head %}
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/home.css') }}"/>
 {% endblock %} 
 
 <!-- Updates the <body> of the webpage -->
 {% block body %}
-	<div class="top-left">
-		<a href="#"><img src={{url_for('static', filename='images/icon.png')}} /></a>
-	</div>
-
-	<div class="top-nav">
-		<a href="#">Decrypt Results</a>
-		<a href="#">Generate Keys</a>
-		<a href="#">Contact Us</a>
-		<a href="#">About Us</a>
-		<a href="#">Home</a>
-	</div>
-
-	<div class="top-right">
-		<button type="button" class="login">Sign up / Login</button>
-	</div>
-
 	<div class="banner">
 		<img src= {{url_for('static', filename='images/banner.jpg')}} />
 	</div>
