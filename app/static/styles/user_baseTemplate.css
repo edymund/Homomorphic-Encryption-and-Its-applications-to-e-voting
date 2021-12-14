@@ -10,19 +10,6 @@ body, html {
 	border: 1px black solid;
 } */
 
-/* login/signup button */
-.logout {
-	border: none;
-	outline: 0;
-	display: inline-block;
-	padding: 10px;
-	color: black;
-	background-color: #ddd;
-	text-align: center;
-	cursor: pointer;
-	margin-top: 10px;
-}
-
 /* icon */
 .top-left img{
 	padding-top: 30px;
