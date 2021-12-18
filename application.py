@@ -41,4 +41,4 @@ from app import application
 
 # Configure app to run if this file is executed
 if __name__ == '__main__':
-    application.run(debug=False, use_reloader=True)
+    application.run(debug=True, use_reloader=True)

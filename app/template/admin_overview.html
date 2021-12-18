@@ -1,0 +1,22 @@
+{% extends "user_baseTemplate.html" %} 
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+{% endblock %} 
+
+{% block body %}
+    <h2>Project Details</h2>
+    <form>
+        <label for="name">Project:</label>
+        <input type="text" id="name" name="name" /><br />
+        <label for="status">Status:</label>
+        <input type="text" id="status" value="DRAFT MODE" disabled /> <br />
+        <label for="startDateTime">Start Date & Time:</label>
+        <input type="datetime-local" id="startDateTime" name="startDateTime" /> <br />
+        <label for="endDateTime">End Date & Time:</label>
+        <input type="datetime-local" id="endDateTime" name="endDateTime" /> <br />
+        <label for="publicKey">Public Key:</label>
+        <input type="text" id="publicKey" /><br />
+        <input type="submit" value="Save details" />
+    </form>
+{% endblock %}
