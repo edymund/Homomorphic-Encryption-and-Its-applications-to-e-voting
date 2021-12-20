@@ -2,8 +2,8 @@
 <!-- Updates the <head> of the webpage -->
     {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_importVoter.css') }}"/>
+    <script type=text/javascript src="{{ url_for('static',filename='js/user_importVoterList.js') }}"></script>
 {% endblock %} 
-<!--Change CSS-->
 
 <!-- Updates the <body> of the webpage -->
     {% block body %}
@@ -16,9 +16,9 @@
                     <label>Upload file:</label>
                 </td>
                 <td style= "width:70%;">
-                    <input type="text" placeholder = "No File ATM" readonly>
-                    <input type="file" id="myFile" name="filename" accept =".csv">
-
+                    <input type="text" id ="voter-list-tb" readonly>
+                    <input type="file" id="myFile" name= "filename" onchange = "showname();" accept =".csv" hidden>
+                    <input type="button" name="filename-btn" value ="File" onclick="openfile();" >
                 </td>
 
             </tr>
@@ -40,21 +40,5 @@
                 </td>
             </tr>
         </table>
-
-        <!--
-        <label for="Upload file"><b>Upload file: </label>
-        <input type="text" >
-
-        <button type="submit">Upload</button>
-
-        <h4>
-            <label for="Current-voters"><b>Current voters:</b></label>
-        </h4>
-
-        <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br>
-        
-        
-        -->
-
     </div>
     {% endblock %} 
