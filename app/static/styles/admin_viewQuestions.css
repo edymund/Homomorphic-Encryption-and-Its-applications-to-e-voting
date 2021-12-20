@@ -17,3 +17,29 @@
 	box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, 0.2);
 	background-color:rgb(245, 222, 192);
 }
+
+input.newQuestionImage {
+	margin:0px;
+	max-height: 30px;
+	overflow: hidden;
+	display: inline;
+	max-width:30%;
+	border: 1px solid black;
+	float:right;
+	
+}
+
+#projectNameField {
+	display: inline;
+	width: 50%;
+	border: 1px solid black;
+}
+
+form {
+	padding: 0px 0px 20px 0px;
+}
+
+#header {
+	height: 50px;
+	vertical-align: middle;
+}
