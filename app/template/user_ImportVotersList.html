@@ -1,0 +1,60 @@
+{% extends "user_baseTemplate.html" %}
+<!-- Updates the <head> of the webpage -->
+    {% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_importVoter.css') }}"/>
+{% endblock %} 
+<!--Change CSS-->
+
+<!-- Updates the <body> of the webpage -->
+    {% block body %}
+    <div class="content">
+   
+        <h2>Import voters list</h2>
+        <table>
+            <tr >
+                <td style= "width:10%;">
+                    <label>Upload file:</label>
+                </td>
+                <td style= "width:70%;">
+                    <input type="text" placeholder = "No File ATM" readonly>
+                    <input type="file" id="myFile" name="filename" accept =".csv">
+
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan = "2">
+                    <button type="submit">Upload</button>
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td colspan = "2">
+                    <label  for="Current-voters"><b>Current voters:</b></label>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan = "2"> 
+                    <textarea readonly spellcheck="True" wrap= hard >Cya bro</textarea><br>
+                </td>
+            </tr>
+        </table>
+
+        <!--
+        <label for="Upload file"><b>Upload file: </label>
+        <input type="text" >
+
+        <button type="submit">Upload</button>
+
+        <h4>
+            <label for="Current-voters"><b>Current voters:</b></label>
+        </h4>
+
+        <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br>
+        
+        
+        -->
+
+    </div>
+    {% endblock %} 
