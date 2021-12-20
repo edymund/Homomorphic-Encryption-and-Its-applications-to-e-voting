@@ -26,3 +26,6 @@ def editProfilePage():
 	# # Displays the webpage
 	# return render_template('overview.html', userType = session['userType'],
 	# 										healthStatus = exposureStatus)
+
+
+	
