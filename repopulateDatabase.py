@@ -12,42 +12,6 @@ from app.dbConfig import dbConnect, dbDisconnect
 from random import randrange, randint, uniform
 from datetime import datetime, timedelta
 
-# -------------------------------------------------
-#               Editable Settings
-# -------------------------------------------------
-# Location History Settings
-CHANCE_TO_GO_OUT = 33          # In percentage (33%)
-MIN_LOCATION_VISITED = 1        # No of location
-MAX_LOCATION_VISITED = 3        # No of location
-
-# Infection Setting
-POPULATION_PERCENTAGE_CONFIRMED_INFECTED_DAILY = 0.01	  # In percentage (0.01%)
-
-# Vaccination Settings (Sum to 100)
-NOT_ELIGIBLE_FOR_VACCINATION = 10 							
-ELIGIBLE_FOR_VACCINATION = 20
-SCHEDULED_FOR_FIRST_SHOT = 30
-SCHEDULED_FOR_SECOND_SHOT = 30
-VACCINATION_COMPLETED = 100 - NOT_ELIGIBLE_FOR_VACCINATION - \
-						ELIGIBLE_FOR_VACCINATION - \
-						SCHEDULED_FOR_FIRST_SHOT - \
-						SCHEDULED_FOR_SECOND_SHOT
-print(VACCINATION_COMPLETED)
-
-
-
-# Code to create and populate data
-
-#16 ^ 3  = 4096 unique names / accounts
-firstName = ['Addison', 'Bowie', 'Carter', 'Drew', 'Eden', 'Finn', 'Gabriel', 'Hayden', 'Jamie', 'Jules', 'Ripley', 'Skylar', 'Ashton', 'Caelan', 'Flynn', 'Kaden']
-middleName = ['Angel', 'Asa', 'Bay', 'Blue', 'Cameron', 'Gray', 'Lee', 'Quinn', 'Rue', 'Tate', 'Banks', 'Quince', 'Finley', 'Shea', 'Pace', 'James']
-lastName = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Miller', 'Davis', 'Garcia', 'Wilson', 'Taylor', 'Moore', 'White', 'Anderson', 'Rodriguez', 'Lopez', 'Walker']
-gender = ['M', 'F']
-
-businessID = range(1, 11)
-businessName = ['Bapple', 'Amazone', 'Fishbook', 'Boogle', 'McRonald\'s', '7-Melon', 'Sunbucks', 'Blokeswagon', 'Cola Coca', 'Borgar King']
-branchLocation = ['Ang Mo Kio', 'Bishan', 'Choa Chu Kang', 'Woodlands', 'Punggol', 'Tampines', 'Pasir Ris', 'Yishun', 'Jurong', 'Sengkang']
-
 
 # Delete existing sqlite file
 if os.path.exists("app/db.sqlite3"):
@@ -57,389 +21,314 @@ else:
 	
 
 # Create and connect to database
-connection = dbConnect()
-db = connection.cursor()
+mydb = dbConnect()
+mycursor = mydb.cursor()
+
+
+#Drop all tables
+mycursor.execute("DROP TABLE IF EXISTS voter;")
+mycursor.execute("DROP TABLE IF EXISTS  administrators;")
+mycursor.execute("DROP TABLE IF EXISTS  answer;")
+mycursor.execute("DROP TABLE IF EXISTS  electionmsgs;")
+mycursor.execute("DROP TABLE IF EXISTS  record;")
+mycursor.execute("DROP TABLE IF EXISTS  candidates;")
+mycursor.execute("DROP TABLE IF EXISTS  questions;")
+mycursor.execute("DROP TABLE IF EXISTS  projdetails;")
+mycursor.execute("DROP TABLE IF EXISTS  users;")
 
 # Recreate all tables again
 create = ["""
-			CREATE TABLE business (
-				id INTEGER NOT NULL,
-				name VARCHAR(50) NOT NULL,
-				PRIMARY KEY (id),
-				UNIQUE (name)
-			)
+            CREATE TABLE users (
+            userID INTEGER PRIMARY KEY AUTOINCREMENT,
+            email varchar(255) NOT NULL,
+            password varchar(255) NOT NULL,
+            companyName varchar(255) NOT NULL,
+            firstName varchar(255) NOT NULL,
+            lastName varchar(255) DEFAULT NULL,
+            UNIQUE (userID),
+            UNIQUE (email)
+            )
 			""",  
 			"""
-			CREATE TABLE organisation (
-				id INTEGER NOT NULL,
-				name VARCHAR(50) NOT NULL,
-				PRIMARY KEY (id),
-				UNIQUE (name)
-			)
+			CREATE TABLE administrators (
+            administratorsID INTEGER PRIMARY KEY AUTOINCREMENT,
+            userID int(11) NOT NULL,
+            projID int(11) NOT NULL,
+            adminStatus varchar(255) NOT NULL,
+            approval BOOLEAN,
+            UNIQUE (administratorsID),
+            FOREIGN KEY (userID) REFERENCES users (userID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            ) 
+			""",
+            """
+			CREATE TABLE projdetails (
+            projDetailsID INTEGER PRIMARY KEY AUTOINCREMENT,
+            title varchar(255) NOT NULL,
+            status varchar(255) NOT NULL,
+            startDate date NOT NULL,
+            startTime time NOT NULL,
+            endDate date NOT NULL,
+            endTime time NOT NULL,
+            publicKey varchar(255) NOT NULL,
+            UNIQUE (projDetailsID)
+            ) 
 			""",
 			"""
-			CREATE TABLE user (
-				id INTEGER NOT NULL,
-				"NRIC" VARCHAR(10) NOT NULL,
-				password VARCHAR(50) NOT NULL,
-				"firstName" VARCHAR(50) NOT NULL,
-				"middleName" VARCHAR(50) NOT NULL,
-				"lastName" VARCHAR(50) NOT NULL,
-				mobile INTEGER NOT NULL,
-				gender VARCHAR(1) NOT NULL,
-				"accountActive" BOOLEAN,
-				"accountType" VARCHAR(50) NOT NULL,
-				PRIMARY KEY (id),
-				UNIQUE ("NRIC")
-			)
+			CREATE TABLE voter (
+            voterID INTEGER PRIMARY KEY AUTOINCREMENT,
+            email varchar(255) NOT NULL,
+            projectID int(11) NOT NULL,
+            UNIQUE (voterID),
+            FOREIGN KEY (projectID) REFERENCES projdetails (projDetailsID)
+            )
 			""",
 			"""
-			CREATE TABLE location (
-	   			id INTEGER NOT NULL,
-	   			"businessID" VARCHAR(10) NOT NULL,
-	   			"locationName" VARCHAR(100) NOT NULL,
-	   			PRIMARY KEY (id),
-	   			FOREIGN KEY("businessID") REFERENCES business (id),
-	   			UNIQUE ("locationName")
-			)
+			CREATE TABLE electionmsgs (
+            electionMsgsID INTEGER PRIMARY KEY AUTOINCREMENT,
+            projID int(11) DEFAULT NULL,
+            preMsg varchar(255) NOT NULL,
+            postMsg varchar(255) DEFAULT NULL,
+            inviteMsg varchar(255) DEFAULT NULL,
+            reminderMsg varchar(255) DEFAULT NULL,
+            UNIQUE (electionMsgsID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            )
 			""",
 			"""
-			CREATE TABLE business_user (
-				id INTEGER NOT NULL,
-				"NRIC" VARCHAR(10) NOT NULL,
-				"businessID" INTEGER NOT NULL,
-				PRIMARY KEY (id),
-				UNIQUE ("NRIC"),
-				FOREIGN KEY("NRIC") REFERENCES user ("NRIC"),
-				FOREIGN KEY("businessID") REFERENCES business (id)
-			)
+			CREATE TABLE questions (
+            questionsID INTEGER PRIMARY KEY AUTOINCREMENT,
+            projID int(11) NOT NULL,
+            questions varchar(255) NOT NULL,
+            questionDesc varchar(255) NOT NULL,
+            UNIQUE (questionsID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            )
 			""",
 			"""
-			CREATE TABLE health_staff_user (
-				id INTEGER NOT NULL,
-				"NRIC" VARCHAR(10) NOT NULL,
-				"licenseNo" INTEGER NOT NULL,
-				PRIMARY KEY (id),
-				UNIQUE ("NRIC"),
-				FOREIGN KEY("NRIC") REFERENCES user ("NRIC"),
-				UNIQUE ("licenseNo")
-			)
+			CREATE TABLE candidates (
+            candidateID INTEGER PRIMARY KEY AUTOINCREMENT,
+            projID int(11) NOT NULL,
+            questionID int(11) NOT NULL,
+            candidateOption varchar(255) NOT NULL,
+            image varchar(255) DEFAULT NULL,
+            description varchar(255) DEFAULT NULL,
+            UNIQUE (candidateID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID),
+            FOREIGN KEY (questionID) REFERENCES questions (questionsID)
+            ) 
 			""",
 			"""
-			CREATE TABLE organisation_user (
-				id INTEGER NOT NULL,
-				"NRIC" VARCHAR(10) NOT NULL,
-				"organisationID" INTEGER NOT NULL,
-				PRIMARY KEY (id),
-				UNIQUE ("NRIC"),
-				FOREIGN KEY("NRIC") REFERENCES user ("NRIC"),
-				FOREIGN KEY("organisationID") REFERENCES organisation (id)
-			)
+			CREATE TABLE record (
+            recordID INTEGER PRIMARY KEY AUTOINCREMENT,
+            projID int(11) NOT NULL,
+            questionID int(11) NOT NULL,
+            candidateID int(11) NOT NULL,
+            UNIQUE (recordID),
+            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID),
+            FOREIGN KEY (questionID) REFERENCES questions (questionsID)
+            )
 			""",
-			"""
-			CREATE TABLE alert (
-				id INTEGER NOT NULL,
-				sent_by VARCHAR(10) NOT NULL,
-				sent_on DATETIME NOT NULL,
-				alert_type VARCHAR(100) NOT NULL,
-				"recipient_NRIC" VARCHAR(10) NOT NULL,
-				message TEXT NOT NULL,
-				read_on DATETIME,
-				is_read BOOLEAN,
-				PRIMARY KEY (id),
-				FOREIGN KEY(sent_by) REFERENCES health_staff_user ("NRIC"),
-				FOREIGN KEY("recipient_NRIC") REFERENCES user ("NRIC")
-			)
-			""",
-			"""
-			CREATE TABLE infected_people (
-				id INTEGER NOT NULL,
-				"NRIC" VARCHAR(10) NOT NULL,
-				infected_on DATETIME NOT NULL,
-				PRIMARY KEY (id),
-				FOREIGN KEY("NRIC") REFERENCES user ("NRIC")
-			)
-			""",
-			"""
-			CREATE TABLE vaccination_status (
-				id INTEGER NOT NULL,
-				"NRIC" VARCHAR(10) NOT NULL,
-				"vaccinationStatus" VARCHAR(50) NOT NULL,
-				"dateOfFirstShot" DATETIME,
-				"dateOfSecondShot" DATETIME,
-				PRIMARY KEY (id),
-				FOREIGN KEY("NRIC") REFERENCES user ("NRIC")
-			)
-			""",
-			"""
-			CREATE TABLE location_history (
-				id INTEGER NOT NULL,
-				"NRIC" VARCHAR(10) NOT NULL,
-				location_visited INTEGER,
-				time_in DATETIME NOT NULL,
-				time_out DATETIME NOT NULL,
-				PRIMARY KEY (id),
-				FOREIGN KEY("NRIC") REFERENCES user ("NRIC"),
-				FOREIGN KEY(location_visited) REFERENCES location (id)
-			)
+            """
+			CREATE TABLE answer (
+            answerID INTEGER PRIMARY KEY AUTOINCREMENT,
+            voterID int(11) NOT NULL,
+            recordID int(11) NOT NULL,
+            encryptedAnswer varchar(255) NOT NULL,
+            UNIQUE (answerID),
+            FOREIGN KEY (voterID) REFERENCES voter (voterID),
+            FOREIGN KEY (recordID) REFERENCES record (recordID)
+            ) 
 			"""]
 
 # Create all tables
 for commands in create:
-	db.execute(commands)
+	mydb.execute(commands)
 
 print('All tables have been created')
+# userEmail=['glen@hotmail.com','john@hotmail.com']
+# password=['1234','12a4']
+# companyName=['abs','abs']
+# firstName=['glen','john']
+# lastName=['lee','']
+# count = 0
+# for x in userEmail:
+# 			count += 1
+# #Insert data for users table
+# mycursor.execute("INSERT INTO users (email, password, companyName, firstName, lastName) VALUES( (?), (?), (?), (?), (?) )", (x,password,companyName,firstName,lastName))
 
-# Create BUSINESS record
-for business in businessName:
-	db.execute("INSERT INTO business(name) values (?)", (business, ))
-print('All business entity has been created')
+#Insert data for users table
+userInsertquery = "INSERT INTO users (email, password, companyName, firstName, lastName) VALUES (?,?,?,?,?)"
+## storing values in a variable
+userInsertvalues = [
+    ("glen@hotmail.com","1234","abs","glen","lee"),
+    ("john@hotmail.com","12a4","abs","john","NULL")
+]
 
-# Create ORGANISATION record
-db.execute("INSERT INTO organisation(name) values (?)", ('Ministry of Health', ))
-print('All organisation enity created')
-
-# Create USER record
-# All users types are added to this database, before randomly deciding if this user
-# is a public, business, health staff, organisation user
-count = 0
-licenseNo = 10000000
-
-# Generate Users ()
-for x in firstName:
-	for y in middleName:
-		for z in lastName:
-			count += 1
-
-			# Generate NRIC
-			NRIC = 'S'+ '{:04d}'.format(count)
-
-			# Generate a random usertype
-			mobile = 90000000 + count
-			random_gender = randint(0,len(gender)-1)
-
-			if count < 1000:
-				accountType = 'Public'
-			elif 1000 <= count < 2000:
-				accountType = 'Health Staff'
-			elif 2000 <= count < 3000:
-				accountType = 'Business'
-			else:
-				accountType = 'Organisation'
-
-		
-			# Add User
-			db.execute("""
-				Insert into user(NRIC, password, firstName, 
-					middleName, lastName, mobile, 
-					gender, accountActive, accountType)
-				VALUES( (?), (?), (?), (?), (?), (?), (?), (?), (?))""",
-				(NRIC, NRIC, x, y, z, mobile, gender[random_gender], True, accountType))
-			print('User added. {} new users added.'.format(count), end =' ')
+## executing the query with values
+mycursor.executemany(userInsertquery, userInsertvalues)
 
 
-			if count < 1000:
-				print('Account type: Public')
+#Insert data for projdetails table
+projDetailsInsertquery = "INSERT INTO projdetails (title, status, startDate, startTime, endDate, endTime, publicKey) VALUES (?,?,?,?,?,?,?)"
+## storing values in a variable
+projDetailsInsertvalues = [
+   ("foodpoll","draft","2022-01-08","09:00","2022-01-08","12:00","abababba"),
+   ("president","draft","2022-01-10","10:00","2022-01-11","17:00","vavavava")
+]
 
-			# Generate a health user
-			elif 1000 <= count < 2000:
-				licenseNo += 1
-				db.execute("""INSERT INTO health_staff_user(NRIC, licenseNo) VALUES
-								((?), (?))
-							""", 
-							(NRIC, licenseNo))
-				print('Account type: Health Staff')
+## executing the query with values
+mycursor.executemany(projDetailsInsertquery, projDetailsInsertvalues)
 
-			# Generate a business user
-			elif 2000 <= count < 3000:
-				random_businessID = randint(1,len(businessID))
-				db.execute(
-					"""
-						INSERT INTO business_user(NRIC, businessID) VALUES
-						((?), (?))
-					""", 
-					(NRIC, str(random_businessID)))
-				print('Account type: Business')
+#Insert data for administrators table
+administratorsInsertquery = "INSERT INTO administrators (userID, projID, adminStatus, approval)  VALUES (?,?,?,?)"
+## storing values in a variable
+administratorsInsertvalues = [
+   (1, 1, "admin",None),
+   (2, 1, "sub-admin",None),
+   (2, 2, "admin",None)
+]
 
-			# Generate a organisation user
-			else:
-				db.execute("""INSERT INTO organisation_user(NRIC, organisationID) VALUES
-								((?), 1)
-							""", 
-							(NRIC, ))
-				print('Account type: Organisation')
+## executing the query with values
+mycursor.executemany(administratorsInsertquery, administratorsInsertvalues)
 
-db.execute("""UPDATE user
-					  SET accountActive = (?)
-					  WHERE NRIC = (?)""", (False, "S0777"))
+#Insert data for voters table
+voterInsertquery = "INSERT INTO voter (email, projectID)  VALUES (?,?)"
+## storing values in a variable
+voterInsertvalues = [
+   ("may@gmail.com",1),
+   ("angeline@gmail.com",1),
+   ("jake@hotmail.com",1),
+   ("emily@hotmail.com",2),
+   ("yvonne@gmail.com",2),
+   ("bryan@hotmail.com",2)
+]
 
-# Generate Locations (100 Locations)
-count = 1
-allLocations = {}
-for business in businessName:
-	for branch in branchLocation:
-		locationName = '{} - {} Branch'.format(business, branch)
-		allLocations[count] = locationName
-		db.execute(
-			"""
-			INSERT INTO LOCATION(businessId, locationName) VALUES ((?), (?))
-			""", 
-			(count, locationName)
-		)
-		print('Location entity has been created - {}'.format(locationName))
-	count += 1
+## executing the query with values
+mycursor.executemany(voterInsertquery, voterInsertvalues)
 
+#Insert data for electionmsgs table
+electionmsgsInsertquery = "INSERT INTO electionmsgs (projID , preMsg, postMsg, inviteMsg, reminderMsg) VALUES (?,?,?,?,?)"
+## storing values in a variable
+electionmsgsInsertvalues = [
+   (1,"pre/msg",None,"invitation","remember to vote")
+]
 
+## executing the query with values
+mycursor.executemany(electionmsgsInsertquery, electionmsgsInsertvalues)
 
-# Variable Setup
-totalNumberOfUsers = range(1, 4097)
-numOfDays = range(31, -1, -1)
-today = datetime.now()
-today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+#Insert data for questions table
+questionsInsertquery = "INSERT INTO questions (projID, questions, questionDesc) VALUES (?,?,?)"
+## storing values in a variable
+questionsInsertvalues = [
+   (1,"Q1","Which flavours would you prefer?"),
+   (1,"Q2","Can you take spice?"),
+   (2,"Q1","Which president would you choose?"),
+   (2,"Q2","Which vice president would you choose?")
 
+]
+## executing the query with values
+mycursor.executemany(questionsInsertquery, questionsInsertvalues)
 
-# Generate Location History
-noOfRecords = 0
-for i in numOfDays:
-	for userID in totalNumberOfUsers:
-		NRIC = 'S'+ '{:04d}'.format(userID)
-		# Random chance to visit location
-		chance = randint(0, 100)
+#Insert data for candidates table
+candidatesInsertquery = "INSERT INTO candidates (projID, questionID, candidateOption, image, description) VALUES (?,?,?,?,?)"
+## storing values in a variable
+candidatesInsertvalues = [
+   (1, 1, "apple", "apple.jpg", "an apple a day keeps a doctor away"),
+   (1, 1, "orange", "orange.jpg", "its an orange"),
+   (1, 1, "strawberry", None, None),
+   (1, 2, "yes", "spicy.jpg", "very spicy"),
+   (1, 2, "no", None, "not spicy"),
+   (2, 1, "jane", "jane.jpg", "10 years of exp"),
+   (2, 1, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
+   (2, 2, "jane", "jane.jpg", "10 years of exp"),
+   (2, 2, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
+   (2, 2, "melissa", "melissa.jpg", "5 years of exp")
+]
 
-		# if user goes out
-		if chance <= CHANCE_TO_GO_OUT:
+## executing the query with values
+mycursor.executemany(candidatesInsertquery, candidatesInsertvalues)
 
-			# Randomly generate number of place visited
-			numOfLocationVisited = randint(MIN_LOCATION_VISITED, MAX_LOCATION_VISITED)
-			locationVisited = []
-
-			# Add all location visited
-			for location in range(numOfLocationVisited):
-				visitLocation = randint(1, 100)
-				while visitLocation in locationVisited:
-					visitLocation = randint(1, 100)
-				locationVisited.append(visitLocation)
-
-			# Add to location history
-			for location in locationVisited:
-				time_in = today - timedelta(i)
-				time_in_hour = randint(0, 21)
-				time_in_min = randint(0, 59)
-				time_in = time_in.replace(hour=time_in_hour, minute=time_in_min)
-				time_out = time_in.replace(hour=time_in_hour + randint(1, 2), minute=randint(0, 59))
-
-				db.execute(
-					"""
-					INSERT INTO location_history(
-						NRIC, location_visited, time_in, time_out
-					) VALUES ((?), (?), (?), (?))
-					""",
-					(NRIC, location, time_in, time_out)
-				)
-				noOfRecords += 1
-				print('Location History Record on {}. Total Location history Record = {}'.format(time_in, noOfRecords))
-
-# Generate Infected Record
-noOfRecords = 0
-for i in numOfDays:
-	for userID in totalNumberOfUsers:            
-		NRIC = 'S'+ '{:04d}'.format(userID)
-		# Random chance to visit location
-		chance = uniform(0.00, 100.00)
-
-		#if user is infected
-		if chance <= POPULATION_PERCENTAGE_CONFIRMED_INFECTED_DAILY:
-			infected_on = visited_on = today - timedelta(i)
-			db.execute(
-				"""
-				INSERT INTO infected_people(NRIC, infected_on)
-				VALUES ((?), (?))
-				""", 
-				(NRIC, infected_on)
-			)
-			noOfRecords += 1
-			print('Infected History Recorded on {}. Total Infected Individual Record = {}'.format(infected_on, noOfRecords))
+#Insert data for record table
+recordInsertquery = "INSERT INTO record (projID, questionID, candidateID)  VALUES (?,?,?)"
+## storing values in a variable
+recordInsertvalues = [
+   (1,1,1),
+   (1,1,2),
+   (1,1,3),
+   (1,2,4),
+   (1,2,5),
+   (2,3,6),
+   (2,3,7),
+   (2,4,6),
+   (2,4,7),
+   (2,4,8)
+]
+## executing the query with values
+mycursor.executemany(recordInsertquery, recordInsertvalues)
 
 
-# Generate random vaccination status
-noOfRecords = 0
-for userID in totalNumberOfUsers:
-	NRIC = 'S'+ '{:04d}'.format(userID)
-	
-	# Chance for a random vaccination Status 
-	chance = uniform(0.00, 100.00)
-	
-	# Set a status for the user
-	status = None
+#Insert data for answer table
+answerInsertquery = "INSERT INTO answer (voterID ,recordID, encryptedAnswer) VALUES (?,?,?)"
+## storing values in a variable
+answerInsertvalues = [
+   (1,1,'1'),
+   (1,2,'0'),
+   (1,3,'0'),
+   (1,4,'1'),
+   (1,5,'0'),
+   (2,1,'0'),
+   (2,2,'0'),
+   (2,3,'1'),
+   (2,4,'1'),
+   (2,5,'0'),
+   (3,1,'0'),
+   (3,2,'1'),
+   (3,3,'0'),
+   (3,4,'0'),
+   (3,5,'1'),
+   (4,6,'1'),
+   (4,7,'0'),
+   (4,8,'0'),
+   (4,9,'1'),
+   (4,10,'0'),
+   (5,6,'0'),
+   (5,7,'1'),
+   (5,8,'0'),
+   (5,9,'0'),
+   (5,10,'1'),
+   (6,6,'0'),
+   (6,7,'1'),
+   (6,8,'1'),
+   (6,9,'0'),
+   (6,10,'0')
 
-	# If not eligible for vaccination 
-	if chance <= NOT_ELIGIBLE_FOR_VACCINATION:
-		status = "Not Eligible for Vaccination"
-	else:
-		chance -= NOT_ELIGIBLE_FOR_VACCINATION
-
-	# if Eligible for vaccination
-	if status is None and chance <= ELIGIBLE_FOR_VACCINATION:
-		status = "Eligible for Vaccination"
-	else:
-		chance -= ELIGIBLE_FOR_VACCINATION
-
-	# if Scheduled for first shot
-	if status is None and chance <= SCHEDULED_FOR_FIRST_SHOT:
-		status = "Scheduled for First Shot"
-	else:
-		chance -= SCHEDULED_FOR_FIRST_SHOT
-	
-	# if scheduled for second shot
-	if status is None and chance <= SCHEDULED_FOR_SECOND_SHOT:
-		status = "Scheduled for Second Shot"
-	else:
-		chance -= SCHEDULED_FOR_SECOND_SHOT
-	
-	if status is None and chance <= VACCINATION_COMPLETED: 
-		status = "Vaccination Completed"
-
-	start_date = datetime(2021, 4, 1)
-	end_date = datetime.today()
-
-	# get first random date
-	time_between_dates = end_date - start_date
-	days_between_dates = time_between_dates.days
-	random_number_of_days = randrange(days_between_dates)
-	random_date = start_date + timedelta(days=random_number_of_days)
-
-	# get second random date
-	time_between_dates = end_date - random_date
-	days_between_dates = time_between_dates.days
-	random_number_of_days = randrange(days_between_dates)
-	random_date1 = random_date + timedelta(days=random_number_of_days)
-
-	date1 = None
-	date2 = None
-
-	if status == "Scheduled for Second Shot":
-		date1 = random_date.strftime('%d/%m/%Y, %H:%M:%S')
-	elif status == "Vaccination Completed":
-		date1 = random_date.strftime('%d/%m/%Y, %H:%M:%S')
-		date2 = random_date1.strftime('%d/%m/%Y, %H:%M:%S')
-
-	db.execute(
-		"""
-		INSERT INTO vaccination_status(
-				NRIC, vaccinationStatus, dateOfFirstShot, dateOfSecondShot
-		)
-		VALUES ((?), (?), (?), (?))
-		""",
-		(NRIC, status, date1, date2)
-	)
-	noOfRecords += 1
-	print('Added vaccination record for {}. Total Vaccination Record = {}'.format(NRIC, noOfRecords))
-
-
+]
+## executing the query with values
+mycursor.executemany(answerInsertquery, answerInsertvalues)
 
 # Commit the update to the database
-connection.commit()
+mydb.commit()
 
-# Close the connection to the database
-dbDisconnect(connection)
+
 print('All entries committed to database')
+# #testing queries
+# #test which project has which admin and subadmins
+# mycursor.execute("SELECT projdetails.title,users.email, users.firstName,users.lastName,administrators.adminStatus FROM administrators INNER JOIN projdetails ON projdetails.projDetailsID = administrators.projID INNER JOIN users ON users.userID = administrators.userID ORDER BY administrators.projID")
+
+# #test to see if questions and candidates are added into the correct project
+# mycursor.execute("SELECT projdetails.title, questions.questions, questions.questionDesc, candidates.candidateOption, candidates.image FROM record INNER JOIN projdetails ON projdetails.projDetailsID = record.projID INNER JOIN questions ON questions.questionsID = record.questionID INNER JOIN candidates ON candidates.candidateID = record.candidateID ORDER BY record.recordID")
+
+# #test to see what all voters vote for
+mycursor.execute("SELECT t2.title,t2.questions,t2.questionDesc,t2.candidateOption,t1.email,t1.encryptedAnswer FROM (SELECT voter.email,answer.encryptedAnswer,answer.recordID FROM answer INNER JOIN voter ON voter.voterID = answer.voterID ORDER BY answer.answerID) AS t1 INNER JOIN (SELECT record.recordID,projdetails.title,questions.questions,questions.questionDesc,candidates.candidateOption FROM record INNER JOIN projdetails ON projdetails.projDetailsID = record.projID INNER JOIN questions ON questions.questionsID = record.questionID INNER JOIN candidates ON candidates.candidateID = record.candidateID) AS t2 ON t1.recordID = t2.recordID")
+# mycursor.execute("SELECT * FROM users;")
+# mycursor.execute("SELECT * FROM administrators;")
+myresult = mycursor.fetchall()
+
+for x in myresult:
+  print(x)
+
+  
+# Close the connection to the database
+dbDisconnect(mydb)
