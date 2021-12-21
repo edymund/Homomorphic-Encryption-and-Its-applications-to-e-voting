@@ -1,5 +1,6 @@
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
+from .boundary.loginBoundary import loginBoundary
 from app import application as app, boundary, loginRequired
 from flask import request
 
@@ -14,6 +15,13 @@ def landingPage():
 def editProfilePage():
 	# Create a boundary object
 	boundary = user_editProfileBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/login', methods=['GET'])
+def loginPage():
+	# Create a boundary object
+	boundary = loginBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 
