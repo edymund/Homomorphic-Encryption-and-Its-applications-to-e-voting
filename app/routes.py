@@ -4,6 +4,7 @@ from .boundary.admin_overviewBoundary import admin_overviewBoundary
 from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministratorsBoundary
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
+from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
 from app import application as app, boundary, loginRequired
 from flask import request
 
@@ -47,6 +48,13 @@ def projectEditQuestions():
 	# Create boundary object
 	boundary = admin_editQuestionsBoundary()
 	if request.method =='GET':
+		return boundary.displayPage()
+
+@app.route("/edit_answers", methods=['GET'])
+def projectEditAnswer():
+	# Crate boundary object
+	boundary = admin_editAnswersBoundary()
+	if request.method == 'GET':
 		return boundary.displayPage()
 
 	# # Create PublicUser_ExposureStatusBoundary Object
