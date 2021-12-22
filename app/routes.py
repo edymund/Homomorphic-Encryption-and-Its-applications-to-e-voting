@@ -16,6 +16,7 @@ def editProfilePage():
 	# Create a boundary object
 	boundary = user_editProfileBoundary()
 	if request.method == 'GET':
+<<<<<<< HEAD
 		return boundary.displayPage()
 
 @app.route('/ViewVoterCoverPage', methods=['GET'])
@@ -34,3 +35,6 @@ def viewVoterCoverPage():
 	# # Displays the webpage
 	# return render_template('overview.html', userType = session['userType'],
 	# 										healthStatus = exposureStatus)
+=======
+		return boundary.displayPage()
+>>>>>>> voters_VoterCoverPage
