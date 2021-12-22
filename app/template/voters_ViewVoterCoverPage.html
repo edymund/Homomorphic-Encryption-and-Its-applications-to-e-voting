@@ -1,26 +1,15 @@
-<!DOCTYPE html>
+{% extends "voters_baseTemplate.html" %}
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="initial-scale=1, width=device-width">
-		<link rel="shortcut icon" href="#" />
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewVoterCoverPage.css') }}"/>
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewVoterCoverPage.css') }}"/>
+{% endblock %} 
 
-	</head>
-
-	<body>
-		<div class="top-left">
-			<a href="/"><img src={{url_for('static', filename='images/icon.png')}} /></a>
-		</div>
-
-		<!-- Body Block -->
-		<div class ="content">
-			
-			<h2>Election Title</h2>
-
-			<h3>Pre-Election Message: </h3>
-			<textarea readonly class="message-boxsize" >
+<!-- Updates the <body> of the webpage -->
+{% block body %}	
+	<h2>Election Title</h2>
+	<h3>Pre-Election Message: </h3>
+	<textarea readonly class="message-boxsize" >
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
 enim ad minim veniam, quis nostrud exercitation ullamco laboris
@@ -28,11 +17,8 @@ nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
 in reprehenderit in voluptate velit esse cillum dolore eu fugiat
 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
 sunt in culpa qui officia deserunt mollit anim id est laborum.
-			</textarea> <br>
-			<div class="center">
-				<button class= "button" type="button">Start Voting</button>
-			</div>
-				
-		</div>
-	</body>
-</html>
+	</textarea> <br>
+	<div class="center">
+		<button class= "button" type="button">Start Voting</button>
+	</div>
+{% endblock %}
