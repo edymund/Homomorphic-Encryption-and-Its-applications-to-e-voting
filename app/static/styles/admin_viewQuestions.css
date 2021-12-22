@@ -1,0 +1,45 @@
+.questionBox {
+	color: inherit;
+	text-decoration: none;
+}
+
+.questions {
+	transform: scale(0.98);
+	border: 1px solid black;
+	margin: 25px 0px 25px 0px;
+	padding: 30px 30px 15px 30px;
+	border-radius: 10px;
+	transition: transform .3s, box-shadow .3s, background-color .3s;
+}
+
+.questions:hover {
+	transform: scale(1);
+	box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, 0.2);
+	background-color:rgb(245, 222, 192);
+}
+
+input.newQuestionImage {
+	margin:0px;
+	max-height: 30px;
+	overflow: hidden;
+	display: inline;
+	max-width:30%;
+	border: 1px solid black;
+	float:right;
+	
+}
+
+#projectNameField {
+	display: inline;
+	width: 50%;
+	border: 1px solid black;
+}
+
+form {
+	padding: 0px 0px 20px 0px;
+}
+
+#header {
+	height: 50px;
+	vertical-align: middle;
+}

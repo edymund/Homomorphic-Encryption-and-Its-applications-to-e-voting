@@ -1,0 +1,33 @@
+table, td, tr, th {
+	border: 1px solid black;
+	border-collapse: collapse;
+
+}
+
+td, th{
+	padding: 10px;
+}
+
+th {
+	text-align: center;
+}
+
+#deleteAdminButton {
+	max-height: 50px;
+	max-width: 50px;
+	overflow: hidden;
+}
+
+td:nth-child(1) {
+  width: 20%px;
+}
+
+/* the second */
+td:nth-child(2) {
+  width: 60%px;
+}
+
+/* the third */
+td:nth-child(3) {
+  width: 20%;
+}

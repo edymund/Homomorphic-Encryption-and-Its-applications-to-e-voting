@@ -1,0 +1,48 @@
+{% extends "user_baseTemplate.html" %} 
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_viewQuestions.css') }}" />
+{% endblock %} 
+
+{% block body %}
+    <h2>Manage Questions</h2>
+	<div id="header">
+		<form>
+			<label for="projectNameField">Project Name:</label>
+			<input type="text" id="projectNameField" value="Project Name Here" disabled/>
+			<input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}">
+		</form>
+	</div>
+
+	<a class="questionBox" href="/editQuestion/">
+		<div class="questions">
+			<span>
+				<b>Q1.</b>
+				What is the correct answer?
+			</span>
+			<ol>
+				<li>Answer A</li>
+				<li>Answer B</li>
+				<li>Answer C</li>
+				<li>Answer D</li>
+			</ol>
+		</div>
+	</a>
+	<a class="questionBox" href="/editQuestion/">
+		<div class="questions">
+			<span>
+				<b>Q2.</b>
+				What is the correct answer?
+			</span>
+			<ol>
+				<li>Answer A</li>
+				<li>Answer B</li>
+				<li>Answer C</li>
+				<li>Answer D</li>
+			</ol>
+		</div>
+	</a>
+
+
+{% endblock %}
