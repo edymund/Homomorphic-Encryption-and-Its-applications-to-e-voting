@@ -6,6 +6,10 @@ body, html {
 	padding: 0px 5% 96px 5%;
 }
 
+/* div {
+	border: 1px black solid;
+} */
+
 /* nav bar text */
 .top-right a {
 	color: black;
