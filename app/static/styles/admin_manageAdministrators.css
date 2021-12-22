@@ -20,7 +20,7 @@ th {
 
 td:nth-child(1) {
   width: 20%px;
-  }
+}
 
 /* the second */
 td:nth-child(2) {
@@ -30,4 +30,4 @@ td:nth-child(2) {
 /* the third */
 td:nth-child(3) {
   width: 20%;
- }
+}

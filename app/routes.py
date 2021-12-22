@@ -2,6 +2,7 @@ from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.admin_overviewBoundary import admin_overviewBoundary
 from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministratorsBoundary
+from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from app import application as app, boundary, loginRequired
 from flask import request
 
@@ -33,6 +34,12 @@ def projectManageAdministrator():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
+@app.route("/view_questions", methods = ['GET'])
+def projectViewQuestions():
+	# Create boundary object
+	boundary = admin_viewQuestionsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
 	# # Create PublicUser_ExposureStatusBoundary Object
 	# publicUser_exposureStatusBoundary = PublicUser_ExposureStatusUI()
 
