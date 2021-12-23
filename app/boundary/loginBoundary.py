@@ -1,4 +1,4 @@
-from flask import render_template, redirect, session
+from flask import render_template, redirect, session, flash
 from ..controllers.loginController import loginController
 
 class loginBoundary:
@@ -26,12 +26,15 @@ class loginBoundary:
 		# Otherwise, account is valid and active
 		# Provide a session and return a success status
 		session['user'] = username
-
+		session['userID'] = controller.getUserID(username)
 
 		return self.RESPONSE_SUCCESS
 	
 	def displaySuccess(self):
+		flash("Login successfully", 'message')
 		return redirect('/mainballot')
 	
-	def displayError(self, message):
-		return render_template('login.html', errorMessage=message)
+	def displayError(self):
+		flash("Username or Password is incorrect",'error')
+		return redirect('/login')
+
