@@ -1,6 +1,11 @@
 from app.boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
+from .boundary.admin_overviewBoundary import admin_overviewBoundary
+from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministratorsBoundary
+from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
+from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
+from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
 from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
@@ -24,6 +29,39 @@ def editProfilePage():
 	boundary = user_editProfileBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+
+@app.route('/overview', methods = ['GET'])
+def projectOverviewPage():
+	# Create a boundary object
+	boundary = admin_overviewBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/manage_administrators', methods = ['GET'])
+def projectManageAdministrator():
+	# Create boundary object
+	boundary = admin_manageAdministratorsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route("/view_questions", methods = ['GET'])
+def projectViewQuestions():
+	# Create boundary object
+	boundary = admin_viewQuestionsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route("/edit_questions", methods=['GET'])
+def projectEditQuestions():
+	# Create boundary object
+	boundary = admin_editQuestionsBoundary()
+	if request.method =='GET':
+		return boundary.displayPage()
+
+@app.route("/edit_answers", methods=['GET'])
+def projectEditAnswer():
+	# Crate boundary object
+	boundary = admin_editAnswersBoundary()
 
 @app.route('/view_electionMessage', methods=['GET'])
 def view_electionMessage():
