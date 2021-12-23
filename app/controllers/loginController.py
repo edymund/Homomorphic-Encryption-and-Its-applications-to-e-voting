@@ -15,3 +15,15 @@ class loginController:
 
 		# Verify if the NRIC and password is correct
 		return user.verifyLoginDetails(username, password)
+	
+	def getUserID(self, username):
+		"""
+		Check if the account type of the user
+		Returns a string of the account type
+		"""
+
+		# Create a user object containing details of the NRIC owner
+		user = User(username)
+
+		# Get the type of account that is tied to the NRIC
+		return user.getUserID()

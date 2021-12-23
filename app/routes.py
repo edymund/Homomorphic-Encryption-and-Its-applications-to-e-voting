@@ -2,6 +2,7 @@ from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
+from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 from app import application as app, boundary, loginRequired
 from flask import request
@@ -42,6 +43,34 @@ def registrationPage():
 	boundary = registrationBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+	if request.method == 'POST':
+		email = request.form['email']
+		password = request.form['psw']
+		cfm_password = request.form['cfm_psw']
+		companyName = request.form['companyName']
+		firstName = request.form['fname']
+		lastName = request.form['lname']
+		response = boundary.onSubmit(email,password,cfm_password,companyName,firstName,lastName)
+	if response == boundary.RESULT_SUCCESS:
+		return boundary.displaySuccess()
+	else:
+		return boundary.displayError(message=response)
+
+@app.route('/changepassword', methods=['GET','POST'])
+def changePasswordPage():
+	# Create a boundary object
+	boundary = user_changePasswordBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+	if request.method == 'POST':
+		old_password = request.form['old_pw']
+		new_password = request.form['new_pw']
+		cfm_password = request.form['cfm_pw']
+		response = boundary.onSubmit(old_password,new_password, cfm_password)
+	if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displaySuccess()
+	else:
+		return boundary.displayError(message=response)
 
 @app.route('/mainballot', methods=['GET','POST'])
 def mainBallotPage():
