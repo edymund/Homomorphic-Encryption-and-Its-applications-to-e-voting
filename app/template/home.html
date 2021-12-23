@@ -4,6 +4,7 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/home.css') }}"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
 {% endblock %} 
 
 <!-- Updates the <body> of the webpage -->
@@ -13,25 +14,47 @@
 	</div>
 
 	<div class="content">
-		<p>Drop your content here</p>
-		<h3>Some text</h3>
+
+		<div class = "content_top_center">
+			<div class ="content_top_center_title">
+				<h3>Make your decision-making process modern, secure, and effective</h3>
+			</div>
+			<div class ="content_top_center_paragraph">
+			<p>
+				Upgrade from manually counting ballots to an online election system without sacrificing the integrity of your vote
+			</p>
+			</div>
+		</div>
+
+		<div class ="content_top_left">
+			<h3><span class="material-icons-outlined">ballot</span> A reliable online voting tool for your group</h3>
+			<p>
+				Run online elections among your group for a single important event
+			</p>
+		</div>
+
+		<div class ="content_bottom_left">
+			<h3><span class="material-icons-outlined">enhanced_encryption</span> Encrypted Votes</h3>
+			<p>
+				Voters information are encrypted and they remained anonymous.
+			</p>
+		</div>
+
+		<div class ="content_top_right">
+			<h3><span class="material-icons-outlined">emoji_emotions</span> A pleasant way to cast votes</h3>
+			<p>
+				Your voters deserve a fair and easy to use voting website, accessible from any device.
+			</p>
+		</div>
+
+		<div class ="content_bottom_right">
+			<h3><span class="material-icons-outlined">devices</span> Web app-based voting platform</h3>
 		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-			enim ad minim veniam, quis nostrud exercitation ullamco laboris
-			nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-			in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-			nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-			sunt in culpa qui officia deserunt mollit anim id est laborum.
+			Send eligible voters to a personalized voting website
 		</p>
-		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-			enim ad minim veniam, quis nostrud exercitation ullamco laboris
-			nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-			in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-			nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-			sunt in culpa qui officia deserunt mollit anim id est laborum.
-		</p>
+		</div>
+
+
+
 	</div>
 {% endblock %}

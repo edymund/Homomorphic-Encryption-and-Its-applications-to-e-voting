@@ -1,59 +1,164 @@
-import mysql.connector
+### WARNING: ONLY USE THIS IF YOU WANT A CLEAN RESET ON THE DATABASE
+###          THIS Will drop all tables and re-create them using a fresh slate
+###          ANY CHANGES MADE AFTER INITIAL SETUP WILL BE LOST
 
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="password"
-)
+# TO REPOPULATE THE DATABASE 
+#   1. Copy all classes from entities.py and replace the classes below
+#   2. type the following command in command prompt
+#      >>> python repopulateDatabase.py
 
+import os
+from app.dbConfig import dbConnect, dbDisconnect
+from random import randrange, randint, uniform
+from datetime import datetime, timedelta
+
+
+# Delete existing sqlite file
+if os.path.exists("app/db.sqlite3"):
+  	os.remove("app/db.sqlite3")
+else:
+  	print("The file does not exist")
+	
+
+# Create and connect to database
+mydb = dbConnect()
 mycursor = mydb.cursor()
 
-#Create database
-mycursor.execute("CREATE DATABASE IF NOT EXISTS `votingapplicationdb`;")
-mycursor.execute("USE `votingapplicationdb`;")
 
 #Drop all tables
-mycursor.execute("DROP TABLE IF EXISTS `voter`;")
-mycursor.execute("DROP TABLE IF EXISTS  `administrators`;")
-mycursor.execute("DROP TABLE IF EXISTS  `answer`;")
-mycursor.execute("DROP TABLE IF EXISTS  `electionmsgs`;")
-mycursor.execute("DROP TABLE IF EXISTS  `record`;")
-mycursor.execute("DROP TABLE IF EXISTS  `candidates`;")
-mycursor.execute("DROP TABLE IF EXISTS  `questions`;")
-mycursor.execute("DROP TABLE IF EXISTS  `projdetails`;")
-mycursor.execute("DROP TABLE IF EXISTS  `users`;")
+mycursor.execute("DROP TABLE IF EXISTS voter;")
+mycursor.execute("DROP TABLE IF EXISTS  administrators;")
+mycursor.execute("DROP TABLE IF EXISTS  answer;")
+mycursor.execute("DROP TABLE IF EXISTS  electionmsgs;")
+mycursor.execute("DROP TABLE IF EXISTS  record;")
+mycursor.execute("DROP TABLE IF EXISTS  candidates;")
+mycursor.execute("DROP TABLE IF EXISTS  questions;")
+mycursor.execute("DROP TABLE IF EXISTS  projdetails;")
+mycursor.execute("DROP TABLE IF EXISTS  users;")
 
-#Create users table
-mycursor.execute("CREATE TABLE `users` ( `userID` int(11) NOT NULL AUTO_INCREMENT,  `email` varchar(255) NOT NULL, `password` varchar(255) NOT NULL, `companyName` varchar(255) NOT NULL, `firstName` varchar(255) NOT NULL, `lastName` varchar(255) DEFAULT NULL, PRIMARY KEY (`userID`), UNIQUE KEY `userID_UNIQUE` (`userID`), UNIQUE KEY `email_UNIQUE` (`email`) ); ")
+# Recreate all tables again
+create = ["""
+            CREATE TABLE users (
+            userID int(11) NOT NULL,
+            email varchar(255) NOT NULL,
+            password varchar(255) NOT NULL,
+            companyName varchar(255) NOT NULL,
+            firstName varchar(255) NOT NULL,
+            lastName varchar(255) DEFAULT NULL,
+            PRIMARY KEY (userID),
+            UNIQUE (userID),
+            UNIQUE (email)
+            )
+			""",  
+			"""
+			CREATE TABLE administrators (
+            administratorsID int(11) NOT NULL,
+            userID int(11) NOT NULL,
+            projID int(11) NOT NULL,
+            adminStatus varchar(255) NOT NULL,
+            approval BOOLEAN,
+            PRIMARY KEY (administratorsID),
+            UNIQUE (administratorsID),
+            FOREIGN KEY (userID) REFERENCES users (userID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            ) 
+			""",
+			"""
+			CREATE TABLE projdetails (
+            projDetailsID int(11) NOT NULL,
+            title varchar(255) NOT NULL,
+            status varchar(255) NOT NULL,
+            startDate date NOT NULL,
+            startTime time NOT NULL,
+            endDate date NOT NULL,
+            endTime time NOT NULL,
+            publicKey varchar(255) NOT NULL,
+            PRIMARY KEY (projDetailsID),
+            UNIQUE (projDetailsID)
+            ) 
+			""",
+			"""
+			CREATE TABLE electionmsgs (
+            electionMsgsID int(11) NOT NULL,
+            projID int(11) DEFAULT NULL,
+            preMsg varchar(255) NOT NULL,
+            postMsg varchar(255) DEFAULT NULL,
+            inviteMsg varchar(255) DEFAULT NULL,
+            reminderMsg varchar(255) DEFAULT NULL,
+            PRIMARY KEY (electionMsgsID),
+            UNIQUE (electionMsgsID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            )
+			""",
+			"""
+			CREATE TABLE questions (
+            questionsID int(11) NOT NULL,
+            projID int(11) NOT NULL,
+            questions varchar(255) NOT NULL,
+            questionDesc varchar(255) NOT NULL,
+            PRIMARY KEY (questionsID),
+            UNIQUE (questionsID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            )
+			""",
+			"""
+			CREATE TABLE candidates (
+            candidateID int(11) NOT NULL,
+            projID int(11) NOT NULL,
+            questionID int(11) NOT NULL,
+            candidateOption varchar(255) NOT NULL,
+            image varchar(255) DEFAULT NULL,
+            description varchar(255) DEFAULT NULL,
+            PRIMARY KEY (candidateID),
+            UNIQUE (candidateID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID),
+            FOREIGN KEY (questionID) REFERENCES questions (questionsID)
+            ) 
+			""",
+			"""
+			CREATE TABLE voter (
+            voterID int(11) NOT NULL,
+            email varchar(255) NOT NULL,
+            projectID int(11) NOT NULL,
+            PRIMARY KEY (voterID),
+            UNIQUE (voterID),
+            FOREIGN KEY (projectID) REFERENCES projdetails (projDetailsID)
+            )
+			""",
+			"""
+			CREATE TABLE record (
+            recordID int(11) NOT NULL,
+            projID int(11) NOT NULL,
+            questionID int(11) NOT NULL,
+            candidateID int(11) NOT NULL,
+            PRIMARY KEY (recordID),
+            UNIQUE (recordID),
+            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID),
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID),
+            FOREIGN KEY (questionID) REFERENCES questions (questionsID)
+            )
+			""",
+            """
+			CREATE TABLE answer (
+            answerID int(11) NOT NULL,
+            voterID int(11) NOT NULL,
+            recordID int(11) NOT NULL,
+            encryptedAnswer varchar(255) NOT NULL,
+            PRIMARY KEY (answerID),
+            UNIQUE (answerID),
+            FOREIGN KEY (voterID) REFERENCES voter (voterID),
+            FOREIGN KEY (recordID) REFERENCES record (recordID)
+            ) 
+			"""]
 
-#Create projdetails table
-mycursor.execute("CREATE TABLE `projdetails` ( `projDetailsID` int(11) NOT NULL AUTO_INCREMENT, `title` varchar(255) NOT NULL, `status` varchar(255) NOT NULL, `startDate` date NOT NULL, `startTime` time NOT NULL, `endDate` date NOT NULL, `endTime` time NOT NULL, `publicKey` varchar(255) NOT NULL, PRIMARY KEY (`projDetailsID`), UNIQUE KEY `projDetailsID_UNIQUE` (`projDetailsID`) ); ")
+# Create all tables
+for commands in create:
+	mydb.execute(commands)
 
-#Create administrator table
-mycursor.execute("CREATE TABLE `administrators` ( `administratorsID` int(11) NOT NULL AUTO_INCREMENT, `userID` int(11) NOT NULL, `projID` int(11) NOT NULL, `adminStatus` varchar(255) NOT NULL, `approval` varchar(255) DEFAULT NULL, PRIMARY KEY (`administratorsID`), UNIQUE KEY `administratorsID_UNIQUE` (`administratorsID`), KEY `FK_userID_idx` (`userID`), KEY `FK_projID_idx` (`projID`), CONSTRAINT `FK_adminsitrators_userID` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT `FK_adminstrators_projID` FOREIGN KEY (`projID`) REFERENCES `projdetails` (`projDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION );")
-
-#Create voter table
-mycursor.execute("CREATE TABLE `voter` ( `voterID` int(11) NOT NULL AUTO_INCREMENT, `email` varchar(255) NOT NULL, `projectID` int(11) NOT NULL, PRIMARY KEY (`voterID`), UNIQUE KEY `voterID_UNIQUE` (`voterID`), KEY `FK_voter_projID_idx` (`projectID`), CONSTRAINT `FK_voter_projID` FOREIGN KEY (`projectID`) REFERENCES `projdetails` (`projDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION );")
-
-#Create electionmsgs table
-mycursor.execute("CREATE TABLE `electionmsgs` ( `electionMsgsID` int(11) NOT NULL AUTO_INCREMENT, `projID` int(11) DEFAULT NULL, `preMsg` varchar(255) NOT NULL, `postMsg` varchar(255) DEFAULT NULL, `inviteMsg` varchar(255) DEFAULT NULL, `reminderMsg` varchar(255) DEFAULT NULL, PRIMARY KEY (`electionMsgsID`), UNIQUE KEY `electionMsgsID_UNIQUE` (`electionMsgsID`), KEY `FK_electionMsgs_projID_idx` (`projID`), CONSTRAINT `FK_electionMsgs_projID` FOREIGN KEY (`projID`) REFERENCES `projdetails` (`projDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION );")
-
-#Create questions table
-mycursor.execute("CREATE TABLE `questions` ( `questionsID` int(11) NOT NULL AUTO_INCREMENT, `projID` int(11) NOT NULL, `questions` varchar(255) NOT NULL, `questionDesc` varchar(255) NOT NULL, PRIMARY KEY (`questionsID`), UNIQUE KEY `questionsID_UNIQUE` (`questionsID`), KEY `FK_projID_idx` (`projID`), CONSTRAINT `FK_projectID` FOREIGN KEY (`projID`) REFERENCES `projdetails` (`projDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION );")
-
-#Create candidates table
-mycursor.execute("CREATE TABLE `candidates` ( `candidateID` int(11) NOT NULL AUTO_INCREMENT, `projID` int(11) NOT NULL, `questionID` int(11) NOT NULL, `candidateOption` varchar(255) NOT NULL, `image` varchar(255) DEFAULT NULL, `description` varchar(255) DEFAULT NULL, PRIMARY KEY (`candidateID`), UNIQUE KEY `candidateID_UNIQUE` (`candidateID`), KEY `FK_cadidates_projID_idx` (`projID`), KEY `FK_candidates_questionID_idx` (`questionID`), CONSTRAINT `FK_cadidates_projID` FOREIGN KEY (`projID`) REFERENCES `projdetails` (`projDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT `FK_candidates_questionID` FOREIGN KEY (`questionID`) REFERENCES `questions` (`questionsID`) ON DELETE NO ACTION ON UPDATE NO ACTION);")
-
-#Create records table
-mycursor.execute("CREATE TABLE `record` ( `recordID` int(11) NOT NULL AUTO_INCREMENT, `projID` int(11) NOT NULL, `questionID` int(11) NOT NULL, `candidateID` int(11) NOT NULL, PRIMARY KEY (`recordID`), UNIQUE KEY `recordID_UNIQUE` (`recordID`), KEY `FK_record_projID_idx` (`projID`), KEY `FK_record_questionID_idx` (`questionID`), KEY `FK_record_candidateID_idx` (`candidateID`), CONSTRAINT `FK_record_candidateID` FOREIGN KEY (`candidateID`) REFERENCES `candidates` (`candidateID`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT `FK_record_projID` FOREIGN KEY (`projID`) REFERENCES `projdetails` (`projDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT `FK_record_questionID` FOREIGN KEY (`questionID`) REFERENCES `questions` (`questionsID`) ON DELETE NO ACTION ON UPDATE NO ACTION );")
-
-#Create answer table
-mycursor.execute("CREATE TABLE `answer` (`answerID` int(11) NOT NULL AUTO_INCREMENT,`voterID` int(11) NOT NULL,`recordID` int(11) NOT NULL,`encryptedAnswer` varchar(255) NOT NULL,PRIMARY KEY (`answerID`),UNIQUE KEY `answerID_UNIQUE` (`answerID`),KEY `FK_answer_recordID_idx` (`recordID`),CONSTRAINT `FK_answer_recordID` FOREIGN KEY (`recordID`) REFERENCES `record` (`recordID`) ON DELETE NO ACTION ON UPDATE NO ACTION);")
-
-
+print('All tables have been created')
 
 #Insert data for users table
-userInsertquery = "INSERT INTO users (email, password, companyName, firstName, lastName) VALUES (%s, %s, %s, %s, %s)"
+userInsertquery = "INSERT INTO users (userEmail, password, companyName, firstName, lastName) VALUES (?,?,?,?,?)"
 ## storing values in a variable
 userInsertvalues = [
     ("glen@hotmail.com","1234","abs","glen","lee"),
@@ -202,10 +307,12 @@ answerInsertvalues = [
 ## executing the query with values
 mycursor.executemany(answerInsertquery, answerInsertvalues)
 
-
-## to make final output we have to run the 'commit()' method of the database object
+# Commit the update to the database
 mydb.commit()
 
+# Close the connection to the database
+dbDisconnect(mydb)
+print('All entries committed to database')
 # #testing queries
 # #test which project has which admin and subadmins
 # mycursor.execute("SELECT projdetails.title,users.email, users.firstName,users.lastName,administrators.adminStatus FROM administrators INNER JOIN projdetails ON projdetails.projDetailsID = administrators.projID INNER JOIN users ON users.userID = administrators.userID ORDER BY administrators.projID")
