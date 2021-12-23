@@ -1,0 +1,26 @@
+<!-- Extends the basic html template -->
+{% extends "guest_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/login.css') }}"/>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<div class="content">
+
+	<h2>Login</h2>
+    <form method="POST" action="/login">
+        <label for="username"><b>Username: </b></label>
+        <input type="text" class="username" placeholder="Enter Username" name="username" required> <br>
+        
+        <label for="psw"><b>Password: </b></label>
+        <input type="password" class="psw" placeholder="Enter Password" name="psw" required> <span class="forget_pw"><a href="/resetpassword">Forget Password?</a></span> <br>
+        
+        <button type="submit">Login</button> <br> <br>
+        
+        <span class="sign_up"><a href="/registration">Don't have an account yet? Sign up</a></span>
+    </form>
+</div>
+{% endblock %} 
