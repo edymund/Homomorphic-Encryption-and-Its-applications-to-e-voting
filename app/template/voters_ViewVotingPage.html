@@ -1,0 +1,58 @@
+{% extends "voters_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewVotingPage.css') }}"/>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<table>
+	<tr>
+		{%for image in imagePath %}
+		<td class="candidateInfo">
+			<img src={{image}} >
+		</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		{%for name in namePath %}
+		<td class="candidateInfo">
+			{{ name }}
+		</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		{%for description in descriptions %}
+		<td class="candidateInfo">
+			{{ description }}
+		</td>
+		{% endfor %}
+	</tr>
+</table>
+<table>
+	<tr>
+		<td class="questionInfo">
+			{{question}}
+		</td>
+	</tr>
+	<form action="/" method="POST"></form>
+	<tr>
+		<td class="answerInfo">
+			{%for name in namePath %}
+			<input type="radio" id={{name}} name={{name}} value={{name}}>
+			<label for={{name}}><b>{{name}}</b></label><br>
+			{% endfor %}
+			<br>
+				
+		</td>
+	</tr>
+	<tr>
+		<td class="center">
+			<input type="submit" value="Submit">	
+		</td>
+	</tr>
+	</form>
+</table>
+
+{% endblock %} 
