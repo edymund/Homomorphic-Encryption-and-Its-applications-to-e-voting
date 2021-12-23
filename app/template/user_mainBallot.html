@@ -1,0 +1,42 @@
+{% extends "user_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_mainBallot.css') }}"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript src="{{url_for('static', filename='js/user_mainBallot.js') }}"></script>
+
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<div class="content">
+
+    <input id="search_bar" style="font-family: FontAwesome;" placeholder='&#xf002 Search...' />
+
+    <h2>All Projects <span class="material-icons-outlined" onclick="location.href='#'">add_circle_outline</span> </h2>    
+
+    <div class = "all_ballots">
+        <span class = "serial_no"></span>
+        <!-- Project name cannot exceed 53 characters <input type"text" maxlength="10"> -->
+        <span class = "project_name"> General Election</span>
+        <span class = "role">Sub-Admin</span>
+        <span class = "status">Draft</span>
+    </div>
+    <div class = "all_ballots">
+        <span class = "serial_no"></span>
+        <span class = "project_name"> Which fruit is the most popular?</span>
+        <span class = "role">Admin</span>
+        <span class = "status">Completed</span>
+    </div>
+    <div class = "all_ballots">
+        <span class = "serial_no"></span>
+        <span class = "project_name"> Most well-liked male celebrity?</span>
+        <span class = "role">Admin</span>
+        <span class = "status">Ongoing</span>
+    </div>
+
+</div>
+{% endblock %} 
