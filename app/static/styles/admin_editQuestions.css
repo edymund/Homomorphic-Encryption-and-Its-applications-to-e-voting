@@ -1,0 +1,10 @@
+input.newQuestionImage {
+	margin: 0px;
+	max-height: 30px;
+	overflow: hidden;
+	display: inline;
+	max-width: 30%;
+	border: 1px solid black;
+	/* float:right; */
+}
+
