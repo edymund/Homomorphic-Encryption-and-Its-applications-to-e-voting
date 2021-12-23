@@ -34,7 +34,7 @@ class loginBoundary:
 		flash("Login successfully", 'message')
 		return redirect('/mainballot')
 	
-	def displayError(self):
-		flash("Username or Password is incorrect",'error')
+	def displayError(self, message):
+		flash(message, 'error')
 		return redirect('/login')
 
