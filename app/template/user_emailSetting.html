@@ -1,0 +1,60 @@
+{% extends "user_baseTemplate.html" %}
+<!-- Updates the <head> of the webpage -->
+    {% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_electionMessage.css') }}"/>
+{% endblock %} 
+<!--Change CSS-->
+
+<!-- Updates the <body> of the webpage -->
+    {% block body %}
+    <div class="content">
+
+        <h2>Email Settings</h2>
+        <table>
+            <tr>
+                <td>
+                    <h4>
+                        <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
+                    </h4>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea spellcheck="True" wrap= hard >Welcome to evoting bro</textarea><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="submit">Send reminder link</button>
+                </td>
+            </tr>
+            
+        </table>
+        <!-- <h4>
+            <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
+        </h4> -->
+
+        <!-- <textarea spellcheck="True" wrap= hard >Welcome to evoting bro</textarea><br> -->
+        <!--Change text box size-->
+
+        <!-- <h4>
+            <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
+        </h4> -->
+
+        <!-- <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br> -->
+        <!--Change text box size-->
+        
+        <!-- <button type="submit">Send reminder link</button> -->
+
+    </div>
+    {% endblock %} 
