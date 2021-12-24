@@ -3,6 +3,7 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewVotingPage.css') }}"/>
+<script type="text/javascript" src="static/js/voters_ViewVotingPage.js"></script>
 {% endblock %} 
 
 <!-- Updates the <body> of the webpage -->
@@ -49,10 +50,22 @@
 	</tr>
 	<tr>
 		<td class="center">
-			<input type="submit" value="Submit">	
+			<input type="button" id="popup" value="Submit"></button>
 		</td>
 	</tr>
 	</form>
 </table>
-
-{% endblock %} 
+<!-- modal pop up-->
+<div class = "bg-modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h2>Are You Sure Of Your Choice?</h2>
+		</div>
+		<div class="modal-body"></div>
+		<div class="modal-footer">
+			<button class="modal-button" id="cancel" >Cancel</button>
+			<button class="modal-button-submit" >Submit</button>
+		</div>
+	</div>
+</div>
+{% endblock %}
