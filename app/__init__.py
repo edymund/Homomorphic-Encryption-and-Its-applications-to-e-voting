@@ -38,12 +38,23 @@ def authorisationRequired(function):
 		# If user is not authorised
 		try:
 			# If user is authenticated, proceed as per normal
-			if session['userID']:
-				print("User authenticated")
-				print(session['user'])
-				print(session['userID'])
+			accessedResource = kwargs.get("projectID")
+			print(accessedResource)
+			print(session['adminProjectID'])
+			print(session['subAdminProjectID'])
+			if int(accessedResource) in session['adminProjectID']:
+				print("User is admin of project")
 				return function(*args, **kwargs)
-			
+
+			elif int(accessedResource) in session['subAdminProjectID']:
+				print("User is sub-admin of project")
+				return function(*args, **kwargs)
+
+			else: 
+				print("User not authorized, Redirecting")
+				flash("Not authorized to access this resource")
+				return redirect('/overview')
+
 		except KeyError as e:
 			# if session['isAuthenticated'] is None or not session['isAuthenticated']:
 			print(e)

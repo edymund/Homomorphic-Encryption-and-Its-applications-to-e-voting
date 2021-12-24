@@ -2,23 +2,23 @@ from ..dbConfig import dbConnect, dbDisconnect
 
 class Administrator:
 	# Constructor for user
-	def __init__(self, administratorID = None):
+	def __init__(self, userID = None):
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
 		# If the NRIC is provided, fill the object with details from database
 		hasResult = False
-		if administratorID is not None:
+		if userID is not None:
 			# Select User from database and populate instance variables
 			result = db.execute("""SELECT administratorsID, userID, projID, adminStatus, approval
-								FROM administratorsID
-								WHERE administratorID = (?)""", (administratorID,)).fetchone()
+								FROM administrators
+								WHERE userID = (?)""", (userID,)).fetchone()
 
 			# If a result is returned, populate object with data
 			if result is not None:
 				hasResult = True
 				# Initialise instance variables for this object
-				self.__administratorsID = administratorID
+				self.__administratorsID = result[1]
 				self.__userID = result[1]
 				self.__projID = result[2]
 				self.__adminStatus = result[3]
@@ -34,22 +34,45 @@ class Administrator:
 		dbDisconnect(connection)
 
 	# Verify if the user is an admin and authorized to view the page
-	def verifyPermission(self, userID, projectID):
+	def getProjectsAsAdmin(self, userID):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		if userID is not None:
 			# Select User from database and populate instance variables
-			result = db.execute("""SELECT adminStatus
-								FROM administratorsID
-								WHERE administratorID = (?) and projID = (?)""", (userID, projectID)).fetchone()
+			result = db.execute("""SELECT projID
+								FROM administrators
+								WHERE userID = (?) AND adminStatus = 'admin' """, (userID,)).fetchall()
 		
 		dbDisconnect(connection)
 
-		if result is not None:
-			return True
-		return False
+		if result is None:
+			return []
+		else:
+			projectID = []
+			for item in result:
+				projectID.append(item[0])
+			return projectID
 
+	def getProjectsAsSubadmin(self, userID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if userID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT projID
+								FROM administrators
+								WHERE userID = (?) AND adminStatus = 'sub-admin' """, (userID,)).fetchall()
+		
+		dbDisconnect(connection)
+
+		if result is None:
+			return []
+		else:
+			projectID = []
+			for item in result:
+				projectID.append(item[0])
+			return projectID
 		
 		
 

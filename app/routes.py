@@ -15,7 +15,7 @@ from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 
-from app import application as app, boundary, loginRequired
+from app import application as app, boundary, loginRequired, authorisationRequired
 from flask import request
 
 @app.route('/', methods=['GET'])
@@ -41,12 +41,12 @@ def projectOverviewPage():
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired
-# @authorizationRequired
+@authorisationRequired
 def projectManageAdministrator(projectID):
 	# Create boundary object
 	boundary = admin_manageAdministratorsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage(projectID)
+		return boundary.displayPage(projectID=projectID)
 	if request.method == 'POST':
 		return boundary.addAdministrator(projectID)
 
