@@ -1,0 +1,35 @@
+{% extends "user_baseTemplate.html" %} 
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_manageAdministrators.css') }}" />
+{% endblock %} 
+
+{% block body %}
+    <h2>Add Sub-administrators</h2>
+	<p>
+		Sub-administrators will be prompted to verify the details of the voting event before the voting event can go live.
+	</p>
+
+	<form>
+		<label for="addSubAdminField">Add sub-administrator:</label>
+		<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name=addEmail/>
+	</form>
+    
+	<form>
+		<input type="hidden" name="projectID" value="1"/>
+		<table>
+			<tr>
+				<th>No.</th>
+				<th>Sub-Administrator Emails</th>
+				<th>Delete</th>
+			</tr>
+			<tr>
+				<td>1.</td>
+				<td>abc@email.com</td>
+				<td><input id="deleteAdminButton" type="image" value ="1" name="deleteID" src="{{ url_for('static',filename='images/cross.png') }}"></td>
+			</tr>
+		</table>
+        
+    </form>
+{% endblock %}
