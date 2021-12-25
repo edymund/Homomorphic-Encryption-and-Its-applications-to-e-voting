@@ -1,4 +1,6 @@
-from flask import render_template
+from flask import render_template, session, flash, redirect
+from ..controllers.user_mainBallotController import user_mainBallotController
+
 class user_mainBallotBoundary:
 	# Constructor
 	def __init__(self):
@@ -6,4 +8,7 @@ class user_mainBallotBoundary:
 
 	# Other Methods
 	def displayPage(self):
-		return render_template('user_mainBallot.html')
+		controller = user_mainBallotController()
+		user_id = session['userID']
+		data = controller.getProject(user_id)
+		return render_template('user_mainBallot.html',data=data)
