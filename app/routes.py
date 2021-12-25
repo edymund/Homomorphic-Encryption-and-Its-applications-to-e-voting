@@ -10,11 +10,12 @@ from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
+# from .boundary.registrationBoundary import registrationBoundary
 from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 
-from app import application as app, boundary, loginRequired
+from app import application as app, boundary, loginRequired, authorisationRequired
 from flask import request
 
 @app.route('/', methods=['GET'])
@@ -38,14 +39,19 @@ def projectOverviewPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/manage_administrators', methods = ['GET'])
-def projectManageAdministrator():
+@app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def projectManageAdministrator(projectID):
 	# Create boundary object
 	boundary = admin_manageAdministratorsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID=projectID)
+	if request.method == 'POST':
+		return boundary.addAdministrator(projectID)
 
 @app.route("/view_questions", methods = ['GET'])
+@loginRequired
 def projectViewQuestions():
 	# Create boundary object
 	boundary = admin_viewQuestionsBoundary()
@@ -99,6 +105,13 @@ def loginPage():
 			return boundary.displaySuccess()
 		else:
 			return boundary.displayError(message=response)
+
+# @app.route('/registration', methods=['GET','POST'])
+# def registrationPage():
+# 	# Create a boundary object
+# 	boundary = registrationBoundary()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
 
 @app.route('/registration', methods=['GET','POST'])
 def registrationPage():
