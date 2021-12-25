@@ -74,5 +74,21 @@ class Administrator:
 				projectID.append(item[0])
 			return projectID
 		
-		
+	def getProjectDetails(self,user_id):
+		connection = dbConnect()
+		db = connection.cursor()
+		result = db.execute("""select * from administrators a 
+            inner join projdetails b on a.projID = b.projDetailsID 
+            where a.userID = (?)""", (user_id,)).fetchall()
+		dbDisconnect(connection)
+		return result
+		# Result array in getProjectDetails
+		# adminID = result[0]
+		# userID = result[1]
+		# projID = result[2]
+		# adminStatus = result[3]
+		# approval = result[4]
+		# projDetailsID = result[5]
+		# projTitle = result[6]
+		# projStatus = result[7]		
 
