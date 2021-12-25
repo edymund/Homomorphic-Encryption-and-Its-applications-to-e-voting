@@ -16,22 +16,22 @@
 		</p>
 		<form method="POST" action="/registration">
 			<label for="fname"><b>First Name: </b></label>
-			<input type="text" placeholder="Enter your name" name="fname" required> <br>
+			<input type="text" placeholder="Enter your name" name="fname" autocomplete="off" pattern="[A-Za-z]{1,20}" title="We only accept letters" required> <br>
 
 			<label for="lname"><b>Last Name: </b></label>
-			<input type="text" placeholder="Enter your name" name="lname" required> <br>
+			<input type="text" placeholder="Enter your name" name="lname" autocomplete="off" pattern="[A-Za-z]{1,20}" title="We only accept letters" required> <br>
 	
 			<label for="company_name"><b>Company Name: </b></label>
-			<input type="text" placeholder="Enter company name" name="companyName" > <br>
+			<input type="text" placeholder="Enter company name" name="companyName" autocomplete="off" > <br>
 	
 			<label for="email"><b>Email: </b></label>
-			<input type="text" placeholder="Enter Email" name="email" required> <br>
+			<input type="text" placeholder="Enter Email" name="email" autocomplete="off" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Email field must be in the following order: characters@characters.domain" required> <br>
 		  
 			<label for="psw"><b>Password: </b></label>
-			<input type="password" placeholder="Enter Password" name="psw" required> <br>
+			<input type="password" placeholder="Enter Password" name="psw" autocomplete="off" required> <br>
 	
 			<label for="cfm_psw"><b>Confirm Password: </b></label>
-			<input type="password" placeholder="Confirm Password" name="cfm_psw" required> <br>
+			<input type="password" placeholder="Confirm Password" name="cfm_psw" autocomplete="off" required> <br>
 			
 			<button type="submit" class="sign_up">Register</button> <br>
 		</form>
