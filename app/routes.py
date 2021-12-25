@@ -10,7 +10,7 @@ from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
-from .boundary.registrationBoundary import registrationBoundary
+# from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 
 from app import application as app, boundary, loginRequired
