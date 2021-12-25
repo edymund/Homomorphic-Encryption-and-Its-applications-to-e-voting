@@ -3,6 +3,7 @@ from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
 from .boundary.voters_ViewSubmittedVotePage import voters_ViewSubmittedVotePage
+from .boundary.voters_ViewEncryptedVotePage import voters_ViewEncryptedVotePage
 from app import application as app, boundary, loginRequired
 from flask import request
 
@@ -38,5 +39,12 @@ def viewVotingPage():
 def viewSubmittedVotePage():
 	# Create a boundary object
 	boundary = voters_ViewSubmittedVotePage()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/ViewEncryptedVotePage', methods=['GET'])
+def viewEncryptedVotePage():
+	# Create a boundary object
+	boundary = voters_ViewEncryptedVotePage()
 	if request.method == 'GET':
 		return boundary.displayPage()
