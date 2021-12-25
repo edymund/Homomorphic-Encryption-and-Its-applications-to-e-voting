@@ -1,0 +1,31 @@
+{% extends "user_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_settings.css') }}"/>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<div class="content">
+
+	<h2>Settings</h2>
+	<form method="POST" action="/settings">
+		<label for="fname"><b>First Name: </b></label>
+		<input type="text" placeholder="First name" name="fname"> <br>
+
+		<label for="lname"><b>Last Name: </b></label>
+		<input type="text" placeholder="Last name" name="lname"> <br>
+
+		<label for="email"><b>Email: </b></label>
+		<input type="text" placeholder="Email" name="email"> <br>
+
+		<label for="Company"><b>Company: </b></label>
+		<input type="text" placeholder="Company Name" name = "companyName"> <br>
+		<button type="submit">Update Particulars</button>
+	</form>
+
+	<button type="submit" onclick="location.href='/changepassword'">Change Password</button>
+
+</div>
+{% endblock %} 
