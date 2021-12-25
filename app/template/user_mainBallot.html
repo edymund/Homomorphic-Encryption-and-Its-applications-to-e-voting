@@ -29,11 +29,10 @@
 	projTitle = item[6]
 	projStatus = item[7]     
     --> 
-    <!--  --> 
     {% for item in data %}
     <div class = "all_ballots">
         <span class = "serial_no"></span>
-        <span class  = "project_name" onclick="location.href='#'">{{item[6]}}</span>
+        <span class  = "project_name" onclick="location.href='/mainballot?Id={{item[2]}}'">{{item[6]}}</span>
         <span class = "role">{{item[3]}}</span>
         <span class = "status">{{item[7]}}</span>
     </div>
