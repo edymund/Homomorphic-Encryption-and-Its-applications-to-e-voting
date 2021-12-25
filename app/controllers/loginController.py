@@ -1,4 +1,5 @@
 from ..entity.User import User
+from ..entity.Administrator import Administrator
 
 class loginController:
 	def __init__(self):
@@ -27,3 +28,13 @@ class loginController:
 
 		# Get the type of account that is tied to the NRIC
 		return user.getUserID()
+
+	def getProjectID_Admin(self, userID):
+		administrator = Administrator(userID)
+
+		return administrator.getProjectsAsAdmin(userID)
+
+	def getProjectID_SubAdmin(self, userID):
+		administrator = Administrator(userID)
+
+		return administrator.getProjectsAsSubadmin(userID)
