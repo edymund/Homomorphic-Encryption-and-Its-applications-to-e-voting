@@ -37,7 +37,7 @@ class loginBoundary:
 		flash("Login successfully", 'message')
 		return redirect('/mainballot')
 	
-	#display error
+	#display error and flash message
 	def displayError(self, message):
 		flash(message, 'error')
 		return redirect('/login')
