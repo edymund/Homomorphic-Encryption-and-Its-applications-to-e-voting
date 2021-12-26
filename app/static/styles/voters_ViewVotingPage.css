@@ -38,14 +38,14 @@ table{
 	left: 46%;
   }
 
-input[type=button]{
+.main-form-submit{
 	padding: 15px 32px;
 	margin: 4px 2px;
 	border-radius: 12px;
 }
 
 
-input[type=button]:hover {
+.main-form-submit:hover {
 	background-color: #555;
 	color: white;
   }
