@@ -4,7 +4,6 @@ class ElectionMessage:
 		# Connect to database
         connection = dbConnect()
         db = connection.cursor()
-        # If the NRIC is provided, fill the object with details from database
         hasResult = False
 
         if electionMsgID is not None or projID is not None:

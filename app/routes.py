@@ -1,4 +1,4 @@
-from app.boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+from app.boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.admin_overviewBoundary import admin_overviewBoundary
@@ -6,15 +6,15 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
-from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
-from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
+from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
+from .boundary.user_viewImportVoterListBoundary import user_viewImportVoterListBoundary
+from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
 # from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 
 from app import application as app, boundary, loginRequired
-from flask import request
+from flask import request, flash, render_template
 
 @app.route('/', methods=['GET'])
 def landingPage():
@@ -70,13 +70,20 @@ def view_electionMessage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/view_importList', methods=['GET'])
+@app.route('/view_importList',  methods=['GET', 'POST'])
 def view_importList():
 	# Create a boundary object
 	boundary = user_viewImportVoterListBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
+	votersList = boundary.populateTextArea()
+	if request.method == 'GET':		
+		return boundary.displayPage(votersList)
+	elif request.method == 'POST':
+		boundary.setProjID(1)
+		file = request.files['filename']
+		response = boundary.onSubmit(file)
+		votersList = boundary.populateTextArea()
+		return boundary.displayPage(votersList)
+		
 @app.route('/view_emailSettings', methods=['GET'])
 def view_emailSetting():
 	# Create a boundary object
