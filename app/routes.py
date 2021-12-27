@@ -46,9 +46,22 @@ def projectManageAdministrator(projectID):
 	# Create boundary object
 	boundary = admin_manageAdministratorsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage(projectID=projectID)
+		return boundary.displayPage(projectID)
+
 	if request.method == 'POST':
-		return boundary.addAdministrator(projectID)
+		dataPosted = request.form['action']
+		if dataPosted == 'addSubAdmin':
+			print("Entering Add Sub-Admin")
+			return boundary.addSubAdministrator(projectID, request.form['addEmail'])
+		
+		elif dataPosted == 'deleteSubAdmin':
+			print("Entering Delete Sub-Admin")
+			print(request.form['deleteID'])
+			return boundary.deleteAdministrator(projectID, request.form['deleteID'])
+		
+		else:
+			return boundary.displayError("Error with Data Entered")
+		
 
 @app.route("/view_questions", methods = ['GET'])
 @loginRequired
