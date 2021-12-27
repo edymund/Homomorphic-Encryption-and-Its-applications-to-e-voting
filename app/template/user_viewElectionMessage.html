@@ -2,6 +2,7 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_electionMessage.css') }}"/>
+    <script type=text/javascript src="{{ url_for('static',filename='js/user_viewElectionMsg.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
@@ -43,7 +44,8 @@
             </table>
         </form>
         <script>
-            {}
+            onload = fillTA("postMsg",{{postMsg | safe}});
+            onload = fillTA("preMsg",{{preMsg | safe }});
         </script>
     
     {% endblock %} 
