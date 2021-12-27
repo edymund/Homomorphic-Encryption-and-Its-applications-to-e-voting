@@ -1,4 +1,4 @@
-from app.boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+from app.boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.admin_overviewBoundary import admin_overviewBoundary
@@ -6,7 +6,7 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
@@ -63,11 +63,16 @@ def projectEditAnswer():
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
 
-@app.route('/view_electionMessage', methods=['GET'])
+@app.route('/view_electionMessage', methods=['GET','POST'])
 def view_electionMessage():
 	# Create a boundary object
 	boundary = user_viewElectionMessageBoundary()
 	if request.method == 'GET':
+		return boundary.displayPage()
+	elif request.method == 'POST':
+		preMsg = request.form['preMsg']
+		postMsg = request.form['postMsg']
+		# response = boundary.onSubmit(preMsg, postMsg)
 		return boundary.displayPage()
 
 @app.route('/view_importList', methods=['GET'])
@@ -102,7 +107,7 @@ def loginPage():
 @app.route('/registration', methods=['GET','POST'])
 def registrationPage():
 	# Create a boundary object
-	boundary = registrationBoundary()
+	# boundary = registrationBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 

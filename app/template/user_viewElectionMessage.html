@@ -7,40 +7,40 @@
 
 <!-- Updates the <body> of the webpage -->
     {% block body %}
-    <div class="content">
-   
+    <div class="content"> 
         <h2>Election Message</h2>
-        <table>
-            <tr>
-                <td>
-                    <h4>
-                        <label for="Pre-ElectionMessage"><b>Pre-Election Message: </b></label>
-                    </h4>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <textarea spellcheck="True" wrap= hard >Welcome to evoting bro</textarea><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>
-                        <label for="Post-ElectionMessage"><b>Post-Election Message: </b></label>
-                    </h4>
-            </tr>
-            <tr>
-                <td>
-                    <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="submit">Save</button>
-                </td>
-            </tr>
-            
-        </table>
-
+        <form method="POST" action="/view_electionMessage" >
+            <table>
+                <tr>
+                    <td>
+                        <h4>
+                            <label for="Pre-ElectionMessage"><b>Pre-Election Message: </b></label>
+                        </h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <textarea id = "preMsg" spellcheck="True" wrap= hard ></textarea><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>
+                            <label for="Post-ElectionMessage"><b>Post-Election Message: </b></label>
+                        </h4>
+                </tr>
+                <tr>
+                    <td>
+                        <textarea id = "postMsg" spellcheck="True" wrap= hard ></textarea><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit">Save</button>
+                    </td>
+                </tr>
+                
+            </table>
+        </form>
     
     {% endblock %} 
