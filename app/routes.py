@@ -135,6 +135,7 @@ def registrationPage():
 		return boundary.displayError(message=response)
 
 @app.route('/changepassword', methods=['GET','POST'])
+@loginRequired
 def changePasswordPage():
 	# Create a boundary object
 	boundary = user_changePasswordBoundary()
@@ -151,6 +152,7 @@ def changePasswordPage():
 		return boundary.displayError(message=response)
 
 @app.route('/mainballot', methods=['GET','POST'])
+@loginRequired
 def mainBallotPage():
 	# Create a boundary object
 	boundary = user_mainBallotBoundary()
@@ -158,6 +160,7 @@ def mainBallotPage():
 		return boundary.displayPage()
 
 @app.route('/settings', methods=['GET','POST'])
+@loginRequired
 def settingsPage():
 	# Create a boundary object
 	boundary = user_settingsBoundary()
