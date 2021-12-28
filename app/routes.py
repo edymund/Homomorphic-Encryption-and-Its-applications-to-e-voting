@@ -10,7 +10,7 @@ from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
-from .boundary.registrationBoundary import registrationBoundary
+# from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 
 from app import application as app, boundary, loginRequired
@@ -83,6 +83,18 @@ def view_emailSetting():
 	boundary = user_viewEmailSettingsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+	if request.method == 'POST':
+		rmdMsg = request.form['RmdMsg']
+		invMsg = request.form['InvMsg']
+		if request.form["action"] =="Update":
+			pass
+		if request.form["action"] =="SendEmail":
+			pass
+		response = boundary.onSubmit(rmdMsg,invMsg)
+		# if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displaySuccess()
+		# else:
+		# 	return boundary.displayError(message=response)
 		
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():

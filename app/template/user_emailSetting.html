@@ -10,36 +10,39 @@
     <div class="content">
 
         <h2>Email Settings</h2>
-        <table>
-            <tr>
-                <td>
-                    <h4>
-                        <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
-                    </h4>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <textarea spellcheck="True" wrap= hard >Welcome to evoting bro</textarea><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="submit">Send reminder link</button>
-                </td>
-            </tr>
-            
-        </table>
+        <form>
+            <table>
+                <tr>
+                    <td colspan = "2">
+                        <h4>
+                            <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
+                        </h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan = "2" >
+                        <textarea spellcheck="True" wrap= hard id ="InvMsg" ></textarea><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan = "2">
+                        <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan = "2">
+                        <textarea spellcheck="True" wrap= hard id ="RmdMsg"></textarea><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" name ="action" value= "Update">Save</button>
+                        <button type="submit" name ="action" value="SendEmail">Send reminder link</button>
+                    </td>
+                </tr>
+                
+            </table>
+        </form>
         <!-- <h4>
             <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
         </h4> -->
