@@ -36,7 +36,7 @@ class user_viewElectionMessageBoundary:
 		# 	f.write("\n"+postMsg)
 		# 	f.close()
 
-		return render_template('user_viewElectionMessage.html',preMsg = json.dumps(preMsg), postMsg=json.dumps(postMsg))
+		return render_template('user_viewElectionMessage.html',preMsg = json.dumps(preMsg), postMsg=json.dumps(postMsg), projID=json.dumps(self.projId))
 	
 	def onSubmit(self, preMsg, postMsg):
 		controller = ElectionMsgController(projID = self.getProjID())
