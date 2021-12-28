@@ -1,6 +1,10 @@
-from app.boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
+from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
+from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
+from .boundary.voters_ViewSubmittedVotePage import voters_ViewSubmittedVotePage
+from .boundary.voters_ViewEncryptedVotePage import voters_ViewEncryptedVotePage
 from .boundary.admin_overviewBoundary import admin_overviewBoundary
 from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministratorsBoundary
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
@@ -18,6 +22,7 @@ from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
+
 from flask import request
 
 @app.route('/', methods=['GET'])
@@ -31,6 +36,34 @@ def landingPage():
 def editProfilePage():
 	# Create a boundary object
 	boundary = user_editProfileBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/ViewVoterCoverPage', methods=['GET'])
+def viewVoterCoverPage():
+	# Create a boundary object
+	boundary = voters_ViewVoterCoverPage()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/ViewVotingPage', methods=['GET'])
+def viewVotingPage():
+	# Create a boundary object
+	boundary = voters_ViewVotingPage()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/ViewSubmittedVotePage', methods=['GET'])
+def viewSubmittedVotePage():
+	# Create a boundary object
+	boundary = voters_ViewSubmittedVotePage()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/ViewEncryptedVotePage', methods=['GET'])
+def viewEncryptedVotePage():
+	# Create a boundary object
+	boundary = voters_ViewEncryptedVotePage()
 	if request.method == 'GET':
 		return boundary.displayPage()
 
@@ -48,10 +81,22 @@ def projectManageAdministrator(projectID):
 	# Create boundary object
 	boundary = admin_manageAdministratorsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage(projectID=projectID)
-	if request.method == 'POST':
-		return boundary.addAdministrator(projectID)
+		return boundary.displayPage(projectID)
 
+	if request.method == 'POST':
+		dataPosted = request.form['action']
+		if dataPosted == 'addSubAdmin':
+			print("Entering Add Sub-Admin")
+			return boundary.addSubAdministrator(projectID, request.form['addEmail'])
+		
+		elif dataPosted == 'deleteSubAdmin':
+			print("Entering Delete Sub-Admin")
+			print(request.form['deleteID'])
+			return boundary.deleteAdministrator(projectID, request.form['deleteID'])
+		
+		else:
+			return boundary.displayError("Error with Data Entered")
+		
 @app.route("/view_questions", methods = ['GET'])
 @loginRequired
 def projectViewQuestions():
@@ -199,3 +244,4 @@ def resetPasswordPage():
 	# # Displays the webpage
 	# return render_template('overview.html', userType = session['userType'],
 	# 										healthStatus = exposureStatus)
+
