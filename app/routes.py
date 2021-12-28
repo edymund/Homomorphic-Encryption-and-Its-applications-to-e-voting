@@ -74,11 +74,11 @@ def view_electionMessage():
 def view_importList():
 	# Create a boundary object
 	boundary = user_viewImportVoterListBoundary()
+	boundary.setProjID(1)
 	votersList = boundary.populateTextArea()
 	if request.method == 'GET':		
 		return boundary.displayPage(votersList)
 	elif request.method == 'POST':
-		boundary.setProjID(1)
 		file = request.files['filename']
 		response = boundary.onSubmit(file)
 		votersList = boundary.populateTextArea()
@@ -89,8 +89,7 @@ def view_emailSetting():
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
-		
+		return boundary.displayPage()		
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():
 	# Create a boundary object

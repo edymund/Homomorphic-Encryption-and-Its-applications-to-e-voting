@@ -16,14 +16,16 @@ class ImportVoterListController:
 
     def valid_email(self, email):
         if email.find("@") > 0:
+            # check if email in database
             return True
         else:
             return False
         
-    def insert_voter(self, projID):
-        for voter in self.voterList:
-            voter = Voter()
-            voter.set_new_voter(voter, self.getProjID())
+    def update_voter(self, projID):
+        for email in self.voterList:
+            voter = Voter(projID)
+            voter.delete_allVoters(projID)
+            voter.insert_to_table(email, self.getProjID())
 
     def get_all_voters_email(self):
         voter = Voter()

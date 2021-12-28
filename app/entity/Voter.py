@@ -13,7 +13,7 @@ class Voter:
             SELECT voterID, email, projectID
             FROM voter
             WHERE projectID = (?)
-            """),((projectID,)).fetchone()
+            """,(projectID,)).fetchone()
 
             # Populate private instance variables with value or None 
             if result is not None:
@@ -34,23 +34,16 @@ class Voter:
     #accessor
     def get_email(self):
         return self.__email
-    
-    #mutator 
-    def set_new_voter(self, new_email, projectID):
-        voterID = self.highest_voterID(projectID)
-        self.voterID = voterID + 1
-        self.email = new_email
-        self.projectID = projectID
 
     #insert 
-    def insert_to_table(self):
+    def insert_to_table(self, new_email, projectID):
         # Open connection to database
         connection = dbConnect()
         db = connection.cursor()
         db.execute("""
-        INSERT INTO Voter(voterID, email, projectID)
-        Values( voterID = (?), email = (?), projectID = (?))
-        """,(self.voterID, self.email, self.projectID))
+        INSERT INTO voter(email, projectID)
+        VALUES( (?) ,(?))
+        """,( new_email, projectID))
         # Commit the update to the database
         connection.commit()
 
@@ -71,18 +64,18 @@ class Voter:
         else:
             return False
 
-    def highest_voterID(self, projID):
-        connection = dbConnect()
-        db = connection.cursor()
-        result = db.execute(""" 
-        SELECT MAX(voterID)
-        FROM Voter
-        WHERE projectID = (?)
-        """),(projID)
-        if result == None:
-            return 0
-        else:
-            return result
+    # def highest_voterID(self, projID):
+    #     connection = dbConnect()
+    #     db = connection.cursor()
+    #     result = db.execute(""" 
+    #     SELECT MAX(voterID)
+    #     FROM Voter
+    #     WHERE projectID = (?)
+    #     """,(projID))
+    #     if result == None:
+    #         return 0
+    #     else:
+    #         return result
 
     def get_all_voters(self, projID ):
         connection = dbConnect()
@@ -93,3 +86,13 @@ class Voter:
         WHERE projectID = (?)
         """,(projID,)).fetchall()
         return result
+
+    def delete_allVoters(self,projID):
+        connection = dbConnect()
+        db = connection.cursor()
+        db.execute(""" 
+        DELETE FROM 
+        Voter 
+        WHERE 
+        projectID = (?)
+        """,(projID,))
