@@ -87,12 +87,12 @@ def view_emailSetting():
 		rmdMsg = request.form['RmdMsg']
 		invMsg = request.form['InvMsg']
 		if request.form["action"] =="Update":
-			pass
+			response = boundary.onSubmit(rmdMsg,invMsg)
 		if request.form["action"] =="SendEmail":
-			pass
-		response = boundary.onSubmit(rmdMsg,invMsg)
+			boundary.send_reminder(rmdMsg)
+		
 		# if response == boundary.RESPONSE_SUCCESS:
-		return boundary.displaySuccess()
+		return boundary.displayPage()
 		# else:
 		# 	return boundary.displayError(message=response)
 		
