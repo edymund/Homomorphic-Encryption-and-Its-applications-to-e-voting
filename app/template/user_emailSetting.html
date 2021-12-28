@@ -2,7 +2,7 @@
 <!-- Updates the <head> of the webpage -->
     {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_electionMessage.css') }}"/>
-    <!-- <script type=text/javascript src="{{ url_for('static',filename='js/user_emailSettings.js') }}"></script> -->
+    <script type=text/javascript src="{{ url_for('static',filename='js/user_emailSettings.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
@@ -44,21 +44,10 @@
                 
             </table>
         </form>
-        <!-- <h4>
-            <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
-        </h4> -->
-
-        <!-- <textarea spellcheck="True" wrap= hard >Welcome to evoting bro</textarea><br> -->
-        <!--Change text box size-->
-
-        <!-- <h4>
-            <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
-        </h4> -->
-
-        <!-- <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br> -->
-        <!--Change text box size-->
-        
-        <!-- <button type="submit">Send reminder link</button> -->
+        <script>
+            onload = fillTA("InvMsg",{{invMsg | safe}});
+            onload = fillTA("RmdMsg",{{rmdMsg | safe }});
+        </script>
 
     </div>
     {% endblock %} 

@@ -80,7 +80,7 @@ def view_importList():
 @app.route('/view_emailSettings',methods=['GET', 'POST'])
 def view_emailSetting():
 	# Create a boundary object
-	boundary = user_viewEmailSettingsBoundary()
+	boundary = user_viewEmailSettingsBoundary(1)
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':

@@ -9,6 +9,10 @@ class user_viewEmailSettingsBoundary:
 		self.rmdMsg = ""
 		self.invMsg = ""
 
+	# accessor
+	def getProjID(self):
+		return self.projectID
+
 	# Other Methods
 	def displayPage(self):
 		controller = EmailSettingsController(projID = self.getProjID())

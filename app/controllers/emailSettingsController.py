@@ -33,18 +33,24 @@ class EmailSettingsController:
             return False
 
     def update_inv_msg(self,msg):
-        pass
+        entity = ElectionMessage(projID= self.projID)
     
     def update_rmd_msg(self,msg):
-        pass
+        entity = ElectionMessage(projID= self.projID)
 
     def retrieve_inv_msg(self):
         entity = ElectionMessage(projID= self.projID)
-        self.preMsg = entity.getPreMsg()
-        return self.preMsg
+        self.invMsg = entity.getInviteMsg()
+        with open("invMsg.txt","w") as f:
+            f.write(str(self.invMsg))
+            f.close()
+        return self.invMsg
 
     def retrieve_rmd_msg(self):
         entity = ElectionMessage(projID= self.projID)
-        self.postMsg = entity.getPostMsg()
-        return self.postMsg
+        self.rmdMsg = entity.getReminderMsg()
+        with open("rmdMsg.txt","w") as f:
+            f.write(str(self.rmdMsg))
+            f.close()
+        return self.rmdMsg
     
