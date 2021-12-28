@@ -8,7 +8,7 @@ from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
 from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
-from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
+from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
 # from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
@@ -77,7 +77,7 @@ def view_importList():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/view_emailSettings', methods=['GET'])
+@app.route('/view_emailSettings',methods=['GET', 'POST'])
 def view_emailSetting():
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()

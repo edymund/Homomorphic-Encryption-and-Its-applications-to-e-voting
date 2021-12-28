@@ -7,3 +7,6 @@ class user_viewEmailSettingsBoundary:
 	# Other Methods
 	def displayPage(self):
 		return render_template('user_emailSetting.html')
+	
+	def onSubmit(self,invMsg,rmdMsg):
+		
