@@ -5,7 +5,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1, width=device-width">
 		<link rel="shortcut icon" href="#" />
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/guest_baseTemplate.css') }}"/>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script type=text/javascript src="{{url_for('static', filename='js/guest_baseTemplate.js') }}"></script>
+
 
 		<!-- Header Block -->
 		{%block head %}
@@ -13,6 +17,17 @@
 	</head>
 
 	<body>
+		{% for message in get_flashed_messages(category_filter=["message"]) %}
+			<div id="msg" class="w3-container w3-center w3-green" style="display: none;">
+				<h4>{{ message }}</h4>
+			</div>
+		{% endfor %}
+		{% for message in get_flashed_messages(category_filter=["error"]) %}
+			<div id="errorMsg" class="w3-container w3-center w3-red" style="display: none;">
+				<h4>{{ message }}</h4>
+			</div>
+		{% endfor %}
+
 		<div class="top-left">
 			<a href="/"><img src={{url_for('static', filename='images/icon.png')}} /></a>
 		</div>
@@ -23,7 +38,7 @@
 			<a href="#">Contact Us</a>
 			<a href="#">Generate Keys</a>
 			<a href="#">Decrypt Results</a>
-			<button type="button" class="login">Sign up / Login</button>
+			<button type="button" class="login" onclick="location.href='/login'" >Sign up / Login</button>
 		</div>
 
 		<!-- Body Block -->

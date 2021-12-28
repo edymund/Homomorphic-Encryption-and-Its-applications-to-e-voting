@@ -1,0 +1,46 @@
+{% extends "user_baseTemplate.html" %} 
+
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_manageAdministrators.css') }}" />
+{% endblock %} 
+
+{% block body %}
+	<h2>Add Sub-administrators</h2>
+	<p>
+		Sub-administrators will be prompted to verify the details of the voting event before the voting event can go live.
+	</p>
+	
+
+	<form action ="/{{projectID}}/manage_administrators" method="post">
+		<input type="hidden" name="projectID" value="{{ projectID }}"/>
+		<label for="addSubAdminField">Add sub-administrator:</label>
+		<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name="addEmail"/>
+		<button name="action" type="submit" value="addSubAdmin">Add</button>
+	</form>
+	
+	<table>
+		<tr>
+			<th>No.</th>
+			<th>Sub-Administrator Emails</th>
+			<th>Delete</th>
+		</tr>
+		{% set count = 1 %}
+		{% for record in subAdministrators %}
+			<tr>
+				<td>{{ count }}</td>
+				<td>{{ record.email }}</td>
+				<td>
+					<form action ="/{{projectID}}/manage_administrators" method="post">
+						<input type="hidden" name="projectID" value="{{ projectID }}"/>
+						<input type="hidden" name="deleteID" value ={{ record.recordID }} />
+						<button name="action" type="submit" value="deleteSubAdmin"><img src={{ url_for('static',filename='images/cross.png') }}/></button>
+					</form>
+				</td>
+			</tr>
+			{% set count = count + 1 %}
+		{% endfor %}
+	</table>
+		
+
+{% endblock %}

@@ -1,0 +1,41 @@
+<!-- Extends the basic html template -->
+{% extends "guest_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/registration.css') }}"/>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+
+	<div class="content">
+		<h2>Registration</h2>
+		<p>
+			Please fill in the particulars below to complete your registration
+		</p>
+		<form method="POST" action="/registration">
+			<label for="fname"><b>First Name: </b></label>
+			<input type="text" placeholder="Enter your name" name="fname" required> <br>
+
+			<label for="lname"><b>Last Name: </b></label>
+			<input type="text" placeholder="Enter your name" name="lname" required> <br>
+	
+			<label for="company_name"><b>Company Name: </b></label>
+			<input type="text" placeholder="Enter company name" name="companyName" > <br>
+	
+			<label for="email"><b>Email: </b></label>
+			<input type="text" placeholder="Enter Email" name="email" required> <br>
+		  
+			<label for="psw"><b>Password: </b></label>
+			<input type="password" placeholder="Enter Password" name="psw" required> <br>
+	
+			<label for="cfm_psw"><b>Confirm Password: </b></label>
+			<input type="password" placeholder="Confirm Password" name="cfm_psw" required> <br>
+			
+			<button type="submit" class="sign_up">Register</button> <br>
+		</form>
+
+	
+	</div>
+{% endblock %}

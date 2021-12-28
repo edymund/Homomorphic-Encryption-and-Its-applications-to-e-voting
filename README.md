@@ -1,5 +1,8 @@
 # Homomorphic-Encryption-and-Its-applications-to-e-voting
 
+# Create Virtual Environment
+python3 -m venv venv
+
 # 1. To activate virtual environment
 
 venv\Scripts\activate
@@ -14,7 +17,7 @@ deactivate
 
 # To run the application
 
-set FLASK_APP=application
+set FLASK_APP=application.py
 set FLASK_ENV=development
 flask run
 
