@@ -79,8 +79,19 @@ def view_importList():
 
 @app.route('/view_emailSettings',methods=['GET', 'POST'])
 def view_emailSetting():
+	# get url
+	base_url = request.base_url
+	# with open("url.txt","w") as f:
+	# 	f.write(url)
+	# 	f.write("/n")
+	# 	f.write(base_url)
+	# 	f.close()
+
 	# Create a boundary object
-	boundary = user_viewEmailSettingsBoundary(1)
+	boundary = user_viewEmailSettingsBoundary()
+	projID = boundary.retrieve_proj_details_from_url(base_url)
+	# boundary.retrieve_proj_details_from_url(url)
+	boundary.setProjID(projID)
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
