@@ -12,7 +12,7 @@ class user_changePasswordBoundary:
 		return render_template('user_changePassword.html')
 
 	def __checkIsValidPassword(self, new_password, cfm_password):
-		# Check if passwords match
+		# Check if passwords match 
 		if new_password != cfm_password:
 			self.ERROR = "Password fields do not match"
 			return False

@@ -30,8 +30,7 @@ class registrationBoundary:
 
 	def __checkEmailFormat(self,email):
 		# Check first name, last name
-		if email != "":
-			if not re.search('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$', email):
+		if not re.search('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$', email):
 				self.ERROR = "Email format is not valid"
 				return False
 		return True

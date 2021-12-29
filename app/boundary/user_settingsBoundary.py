@@ -15,7 +15,7 @@ class user_settingsBoundary:
 		return render_template('user_settings.html')
 
 	def __checkIsValidFirstName(self, first_name):
-		# Check first name, last name
+		# Check first name, last name 
 		if first_name != "":
 			if not re.search('^[a-zA-Z]+$', first_name):
 				self.ERROR = "Name contain invalid characters"
