@@ -15,28 +15,32 @@
 	<form action ="/{{projectID}}/manage_administrators" method="post">
 		<input type="hidden" name="projectID" value="{{ projectID }}"/>
 		<label for="addSubAdminField">Add sub-administrator:</label>
-		<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name=addEmail/>
-		<input type="submit" value="Add"/>
+		<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name="addEmail"/>
+		<button name="action" type="submit" value="addSubAdmin">Add</button>
 	</form>
 	
-	<form action ="/{{projectID}}/manage_administrators" method="post">
-		<input type="hidden" name="projectID" value="{{ projectID }}"/>
-		<table>
+	<table>
+		<tr>
+			<th>No.</th>
+			<th>Sub-Administrator Emails</th>
+			<th>Delete</th>
+		</tr>
+		{% set count = 1 %}
+		{% for record in subAdministrators %}
 			<tr>
-				<th>No.</th>
-				<th>Sub-Administrator Emails</th>
-				<th>Delete</th>
+				<td>{{ count }}</td>
+				<td>{{ record.email }}</td>
+				<td>
+					<form action ="/{{projectID}}/manage_administrators" method="post">
+						<input type="hidden" name="projectID" value="{{ projectID }}"/>
+						<input type="hidden" name="deleteID" value ={{ record.recordID }} />
+						<button name="action" type="submit" value="deleteSubAdmin"><img src={{ url_for('static',filename='images/cross.png') }}/></button>
+					</form>
+				</td>
 			</tr>
-			{% set count = 1 %}
-			{% for record in subAdministrators %}
-				<tr>
-					<td>{{ count }}</td>
-					<td>{{ record.email }}</td>
-					<td><input id="deleteAdminButton" type="image" value ="1" name="deleteID" src="{{ url_for('static',filename='images/cross.png') }}"></td>
-				</tr>
-				{% set count = count + 1 %}
-			{% endfor %}
-		</table>
+			{% set count = count + 1 %}
+		{% endfor %}
+	</table>
 		
-	</form>
+
 {% endblock %}
