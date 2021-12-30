@@ -74,7 +74,12 @@ def view_electionMessage():
 def view_importList():
 	# Create a boundary object
 	boundary = user_viewImportVoterListBoundary()
-	boundary.setProjID(1)
+	# Un comment when linked from nav bar
+
+	# base_url = request.base_url
+	# projID = boundary.retrieve_proj_details_from_url(base_url)
+	# boundary.setProjID(projID)
+
 	votersList = boundary.populateTextArea()
 	if request.method == 'GET':		
 		return boundary.displayPage(votersList)

@@ -59,6 +59,16 @@ class ImportVoterListController:
             for data in proc_datas:
                 self.voterList.append(data)
         return validity
+    
+    @staticmethod
+    def retrieve_proj_detail(url):
+        # url = "www.123/1/abc"
+        for i in range(1):
+            slash = url.find("/")
+            new_url = url[slash+1:]
+        next_slash = new_url.find("/")
+        proj_details = new_url[:next_slash]
+        return proj_details
 
 
         # with open ("try.txt","w") as f:
