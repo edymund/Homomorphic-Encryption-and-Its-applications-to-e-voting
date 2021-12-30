@@ -8,26 +8,26 @@
 
 <!-- Updates the <body> of the webpage -->
 {% block body %}
-<form id="mainform" method="post" action="/" onsubmit="return displayPopup()">
+<form id="mainform" method="post" action="/{{projID}}/ViewVotingPage" onsubmit="return displayPopup()">
 	<table>
 		<tr>
-			{%for image in imagePath %}
+			{%for images in details %}
 			<td class="candidateInfo">
-				<img src={{image}} >
+				<img src={{images[1]}} >
 			</td>
 			{% endfor %}
 		</tr>
 		<tr>
-			{%for name in namePath %}
+			{%for names in details %}
 			<td class="candidateInfo">
-				{{ name }}
+				{{ names[0] }}
 			</td>
 			{% endfor %}
 		</tr>
 		<tr>
-			{%for description in descriptions %}
+			{%for descriptions in details %}
 			<td class="candidateInfo">
-				{{ description }}
+				{{ descriptions[2] }}
 			</td>
 			{% endfor %}
 		</tr>
@@ -40,9 +40,9 @@
 		</tr>
 		<tr>
 			<td class="answerInfo">
-				{%for name in namePath %}
-				<input type="radio" id={{name}} name={{name}} value={{name}}>
-				<label for={{name}}><b>{{name}}</b></label><br>
+				{%for names in details %}
+				<input type="radio" id=candidateRadio name=candidate value={{names[0]}}>
+				<label for=candidateRadio><b>{{names[0]}}</b></label><br>
 				{% endfor %}
 				<br>
 					
