@@ -55,14 +55,16 @@ class Voter:
         connection = dbConnect()
         db = connection.cursor()
         result = db.execute("""
-        SELECT email, projectID
+        SELECT count(1)
         FROM voter
         WHERE projectID = (?) and email = (?) 
-        """),((projectID,try_email,)).fetchone()
-        if result != None:
+        """,(projectID,try_email,)).fetchone()
+        if result[0] > 0:
             return True
-        else:
+        elif result[0] <1:
             return False
+        # Close the connection to the database
+        # dbDisconnect(connection)
 
     # def highest_voterID(self, projID):
     #     connection = dbConnect()
@@ -86,6 +88,18 @@ class Voter:
         WHERE projectID = (?)
         """,(projID,)).fetchall()
         return result
+        # Close the connection to the database
+        # dbDisconnect(connection)
+    
+    def get_all_voters_id(self, projID ):
+        connection = dbConnect()
+        db = connection.cursor()
+        result = db.execute(""" 
+        SELECT voterID
+        FROM Voter
+        WHERE projectID = (?)
+        """,(projID,)).fetchall()
+        return result
 
     def delete_allVoters(self,projID):
         connection = dbConnect()
@@ -96,3 +110,31 @@ class Voter:
         WHERE 
         projectID = (?)
         """,(projID,))
+        # Commit the update to the database
+        connection.commit()
+
+        # Close the connection to the database
+        dbDisconnect(connection)
+
+
+    def delete_child(self,voterID,projID):
+        connection = dbConnect()
+        db = connection.cursor()
+        db.execute(""" 
+        DELETE FROM
+        Answer where
+        answerID in
+        (select answer.answerID
+        FROM answer 
+        INNER JOIN record
+        ON
+        answer.recordID = record.recordID
+        WHERE 
+        answer.voterID = (?) and record.projID =(?))
+        """,(voterID,projID,))
+
+        # Commit the update to the database
+        connection.commit()
+
+        # Close the connection to the database
+        dbDisconnect(connection)

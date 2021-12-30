@@ -15,16 +15,21 @@ class ImportVoterListController:
         self.projID = projID
 
     def valid_email(self, email):
-        if email.find("@") > 0:
-            # check if email in database
+        voter = Voter(self.projID)
+        if voter.email_exist(self.projID,email) == False and email.find("@") > 0 :
             return True
         else:
             return False
         
     def update_voter(self, projID):
-        for email in self.voterList:
-            voter = Voter(projID)
+        voter = Voter(projID)
+        all_id = voter.get_all_voters_id(projID)
+        if len(all_id) >0:
+            for id in all_id:
+                for value in id:
+                    voter.delete_child(value, projID)
             voter.delete_allVoters(projID)
+        for email in self.voterList:
             voter.insert_to_table(email, self.getProjID())
 
     def get_all_voters_email(self):
@@ -44,13 +49,13 @@ class ImportVoterListController:
         validity = False
         # actual code
         proc_datas = datas.Email.to_list()
+        
         for data in proc_datas:
-            if self.valid_email(data):
+            if self.valid_email(data) == True:
                 validity = True
-            else:
-                validity = False
-                break
-        if validity:
+            elif self.valid_email(data) == False:
+                return False
+        if validity == True:
             for data in proc_datas:
                 self.voterList.append(data)
         return validity
