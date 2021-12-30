@@ -176,19 +176,19 @@ def mainBallotPage():
 #				Voting Pages				  #
 ###############################################
 
-@app.route('/ViewVoterCoverPage', methods=['GET'])
-def viewVoterCoverPage():
+@app.route('/<projID>/ViewVoterCoverPage', methods=['GET'])
+def viewVoterCoverPage(projID):
 	# Create a boundary object
 	boundary = voters_ViewVoterCoverPage()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projID)
 
-@app.route('/ViewVotingPage', methods=['GET'])
-def viewVotingPage():
+@app.route('/<projID>/ViewVotingPage', methods=['GET'])
+def viewVotingPage(projID):
 	# Create a boundary object
 	boundary = voters_ViewVotingPage()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projID)
 
 @app.route('/ViewSubmittedVotePage', methods=['GET'])
 def viewSubmittedVotePage():

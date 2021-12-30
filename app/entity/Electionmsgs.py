@@ -2,7 +2,7 @@ from ..dbConfig import dbConnect, dbDisconnect
 
 class Electionmsgs:
 	# Constructor for user
-	def __init__(self, projID = 1):
+	def __init__(self, projID = None):
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
@@ -12,7 +12,7 @@ class Electionmsgs:
 			# Select election messages from database and populate instance variables
 			result = db.execute("""SELECT  electionMsgsID, projID, preMsg, postMsg, inviteMsg, reminderMsg
 								FROM electionmsgs
-								WHERE projID = (?)""", (projID ,)).fetchone()
+								WHERE projID = (?)""", (projID,)).fetchone()
 
 			# If a result is returned, populate object with data
 			if result is not None:
