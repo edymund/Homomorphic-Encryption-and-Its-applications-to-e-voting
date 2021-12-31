@@ -12,7 +12,7 @@ from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
 from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
-from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
+from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
 # from .boundary.registrationBoundary import registrationBoundary
 from .boundary.registrationBoundary import registrationBoundary
@@ -130,12 +130,35 @@ def view_importList():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/view_emailSettings', methods=['GET'])
+@app.route('/view_emailSettings',methods=['GET', 'POST'])
 def view_emailSetting():
+	# get url
+	base_url = request.base_url
+	# with open("url.txt","w") as f:
+	# 	f.write(url)
+	# 	f.write("/n")
+	# 	f.write(base_url)
+	# 	f.close()
+
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
+	projID = boundary.retrieve_proj_details_from_url(base_url)
+	# boundary.retrieve_proj_details_from_url(url)
+	boundary.setProjID(projID)
 	if request.method == 'GET':
 		return boundary.displayPage()
+	if request.method == 'POST':
+		rmdMsg = request.form['RmdMsg']
+		invMsg = request.form['InvMsg']
+		if request.form["action"] =="Update":
+			response = boundary.onSubmit(rmdMsg,invMsg)
+		if request.form["action"] =="SendEmail":
+			boundary.send_reminder(rmdMsg)
+		
+		# if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displayPage()
+		# else:
+		# 	return boundary.displayError(message=response)
 		
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():
