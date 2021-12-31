@@ -1,0 +1,38 @@
+h2{
+	text-align: center;
+}
+
+th,td{
+	padding: 12px 15px;
+}
+
+.content-table{
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 14px;
+	min-width: 400px;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
+
+.content-head{
+	background-color: #009879;
+	color: white;
+	text-align: left;
+	font-weight: bold;
+}
+
+.content-body{
+	background-color: white;
+	border-bottom: 1px solid lightgray;
+}
+
+.content-body:nth-of-type(even){
+	background-color: lightgray;
+}
+
+.content-body:last-of-type{
+	border-bottom: 2px solid #009879;
+}
