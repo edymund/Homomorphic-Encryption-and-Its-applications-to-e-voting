@@ -1,0 +1,35 @@
+{% extends "user_baseTemplate.html" %} 
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_viewQuestions.css') }}" />
+{% endblock %} 
+
+{% block body %}
+    <h2>Manage Questions</h2>
+	<div id="header">
+		<form action="edit_questions/new_question" method="post">
+			<label for="projectNameField">Project Name:</label>
+			<input type="text" id="projectNameField" value="Project Name Here" disabled/>
+			<button name="action" type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
+			<!-- <input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}"> -->
+		</form>
+	</div>
+
+	{% set count = 1 %}
+	{% for record in questionSet %}
+	<a class="questionBox" href="editQuestion/{{ record.question.questionID }}">
+		<div class="questions">
+			<span>
+				<b>{{ record.question.questionNo}}.</b>
+				{{record.question.question}}
+			</span>
+			<ol>
+				{% for candidate in record.option %}
+					<li>{{candidate.description}}</li>
+				{% endfor %}
+			</ol>
+		</div>
+	</a>
+	{% endfor %}
+{% endblock %}

@@ -1,44 +1,48 @@
 {% extends "user_baseTemplate.html" %}
 <!-- Updates the <head> of the webpage -->
-    {% block head %}
+{% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_importVoter.css') }}"/>
     <script type=text/javascript src="{{ url_for('static',filename='js/user_importVoterList.js') }}"></script>
 {% endblock %} 
 
 <!-- Updates the <body> of the webpage -->
-    {% block body %}
-    <div class="content">
-   
+{% block body %}
+    <div class="content" >
+    
         <h2>Import voters list</h2>
-        <table>
-            <tr >
-                <td style= "width:10%;">
-                    <label>Upload file:</label>
-                </td>
-                <td style= "width:70%;">
-                    <input type="text" id ="voter-list-tb" readonly>
-                    <input type="file" id="myFile" name= "filename" onchange = "showname();" accept =".csv" hidden>
-                    <input type="button" name="filename-btn" value ="File" onclick="openfile();" >
-                </td>
+        <form method="POST" action="/view_importList" enctype="multipart/form-data">
+            <table>
+                <tr >
+                    <td style= "width:10%;">
+                        <label>Upload file:</label>
+                    </td>
+                    <td style= "width:70%;">
+                        <input type="text" id ="voter-list-tb" readonly>
+                        <input type="file" id="myFile" name= "filename" onchange = "showname();" accept =".csv" hidden>
+                        <input type="button" name="filename-btn" value ="File" onclick="openfile();" >
+                    </td>
 
-            </tr>
-            <tr>
-                <td colspan = "2">
-                    <button type="submit">Upload</button>
-                </td>
-            </tr>
-            <br>
-            <tr>
-                <td colspan = "2">
-                    <label  for="Current-voters"><b>Current voters:</b></label>
-                </td>
-            </tr>
+                </tr>
+                <tr>
+                    <td colspan = "2">
+                        <button type="submit">Upload</button>
+                    </td>
+                </tr>
 
-            <tr>
-                <td colspan = "2"> 
-                    <textarea readonly spellcheck="True" wrap= hard >Cya bro</textarea><br>
-                </td>
-            </tr>
-        </table>
+                <tr>
+                    <td colspan = "2">
+                        <label  for="Current-voters"><b>Current voters:</b></label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan = "2"> 
+                        <textarea readonly id="allVoter" wrap= hard ></textarea><br>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <script>onload = fillTA({{voterList | safe}})</script>
     </div>
+    
     {% endblock %} 
