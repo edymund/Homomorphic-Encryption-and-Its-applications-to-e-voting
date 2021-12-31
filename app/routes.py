@@ -1,4 +1,3 @@
-from app.boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 # from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
@@ -11,18 +10,17 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
-from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
-from .boundary.user_viewEmailSetting import user_viewEmailSettingsBoundary
+# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+# from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
+from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
 # from .boundary.registrationBoundary import registrationBoundary
-from .boundary.user_settingsBoundary import user_settingsBoundary
 from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
-from .boundary.resetPasswordBoundary import resetPasswordBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
+
 from flask import request
 
 @app.route('/', methods=['GET'])
@@ -118,46 +116,50 @@ def projectEditAnswer():
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
 
-@app.route('/view_electionMessage', methods=['GET','POST'])
-# @app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
-# @loginRequired
-# @authorisationRequired
-def view_electionMessage():
-	# Create a boundary object
-	boundary = user_viewElectionMessageBoundary(1)
-	# get url
-	# base_url = request.base_url
-	# projID = boundary.retrieve_proj_details_from_url(base_url)
-	# boundary.setProjID(projID)
-	
-	if request.method == 'GET':
-		return boundary.displayPage()
-	elif request.method == 'POST':
-		preMsg = request.form['preMsg']
-		postMsg = request.form['postMsg']
-		response = boundary.onSubmit(preMsg, postMsg)
-		return boundary.displayPage()
+# @app.route('/view_electionMessage', methods=['GET'])
+# def view_electionMessage():
+# 	# Create a boundary object
+# 	boundary = user_viewElectionMessageBoundary()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
 
-@app.route('/view_importList',  methods=['GET', 'POST'])
-def view_importList():
-	# Create a boundary object
-	boundary = user_viewImportVoterListBoundary()
-	boundary.setProjID(1)
-	votersList = boundary.populateTextArea()
-	if request.method == 'GET':		
-		return boundary.displayPage(votersList)
-	elif request.method == 'POST':
-		file = request.files['filename']
-		response = boundary.onSubmit(file)
-		votersList = boundary.populateTextArea()
-		return boundary.displayPage(votersList)
-		
-@app.route('/view_emailSettings', methods=['GET'])
+# @app.route('/view_importList', methods=['GET'])
+# def view_importList():
+# 	# Create a boundary object
+# 	boundary = user_viewImportVoterListBoundary()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
+
+@app.route('/view_emailSettings',methods=['GET', 'POST'])
 def view_emailSetting():
+	# get url
+	base_url = request.base_url
+	# with open("url.txt","w") as f:
+	# 	f.write(url)
+	# 	f.write("/n")
+	# 	f.write(base_url)
+	# 	f.close()
+
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
+	projID = boundary.retrieve_proj_details_from_url(base_url)
+	# boundary.retrieve_proj_details_from_url(url)
+	boundary.setProjID(projID)
 	if request.method == 'GET':
-		return boundary.displayPage()		
+		return boundary.displayPage()
+	if request.method == 'POST':
+		rmdMsg = request.form['RmdMsg']
+		invMsg = request.form['InvMsg']
+		if request.form["action"] =="Update":
+			response = boundary.onSubmit(rmdMsg,invMsg)
+		if request.form["action"] =="SendEmail":
+			boundary.send_reminder(rmdMsg)
+		
+		# if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displayPage()
+		# else:
+		# 	return boundary.displayError(message=response)
+		
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():
 	# Create a boundary object
@@ -183,7 +185,7 @@ def loginPage():
 @app.route('/registration', methods=['GET','POST'])
 def registrationPage():
 	# Create a boundary object
-	# boundary = registrationBoundary()
+	boundary = registrationBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
@@ -200,7 +202,6 @@ def registrationPage():
 		return boundary.displayError(message=response)
 
 @app.route('/changepassword', methods=['GET','POST'])
-@loginRequired
 def changePasswordPage():
 	# Create a boundary object
 	boundary = user_changePasswordBoundary()
@@ -217,44 +218,12 @@ def changePasswordPage():
 		return boundary.displayError(message=response)
 
 @app.route('/mainballot', methods=['GET','POST'])
-@loginRequired
 def mainBallotPage():
 	# Create a boundary object
 	boundary = user_mainBallotBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/settings', methods=['GET','POST'])
-@loginRequired
-def settingsPage():
-	# Create a boundary object
-	boundary = user_settingsBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-	if request.method == 'POST':
-		first_name = request.form['fname']
-		last_name = request.form['lname']
-		email = request.form['email']
-		company_name = request.form['companyName']
-		response = boundary.onSubmit(first_name,last_name,email,company_name)	
-	if response == boundary.RESPONSE_SUCCESS:
-		return boundary.displaySuccess()
-	else:
-		return boundary.displayError(message=response)
-
-@app.route('/resetpassword', methods=['GET','POST'])
-def resetPasswordPage():
-	# Create a boundary object
-	boundary = resetPasswordBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-	if request.method == 'POST':
-		email = request.form['email']
-		response = boundary.onSubmit(email)	
-	if response == boundary.RESPONSE_SUCCESS:
-		return boundary.displaySuccess()
-	else:
-		return boundary.displayError(message=response)
 	# # Create PublicUser_ExposureStatusBoundary Object
 	# publicUser_exposureStatusBoundary = PublicUser_ExposureStatusUI()
 
