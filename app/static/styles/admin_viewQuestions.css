@@ -18,15 +18,20 @@
 	background-color:rgb(245, 222, 192);
 }
 
-input.newQuestionImage {
+#buttonImg {
 	margin:0px;
-	max-height: 30px;
-	overflow: hidden;
+	height:30px;
+	/* overflow: hidden; */
 	display: inline;
-	max-width:30%;
-	border: 1px solid black;
-	float:right;
-	
+	width:30px;
+	background-color:rgba(0, 0, 0, 0);
+}
+
+button {
+	float: right;
+	display: inline;
+	background-color:rgba(0, 0, 0, 0);
+	border: none;
 }
 
 #projectNameField {
