@@ -63,13 +63,14 @@ def projectManageAdministrator(projectID):
 			return boundary.displayError("Error with Data Entered")
 		
 
-@app.route("/view_questions", methods = ['GET'])
+@app.route("/<projectID>/view_questions", methods = ['GET'])
 @loginRequired
-def projectViewQuestions():
+@authorisationRequired
+def projectViewQuestions(projectID):
 	# Create boundary object
 	boundary = admin_viewQuestionsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
 
 @app.route("/edit_questions", methods=['GET'])
 def projectEditQuestions():
