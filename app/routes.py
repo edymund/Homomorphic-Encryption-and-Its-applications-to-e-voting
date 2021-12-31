@@ -23,7 +23,6 @@ from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
-
 from flask import request
 
 @app.route('/', methods=['GET'])
@@ -139,20 +138,26 @@ def view_electionMessage():
 		response = boundary.onSubmit(preMsg, postMsg)
 		return boundary.displayPage()
 
-@app.route('/view_importList', methods=['GET'])
+@app.route('/view_importList',  methods=['GET', 'POST'])
 def view_importList():
 	# Create a boundary object
 	boundary = user_viewImportVoterListBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
+	boundary.setProjID(1)
+	votersList = boundary.populateTextArea()
+	if request.method == 'GET':		
+		return boundary.displayPage(votersList)
+	elif request.method == 'POST':
+		file = request.files['filename']
+		response = boundary.onSubmit(file)
+		votersList = boundary.populateTextArea()
+		return boundary.displayPage(votersList)
+		
 @app.route('/view_emailSettings', methods=['GET'])
 def view_emailSetting():
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
-		
+		return boundary.displayPage()		
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():
 	# Create a boundary object

@@ -73,3 +73,4 @@ class user_viewElectionMessageBoundary:
 	def get_pre_msg(self):
 		controller = ElectionMsgController(projID = self.getProjID())
 		return controller.retrieve_pre_election_msg()
+
