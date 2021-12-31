@@ -1,0 +1,40 @@
+{% extends "voters_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewEncryptedVotePage.css') }}"/>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+	<h2><u>All Encrypted Votes</u></h2>
+	{%for questions in completeinfo  %}
+	<table class="content-table">
+		<tr>
+			<th>
+				{{ questions[0] }}
+			</th>
+		</tr>
+		<tr>
+			<th class="content-head">
+				id/candidates
+			</th>
+			{%for name in candidatename %}
+			<th class="content-head">
+				{{ name }}
+			</th>
+			{% endfor %}
+		</tr>
+		{%for info in questions[1] %}
+		<tr class="content-body">
+			{%for details in info %}
+			<td>
+				{{ details }}
+			</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</table>
+	<br>
+	{% endfor %}
+{% endblock %} 
