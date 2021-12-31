@@ -1,5 +1,5 @@
 from app.boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
-from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
