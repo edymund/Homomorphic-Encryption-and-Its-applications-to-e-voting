@@ -18,7 +18,7 @@ class Administrator:
 			if result is not None:
 				hasResult = True
 				# Initialise instance variables for this object
-				self.__administratorsID = result[1]
+				self.__administratorsID = result[0]
 				self.__userID = result[1]
 				self.__projID = result[2]
 				self.__adminStatus = result[3]

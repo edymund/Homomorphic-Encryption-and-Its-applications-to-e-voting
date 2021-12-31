@@ -8,3 +8,11 @@ function showname(){
 function openfile(){
     document.getElementById('myFile').click();
 }
+
+function fillTA(voter){
+    var temp = "";
+    for (let i = 0; i < voter.length; i++) {
+        temp += voter[i] + "\n";
+      }
+    document.getElementById("allVoter").value = temp;
+}

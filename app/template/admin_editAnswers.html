@@ -10,7 +10,9 @@
     <form>
         <label for="name">Project:</label>
         <input type="text" id="name" name="name" value="Project name here" disabled/><br />
-        <h3>Question 1</h3>
+        {% set count = 1 %}
+		{% for record in subAdministrators %}
+		<h3>Question 1</h3>
 		<h3>Candidate Profile</h3>
 		<div>
 			<label for="candidateField">Enter Candidate Name: </label>
@@ -23,5 +25,7 @@
 
         <input type="submit" name="saveQuestion" value="Save" /> </br>
 		<input type="submit" name="deleteQuestion" value="Delete Question"/>
+			{% set count = count + 1 %}
+		{% endfor %}
     </form>
 {% endblock %}

@@ -28,8 +28,8 @@ textarea {
 table,tr,td{
     width: 100%;
     white-space: nowrap;
-    /* border: 1px solid black;
-    border-collapse: collapse; */
+    border: 1px solid black;
+    border-collapse: collapse;
 }
 
 input[type=text] {
