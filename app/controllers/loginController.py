@@ -26,7 +26,7 @@ class loginController:
 		# Create a user object containing details of the NRIC owner
 		user = User(username)
 
-		# Get the type of account that is tied to the NRIC
+		# Get the type of account that is tied to the NRIC 
 		return user.getUserID()
 
 	def getProjectID_Admin(self, userID):
