@@ -70,19 +70,19 @@ def view_electionMessage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/1/view_importList',  methods=['GET', 'POST'])
+@app.route('/view_importList',  methods=['GET', 'POST'])
 # Un comment when linked from nav bar
 # @loginRequired
 # @authorisationRequired
 
-def view_importList():
+def view_importList():	
 	# Create a boundary object
-	boundary = user_viewImportVoterListBoundary()
+	boundary = user_viewImportVoterListBoundary(1)
 	# Un comment when linked from nav bar
 
-	base_url = request.base_url
-	projID = boundary.retrieve_proj_detail(base_url)
-	boundary.setProjID(projID)
+	# base_url = request.base_url
+	# projID = boundary.retrieve_proj_detail(base_url)
+	# boundary.setProjID(projID)
 
 	votersList = boundary.populateTextArea()
 	if request.method == 'GET':		
@@ -98,7 +98,8 @@ def view_emailSetting():
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()		
+		return boundary.displayPage()
+
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():
 	# Create a boundary object
