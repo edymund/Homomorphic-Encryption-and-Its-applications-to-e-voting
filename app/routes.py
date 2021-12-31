@@ -20,6 +20,7 @@ from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 from .boundary.logoutBoundary import logoutBoundary
 from .boundary.user_settingsBoundary import user_settingsBoundary
+from .boundary.resetPasswordBoundary import resetPasswordBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 
@@ -245,6 +246,20 @@ def mainBallotPage():
 	boundary = user_mainBallotBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+
+@app.route('/resetpassword', methods=['GET','POST'])
+def resetPasswordPage():
+	# Create a boundary object
+	boundary = resetPasswordBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+	if request.method == 'POST':
+		email = request.form['email']
+		response = boundary.onSubmit(email)	
+	if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displaySuccess()
+	else:
+		return boundary.displayError(message=response)
 
 @app.route('/logout', methods=['GET'])
 @loginRequired
