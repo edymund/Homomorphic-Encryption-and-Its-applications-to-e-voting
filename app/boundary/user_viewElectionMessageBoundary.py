@@ -25,26 +25,46 @@ class user_viewElectionMessageBoundary:
 
 	# Other Methods
 	def displayPage(self):
-		preMsg = self.get_pre_msg()
-		postMsg = self.get_post_msg()
-		if preMsg == None:
-			preMsg =""
-		if postMsg == None:
-			postMsg = ""
-		# with open("pre.txt","w") as f:
-		# 	f.write(preMsg)
-		# 	f.write("\n"+postMsg)
-		# 	f.close()
+		controller = ElectionMsgController(projID = self.getProjID())
+		preMsg = controller.retrieve_pre_election_msg()
+		postMsg = controller.retrieve_post_election_msg()
+		self.process_msg(preMsg, postMsg)
+		return render_template('user_viewElectionMessage.html',preMsg = json.dumps(self.preMsg), postMsg=json.dumps(self.postMsg), projID=json.dumps(self.projId))
 
-		return render_template('user_viewElectionMessage.html',preMsg = json.dumps(preMsg), postMsg=json.dumps(postMsg), projID=json.dumps(self.projId))
-	
 	def onSubmit(self, preMsg, postMsg):
 		controller = ElectionMsgController(projID = self.getProjID())
-		if controller.check_pre_election_msg(preMsg):
+		if controller.check_election_msg(preMsg):
 			controller.update_pre_election_msg(preMsg)
-		if controller.check_post_election_msg(postMsg):
+			self.setPreMsg(controller.retrieve_pre_election_msg())
+
+		# elif not controller.check_election_msg(preMsg):
+		# 	default_pre_msg = "Enjoy your voting"
+		# 	controller.update_pre_election_msg(default_pre_msg)
+		# 	self.setPreMsg(controller.retrieve_pre_election_msg())
+
+		if controller.check_election_msg(postMsg):
 			controller.update_post_election_msg(postMsg)
-		# proceed to update table
+			self.setPostMsg(controller.retrieve_post_election_msg())
+
+		# elif not controller.check_election_msg(postMsg):
+		# 	default_post_msg = "Hope you enjoyed your vote"
+		# 	controller.update_post_election_msg(default_post_msg)
+		# 	self.setPostMsg(controller.retrieve_post_election_msg())
+
+	def process_msg(self, preMsg, postMsg):
+		controller = ElectionMsgController(projID = self.getProjID())
+		if controller.check_election_msg(preMsg):
+			self.setPreMsg(controller.retrieve_pre_election_msg())
+		elif not controller.check_election_msg(preMsg):
+			default_pre_msg = "Enjoy your voting"
+			self.setPreMsg(default_pre_msg)
+
+		if controller.check_election_msg(postMsg):
+			self.setPreMsg(controller.retrieve_post_election_msg())
+		elif not controller.check_election_msg(postMsg):
+			default_post_msg = "Hope you enjoyed your vote"
+			self.setPostMsg(default_post_msg)
+
 
 	def get_post_msg(self):
 		controller = ElectionMsgController(projID = self.getProjID())

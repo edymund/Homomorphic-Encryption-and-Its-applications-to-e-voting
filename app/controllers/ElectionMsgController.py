@@ -3,8 +3,6 @@ from ..entity.ElectionMessage import ElectionMessage
 class ElectionMsgController:
     def __init__(self, projID = None):
         self.projID = projID
-        self.preMsg = ""
-        self.postMsg = ""
 
     # accessor
     def getProjID(self):
@@ -20,23 +18,19 @@ class ElectionMsgController:
     def setProjID(self,projID):
         self.projID = projID
 
-    def check_pre_election_msg(self,msg):
-        if msg != "":
-            return True
-        else:
+    def check_election_msg(self,msg):
+        if msg == "" or msg ==None:
             return False
-
-    def check_post_election_msg(self,msg):
-        if msg != "":
+        elif msg != "" and msg != None:
             return True
-        else:
-            return False
 
     def update_pre_election_msg(self,msg):
-        pass
+        entity = ElectionMessage(projID= self.projID)
+        entity.setPreMsg(msg)
     
     def update_post_election_msg(self,msg):
-        pass
+        entity = ElectionMessage(projID= self.projID)
+        entity.setPostMsg(msg)
 
     def retrieve_pre_election_msg(self):
         entity = ElectionMessage(projID= self.projID)
