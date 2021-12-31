@@ -64,9 +64,17 @@ def projectEditAnswer():
 	boundary = admin_editAnswersBoundary()
 
 @app.route('/view_electionMessage', methods=['GET','POST'])
+# @app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
+# @loginRequired
+# @authorisationRequired
 def view_electionMessage():
 	# Create a boundary object
 	boundary = user_viewElectionMessageBoundary(1)
+	# get url
+	# base_url = request.base_url
+	# projID = boundary.retrieve_proj_details_from_url(base_url)
+	# boundary.setProjID(projID)
+	
 	if request.method == 'GET':
 		return boundary.displayPage()
 	elif request.method == 'POST':
