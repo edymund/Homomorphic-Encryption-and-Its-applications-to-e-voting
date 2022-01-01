@@ -37,19 +37,19 @@ class user_viewElectionMessageBoundary:
 			controller.update_pre_election_msg(preMsg)
 			self.setPreMsg(controller.retrieve_pre_election_msg())
 
-		# elif not controller.check_election_msg(preMsg):
-		# 	default_pre_msg = "Enjoy your voting"
-		# 	controller.update_pre_election_msg(default_pre_msg)
-		# 	self.setPreMsg(controller.retrieve_pre_election_msg())
+		elif not controller.check_election_msg(preMsg):
+			default_pre_msg = "Enjoy your voting"
+			controller.update_pre_election_msg(default_pre_msg)
+			self.setPreMsg(controller.retrieve_pre_election_msg())
 
 		if controller.check_election_msg(postMsg):
 			controller.update_post_election_msg(postMsg)
 			self.setPostMsg(controller.retrieve_post_election_msg())
 
-		# elif not controller.check_election_msg(postMsg):
-		# 	default_post_msg = "Hope you enjoyed your vote"
-		# 	controller.update_post_election_msg(default_post_msg)
-		# 	self.setPostMsg(controller.retrieve_post_election_msg())
+		elif not controller.check_election_msg(postMsg):
+			default_post_msg = "Hope you enjoyed your vote"
+			controller.update_post_election_msg(default_post_msg)
+			self.setPostMsg(controller.retrieve_post_election_msg())
 
 	def process_msg(self, preMsg, postMsg):
 		controller = ElectionMsgController(projID = self.getProjID())
@@ -60,7 +60,7 @@ class user_viewElectionMessageBoundary:
 			self.setPreMsg(default_pre_msg)
 
 		if controller.check_election_msg(postMsg):
-			self.setPreMsg(controller.retrieve_post_election_msg())
+			self.setPostMsg(controller.retrieve_post_election_msg())
 		elif not controller.check_election_msg(postMsg):
 			default_post_msg = "Hope you enjoyed your vote"
 			self.setPostMsg(default_post_msg)
