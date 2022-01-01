@@ -11,7 +11,6 @@ class voters_ViewVotingPage:
 	def displayPage(self,projID):
 		controller = voters_ViewVotingPageController()
 		
-		details = controller.getCandidateDetails(projID)
-		question = controller.getQuestionDesc(projID)
+		question = controller.getQuestionNCandidate(projID)
 
-		return render_template('voters_ViewVotingPage.html',details=details,question=question,projID=projID)
+		return render_template('voters_ViewVotingPage.html',question=question,projID=projID)

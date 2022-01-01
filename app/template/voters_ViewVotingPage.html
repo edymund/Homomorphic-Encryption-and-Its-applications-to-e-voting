@@ -3,57 +3,65 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewVotingPage.css') }}"/>
-<script type="text/javascript" src="static/js/voters_ViewVotingPage.js"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='js/voters_ViewVotingPage.js') }}"></script>
 {% endblock %} 
 
 <!-- Updates the <body> of the webpage -->
 {% block body %}
 <form id="mainform" method="post" action="/{{projID}}/ViewVotingPage" onsubmit="return displayPopup()">
-	<table>
-		<tr>
-			{%for images in details %}
-			<td class="candidateInfo">
-				<img src={{images[1]}} >
-			</td>
-			{% endfor %}
-		</tr>
-		<tr>
-			{%for names in details %}
-			<td class="candidateInfo">
-				{{ names[0] }}
-			</td>
-			{% endfor %}
-		</tr>
-		<tr>
-			{%for descriptions in details %}
-			<td class="candidateInfo">
-				{{ descriptions[2] }}
-			</td>
-			{% endfor %}
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<td class="questionInfo">
-				{{question}}
-			</td>
-		</tr>
-		<tr>
-			<td class="answerInfo">
-				{%for names in details %}
-				<input type="radio" id=candidateRadio name=candidate value={{names[0]}}>
-				<label for=candidateRadio><b>{{names[0]}}</b></label><br>
+	{%for questions in question %}
+	<div class="question">
+		<span><b>{{questions.question.questionNo}}</b></span>
+		<table>
+			<tr>
+				{% for candidate in questions.option %}
+				<td class="candidateInfo">
+					<img src={{candidate.imageFilename}} >
+				</td>
 				{% endfor %}
-				<br>
-					
-			</td>
-		</tr>
-		<tr>
-			<td class="center">
-				<input type="submit" id="popup" class="main-form-submit"></input>
-			</td>
-		</tr>
-	</table>
+			</tr>
+			<tr>
+				{% for candidate in questions.option %}
+				<td class="candidateInfo">
+					{{ candidate.candidateOption }}
+				</td>
+				{% endfor %}
+			</tr>
+			<tr>
+				{% for candidate in questions.option %}
+				<td class="candidateInfo">
+					{{ candidate.description }}
+				</td>
+				{% endfor %}
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td class="questionInfo">
+					{{questions.question.question}}
+				</td>
+			</tr>
+			<tr>
+				
+				<td class="answerInfo">
+					{% for candidate in questions.option %}
+					<input type="radio" id=candidateRadio name=candidate value={{candidate.candidateOption}}>
+					<label for=candidateRadio><b>{{candidate.candidateOption}}</b></label><br>
+					{% endfor %}
+					<br>
+				</td>
+				
+			</tr>
+		</table>
+	</div>
+	{% endfor %}
+		<table>
+			<tr>
+				<td class="center">
+					<input type="submit" id="popup" class="main-form-submit"></input>
+				</td>
+			</tr>
+		</table>
 </form>
 <!-- modal pop up-->
 <div class = "bg-modal">

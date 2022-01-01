@@ -6,21 +6,21 @@ class voters_ViewVotingPageController:
 	def __init__(self):
 		pass
 	
-	def getCandidateDetails(self,projID):
-		entity = Candidates()
-		
-		"""
-		Gets a 2D array containing results from the database.
-		returns[recordNo][columnNumber].
-		Column 0: Candidate Name, 
-		Column 1: Candidate Image, 
-		Column 2: Candidate Descriptions
- 
-		"""
+	def getQuestionNCandidate(self,projID):
+		questionEntity = Questions()
+		CandidateEntity = Candidates()
 
-		return entity.getCandidateDetails(projID)
-	
-	def getQuestionDesc(self,projID):
-		entity = Questions(projID)
+		questions = questionEntity.getQuestions(projID)
+		candidates = CandidateEntity.getCandidates(projID)
 
-		return entity.getQuestiondescription()
+		questionArray = []
+		for item in questions:
+			question = {}
+			question['question'] = item
+			question['option'] = []
+			for candidate in candidates:
+				if item['questionID'] == candidate['questionID']:
+					question['option'].append(candidate)
+			questionArray.append(question)
+
+		return questionArray
