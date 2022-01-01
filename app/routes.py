@@ -21,6 +21,7 @@ from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
 from .boundary.logoutBoundary import logoutBoundary
 from .boundary.user_settingsBoundary import user_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
+from .boundary.contactUsBoundary import contactUsBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 
@@ -256,6 +257,23 @@ def resetPasswordPage():
 	if request.method == 'POST':
 		email = request.form['email']
 		response = boundary.onSubmit(email)	
+	if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displaySuccess()
+	else:
+		return boundary.displayError(message=response)
+
+@app.route('/contactUs', methods=['GET','POST'])
+def contactUsPage():
+	# Create a boundary object
+	boundary = contactUsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+	if request.method == 'POST':
+		email = request.form['email']
+		name = request.form['name']
+		subject = request.form['subject']
+		feedback = request.form['feedback']
+		response = boundary.onSubmit(email,name,subject,feedback)	
 	if response == boundary.RESPONSE_SUCCESS:
 		return boundary.displaySuccess()
 	else:
