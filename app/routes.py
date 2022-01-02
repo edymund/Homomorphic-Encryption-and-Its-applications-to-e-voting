@@ -116,25 +116,22 @@ def projectEditAnswer():
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
 
-@app.route('/view_electionMessage', methods=['GET','POST'])
-# @app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
-# @loginRequired
-# @authorisationRequired
-def view_electionMessage():
+# @app.route('/view_electionMessage', methods=['GET','POST'])
+@app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_electionMessage(projectID):
 	# Create a boundary object
-	boundary = user_viewElectionMessageBoundary(1)
-	# get url
-	# base_url = request.base_url
-	# projID = boundary.retrieve_proj_details_from_url(base_url)
-	# boundary.setProjID(projID)
+	boundary = user_viewElectionMessageBoundary()
+	boundary.setProjID(projectID)
 
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
 	elif request.method == 'POST':
 		preMsg = request.form['preMsg']
 		postMsg = request.form['postMsg']
 		response = boundary.onSubmit(preMsg, postMsg)
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
 
 # @app.route('/view_importList', methods=['GET'])
 # def view_importList():
