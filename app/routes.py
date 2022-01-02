@@ -22,6 +22,7 @@ from .boundary.logoutBoundary import logoutBoundary
 from .boundary.user_settingsBoundary import user_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
+from .boundary.aboutUsBoundary import aboutUsBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 
@@ -278,6 +279,13 @@ def contactUsPage():
 		return boundary.displaySuccess()
 	else:
 		return boundary.displayError(message=response)
+
+@app.route('/aboutUs', methods=['GET'])
+def aboutUsPage():
+	# Create a boundary object
+	boundary = aboutUsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
 
 @app.route('/logout', methods=['GET'])
 @loginRequired
