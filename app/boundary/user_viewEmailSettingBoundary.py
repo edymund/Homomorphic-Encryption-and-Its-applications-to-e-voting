@@ -37,7 +37,10 @@ class user_viewEmailSettingsBoundary:
 			self.invMsg = "This is a default message"
 
 	def send_reminder(self, msg):
-		pass
-			# display in text area
-			# self.populateTextArea()
-			# controller.insert_voter(self.projectID)
+		controller = EmailSettingsController(projID = self.getProjID())
+		if controller.check_msg(msg):
+			self.rmdMsg = msg
+			controller.update_inv_msg(msg)
+		else: 
+			self.invMsg = "This is a default message"
+		controller.send_reminder()

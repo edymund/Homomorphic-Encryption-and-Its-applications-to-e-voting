@@ -1,4 +1,7 @@
 from ..entity.ElectionMessage import ElectionMessage
+from ..entity.Voter import Voter
+import smtplib
+from email.message import EmailMessage
 
 class EmailSettingsController:
     def __init__(self, projID = None):
@@ -47,4 +50,42 @@ class EmailSettingsController:
         self.rmdMsg = entity.getReminderMsg()
         return self.rmdMsg
         
+    def send_reminder(self):
+        EMAIL_PASSWORD="vxdvwcgecpdkndkj"
+        EMAIL_ADDRESS="fyp21s403@gmail.com"
+        voter_entity = Voter(self.projID)
+        Election_entity = ElectionMessage(self.projID)
+        
+        #get Reminder message
+
+        rmd_msg = Election_entity.getReminderMsg()
+        all_voters = voter_entity.get_all_voters()
+
+        for voter_email in all_voters: 
+        #     print (type(voter_email[0]))
+        #     print(rmd_msg)
+        # voter_email = ["abcd@gmail.com"]
+            email = EmailMessage()
+            new_email = self.set_mail(EMAIL_ADDRESS, voter_email[0],rmd_msg, email)
+            print(new_email["To"])
+            self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, new_email)
     
+    def set_mail(self, sender, receiver, message,email):
+        email["From"] = sender
+        email["To"] = receiver
+        email["Subject"] = "Reminder message to vote"
+        email.set_content(message)
+        return email
+
+    def send_mail(self, EMAIL_ADR, EMAIL_PW, email):
+        with smtplib.SMTP("smtp.gmail.com",587) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.ehlo()
+            
+            smtp.login(EMAIL_ADR, EMAIL_PW)
+            # print(f"Message: {email.get_content()}")
+            # get_picture(msg)
+            smtp.send_message(email)
+            smtp.quit()
+            del email
