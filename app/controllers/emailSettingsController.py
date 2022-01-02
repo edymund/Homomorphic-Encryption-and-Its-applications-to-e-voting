@@ -20,48 +20,31 @@ class EmailSettingsController:
     def setProjID(self,projID):
         self.projID = projID
 
-    def check_inv_msg(self,msg):
-        if msg != "":
-            return True
-        else:
+    def check_msg(self,msg):
+        if msg == "" or msg == None:
             return False
-
-    def check_rmd_msg(self,msg):
-        if msg != "":
+        elif msg != "" or msg != None:
             return True
-        else:
-            return False
 
     def update_inv_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
+        invMsg = entity.setInviteMsg(msg)
+        self.invMsg = invMsg
     
     def update_rmd_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
+        rmdMsg =entity.setReminderMsg(msg)
+        self.invMsg = rmdMsg
+        
 
     def retrieve_inv_msg(self):
         entity = ElectionMessage(projID= self.projID)
         self.invMsg = entity.getInviteMsg()
-        # with open("invMsg.txt","w") as f:
-        #     f.write(str(self.invMsg))
-        #     f.close()
         return self.invMsg
 
     def retrieve_rmd_msg(self):
         entity = ElectionMessage(projID= self.projID)
         self.rmdMsg = entity.getReminderMsg()
-        # with open("rmdMsg.txt","w") as f:
-        #     f.write(str(self.rmdMsg))
-        #     f.close()
         return self.rmdMsg
-    
-    @staticmethod
-    def retrieve_proj_detail(url):
-        # url = "www.123/1/abc"
-        for i in range(1):
-            slash = url.find("/")
-            new_url = url[slash+1:]
-        next_slash = new_url.find("/")
-        proj_details = new_url[:next_slash]
-        return proj_details
         
     

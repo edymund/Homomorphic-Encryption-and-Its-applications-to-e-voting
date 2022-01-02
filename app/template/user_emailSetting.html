@@ -11,7 +11,7 @@
     <div class="content">
 
         <h2>Email Settings</h2>
-        <form>
+        <form action ="/{{ projectID }}/view_emailSettings" method="post">
             <table>
                 <tr>
                     <td colspan = "2">
@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <td  colspan = "2" >
-                        <textarea spellcheck="True" wrap= hard id ="InvMsg" ></textarea><br>
+                        <textarea spellcheck="True" wrap= hard name = InvMsg id ="InvMsg" ></textarea><br>
                     </td>
                 </tr>
                 <tr>
@@ -32,7 +32,7 @@
                 </tr>
                 <tr>
                     <td  colspan = "2">
-                        <textarea spellcheck="True" wrap= hard id ="RmdMsg"></textarea><br>
+                        <textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg"></textarea><br>
                     </td>
                 </tr>
                 <tr>
