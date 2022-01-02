@@ -16,27 +16,27 @@
 
     <input id="search_bar" style="font-family: FontAwesome;" placeholder='&#xf002 Search...' />
 
-    <h2>All Projects <span class="material-icons-outlined" onclick="location.href='#'">add_circle_outline</span> </h2>    
-
+    <h2>All Projects <span class="material-icons-outlined" onclick="location.href='#'">add_circle_outline</span> </h2>
+    
+   <!-- Data Array --> 
+    <!--
+	adminID = item[0]
+	userID = item[1]
+	projID = item[2]
+	adminStatus = item[3]
+	approval = item[4]
+	projDetailsID = item[5]
+	projTitle = item[6]
+	projStatus = item[7]     
+    --> 
+    {% for item in data %}
     <div class = "all_ballots">
         <span class = "serial_no"></span>
-        <!-- Project name cannot exceed 53 characters <input type"text" maxlength="10"> -->
-        <span class = "project_name"> General Election</span>
-        <span class = "role">Sub-Admin</span>
-        <span class = "status">Draft</span>
+        <span class  = "project_name" onclick="location.href='/mainballot?Id={{item[2]}}'">{{item[6]}}</span>
+        <span class = "role">{{item[3]}}</span>
+        <span class = "status">{{item[7]}}</span>
     </div>
-    <div class = "all_ballots">
-        <span class = "serial_no"></span>
-        <span class = "project_name"> Which fruit is the most popular?</span>
-        <span class = "role">Admin</span>
-        <span class = "status">Completed</span>
-    </div>
-    <div class = "all_ballots">
-        <span class = "serial_no"></span>
-        <span class = "project_name"> Most well-liked male celebrity?</span>
-        <span class = "role">Admin</span>
-        <span class = "status">Ongoing</span>
-    </div>
+    {% endfor %}
 
 </div>
 {% endblock %} 

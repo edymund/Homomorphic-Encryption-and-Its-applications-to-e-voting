@@ -1,6 +1,6 @@
 from ..dbConfig import dbConnect, dbDisconnect
 class ElectionMessage:
-    def __init__(self, electionMsgID = None, projID= None):
+  def __init__(self, electionMsgID = None, projID= None):
 		# Connect to database
         connection = dbConnect()
         db = connection.cursor()
@@ -30,7 +30,7 @@ class ElectionMessage:
           self.postMsg        = None
           self.inviteMsg      = None
           self.reminderMsg    = None
-      
+          
         # Disconnect from database
         dbDisconnect(connection)
 
