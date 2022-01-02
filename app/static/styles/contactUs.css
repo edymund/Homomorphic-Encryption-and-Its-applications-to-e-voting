@@ -14,14 +14,25 @@ input[type=text], input[type=password] {
     background: #FFFFFF
 }
 
+/* Textarea */
 .feedback {
     overflow-wrap: break-word;
     width: 30%;
     border: none;
+    resize: none;
+    height:250px;
+    text-indent: 14px;
+    overflow: hidden;
 }
 
+/* Adjust label to be in the middle of textarea */
 .formfield * {
     vertical-align: middle;
+}
+
+/* Adjust placeholder of textarea to be center */
+.feedback::-webkit-input-placeholder {
+    line-height:250px;
 }
 
 /* login button */
