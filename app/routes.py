@@ -65,12 +65,22 @@ def viewEncryptedVotePage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/overview', methods = ['GET'])
+@app.route('/overview', methods = ['GET', 'POST'])
 def projectOverviewPage():
 	# Create a boundary object
 	boundary = admin_overviewBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+	if request.method == 'POST':
+		title = request.form['name']
+		startDateTime = request.form['startDateTime']
+		endDateTime = request.form['endDateTime']
+		publicKey = request.form['publicKey']
+		response = boundary.onSubmit(title, startDateTime, endDateTime, publicKey)
+		if response == boundary.RESPONSE_SUCCESS:
+			return boundary.displaySuccess()
+		else:
+			return boundary.displayError(message=response)
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired
