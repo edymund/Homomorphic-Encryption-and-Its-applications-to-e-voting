@@ -10,7 +10,7 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 # from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
@@ -127,7 +127,7 @@ def view_electionMessage():
 	# base_url = request.base_url
 	# projID = boundary.retrieve_proj_details_from_url(base_url)
 	# boundary.setProjID(projID)
-	
+
 	if request.method == 'GET':
 		return boundary.displayPage()
 	elif request.method == 'POST':

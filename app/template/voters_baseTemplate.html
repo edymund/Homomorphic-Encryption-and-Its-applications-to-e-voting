@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, width=device-width">
+		<link rel="shortcut icon" href="#" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_baseTemplate.css') }}"/>
+
+		<!-- Header Block -->
+		{% block head %}
+		{% endblock %}
+	</head>
+
+	<body>
+		<div class="top-left">
+			<a href="/"><img src={{url_for('static', filename='images/icon.png')}} /></a>
+		</div>
+
+		<!-- Body Block -->
+		<div class ="content">
+			{% block body %}
+			{% endblock %}
+		</div>
+	</body>
+</html>

@@ -30,7 +30,6 @@ mycursor.execute("DROP TABLE IF EXISTS voter;")
 mycursor.execute("DROP TABLE IF EXISTS  administrators;")
 mycursor.execute("DROP TABLE IF EXISTS  answer;")
 mycursor.execute("DROP TABLE IF EXISTS  electionmsgs;")
-mycursor.execute("DROP TABLE IF EXISTS  record;")
 mycursor.execute("DROP TABLE IF EXISTS  candidates;")
 mycursor.execute("DROP TABLE IF EXISTS  questions;")
 mycursor.execute("DROP TABLE IF EXISTS  projdetails;")
@@ -65,7 +64,7 @@ create = ["""
 			CREATE TABLE projdetails (
             projDetailsID INTEGER PRIMARY KEY AUTOINCREMENT,
             title varchar(255) NOT NULL,
-            status varchar(255) NOT NULL,
+            status varchar(255) NOT NULL DEFAULT 'draft',
             startDate date NOT NULL,
             startTime time NOT NULL,
             endDate date NOT NULL,
@@ -77,8 +76,10 @@ create = ["""
 			"""
 			CREATE TABLE voter (
             voterID INTEGER PRIMARY KEY AUTOINCREMENT,
+            voterNumber varchar(255) NOT NULL,
             email varchar(255) NOT NULL,
             projectID int(11) NOT NULL,
+            password varchar(255) NOT NULL,
             UNIQUE (voterID),
             FOREIGN KEY (projectID) REFERENCES projdetails (projDetailsID)
             )
@@ -118,27 +119,15 @@ create = ["""
             FOREIGN KEY (questionID) REFERENCES questions (questionsID)
             ) 
 			""",
-			"""
-			CREATE TABLE record (
-            recordID INTEGER PRIMARY KEY AUTOINCREMENT,
-            projID int(11) NOT NULL,
-            questionID int(11) NOT NULL,
-            candidateID int(11) NOT NULL,
-            UNIQUE (recordID),
-            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID),
-            FOREIGN KEY (questionID) REFERENCES questions (questionsID)
-            )
-			""",
             """
 			CREATE TABLE answer (
             answerID INTEGER PRIMARY KEY AUTOINCREMENT,
             voterID int(11) NOT NULL,
-            recordID int(11) NOT NULL,
+            candidateID int(11) NOT NULL,
             encryptedAnswer varchar(255) NOT NULL,
             UNIQUE (answerID),
             FOREIGN KEY (voterID) REFERENCES voter (voterID),
-            FOREIGN KEY (recordID) REFERENCES record (recordID)
+            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID)
             ) 
 			"""]
 
@@ -194,15 +183,15 @@ administratorsInsertvalues = [
 mycursor.executemany(administratorsInsertquery, administratorsInsertvalues)
 
 #Insert data for voters table
-voterInsertquery = "INSERT INTO voter (email, projectID)  VALUES (?,?)"
+voterInsertquery = "INSERT INTO voter (voterNumber, email, projectID, password)  VALUES (?,?,?,?)"
 ## storing values in a variable
 voterInsertvalues = [
-   ("may@gmail.com",1),
-   ("angeline@gmail.com",1),
-   ("jake@hotmail.com",1),
-   ("emily@hotmail.com",2),
-   ("yvonne@gmail.com",2),
-   ("bryan@hotmail.com",2)
+   ("a12341","may@gmail.com",1,"aaa"),
+   ("bhsg12","angeline@gmail.com",1,"bbb"),
+   ("ajsh12","jake@hotmail.com",1,"ccc"),
+   ("213ggq","emily@hotmail.com",2,"sss"),
+   ("sgshh9","yvonne@gmail.com",2,"ddd"),
+   ("iop905","bryan@hotmail.com",2,"eee")
 ]
 
 ## executing the query with values
@@ -240,37 +229,19 @@ candidatesInsertvalues = [
    (1, 1, "strawberry", None, None),
    (1, 2, "yes", "spicy.jpg", "very spicy"),
    (1, 2, "no", None, "not spicy"),
-   (2, 1, "jane", "jane.jpg", "10 years of exp"),
-   (2, 1, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
-   (2, 2, "jane", "jane.jpg", "10 years of exp"),
-   (2, 2, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
-   (2, 2, "melissa", "melissa.jpg", "5 years of exp")
+   (2, 3, "jane", "jane.jpg", "10 years of exp"),
+   (2, 3, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
+   (2, 4, "jane", "jane.jpg", "10 years of exp"),
+   (2, 4, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
+   (2, 4, "melissa", "melissa.jpg", "5 years of exp")
 ]
 
 ## executing the query with values
 mycursor.executemany(candidatesInsertquery, candidatesInsertvalues)
 
-#Insert data for record table
-recordInsertquery = "INSERT INTO record (projID, questionID, candidateID)  VALUES (?,?,?)"
-## storing values in a variable
-recordInsertvalues = [
-   (1,1,1),
-   (1,1,2),
-   (1,1,3),
-   (1,2,4),
-   (1,2,5),
-   (2,3,6),
-   (2,3,7),
-   (2,4,6),
-   (2,4,7),
-   (2,4,8)
-]
-## executing the query with values
-mycursor.executemany(recordInsertquery, recordInsertvalues)
-
 
 #Insert data for answer table
-answerInsertquery = "INSERT INTO answer (voterID ,recordID, encryptedAnswer) VALUES (?,?,?)"
+answerInsertquery = "INSERT INTO answer (voterID ,candidateID, encryptedAnswer) VALUES (?,?,?)"
 ## storing values in a variable
 answerInsertvalues = [
    (1,1,'1'),
@@ -318,10 +289,10 @@ print('All entries committed to database')
 # mycursor.execute("SELECT projdetails.title,users.email, users.firstName,users.lastName,administrators.adminStatus FROM administrators INNER JOIN projdetails ON projdetails.projDetailsID = administrators.projID INNER JOIN users ON users.userID = administrators.userID ORDER BY administrators.projID")
 
 # #test to see if questions and candidates are added into the correct project
-# mycursor.execute("SELECT projdetails.title, questions.questions, questions.questionDesc, candidates.candidateOption, candidates.image FROM record INNER JOIN projdetails ON projdetails.projDetailsID = record.projID INNER JOIN questions ON questions.questionsID = record.questionID INNER JOIN candidates ON candidates.candidateID = record.candidateID ORDER BY record.recordID")
+# mycursor.execute("SELECT projdetails.title, questions.questions,questions.questionDesc,candidates.candidateOption FROM candidates INNER JOIN projdetails ON projdetails.projDetailsID = candidates.projID INNER JOIN questions ON questions.questionsID = candidates.questionID")
 
-# #test to see what all voters vote for
-mycursor.execute("SELECT t2.title,t2.questions,t2.questionDesc,t2.candidateOption,t1.email,t1.encryptedAnswer FROM (SELECT voter.email,answer.encryptedAnswer,answer.recordID FROM answer INNER JOIN voter ON voter.voterID = answer.voterID ORDER BY answer.answerID) AS t1 INNER JOIN (SELECT record.recordID,projdetails.title,questions.questions,questions.questionDesc,candidates.candidateOption FROM record INNER JOIN projdetails ON projdetails.projDetailsID = record.projID INNER JOIN questions ON questions.questionsID = record.questionID INNER JOIN candidates ON candidates.candidateID = record.candidateID) AS t2 ON t1.recordID = t2.recordID")
+# #test to see what all voters vote for (including voter 6 digit ID)
+# mycursor.execute("SELECT t2.title,t2.questions,t2.questionDesc,t2.candidateOption,t1.voterNumber,t1.email,t1.encryptedAnswer FROM (SELECT voter.voterNumber,voter.email,answer.encryptedAnswer, answer.candidateID FROM answer INNER JOIN voter ON voter.voterID = answer.voterID ORDER BY answer.answerID) AS t1 INNER JOIN (SELECT candidates.candidateID,projdetails.title, questions.questions,questions.questionDesc,candidates.candidateOption FROM candidates INNER JOIN projdetails ON projdetails.projDetailsID = candidates.projID INNER JOIN questions ON questions.questionsID = candidates.questionID) AS t2 ON t1.candidateID = t2.candidateID")
 # mycursor.execute("SELECT * FROM users;")
 # mycursor.execute("SELECT * FROM administrators;")
 myresult = mycursor.fetchall()

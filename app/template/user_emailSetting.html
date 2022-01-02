@@ -2,6 +2,7 @@
 <!-- Updates the <head> of the webpage -->
     {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_electionMessage.css') }}"/>
+    <script type=text/javascript src="{{ url_for('static',filename='js/user_emailSettings.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
@@ -10,51 +11,43 @@
     <div class="content">
 
         <h2>Email Settings</h2>
-        <table>
-            <tr>
-                <td>
-                    <h4>
-                        <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
-                    </h4>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <textarea spellcheck="True" wrap= hard >Welcome to evoting bro</textarea><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button type="submit">Send reminder link</button>
-                </td>
-            </tr>
-            
-        </table>
-        <!-- <h4>
-            <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
-        </h4> -->
-
-        <!-- <textarea spellcheck="True" wrap= hard >Welcome to evoting bro</textarea><br> -->
-        <!--Change text box size-->
-
-        <!-- <h4>
-            <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
-        </h4> -->
-
-        <!-- <textarea spellcheck="True" wrap= hard >Cya bro</textarea><br> -->
-        <!--Change text box size-->
-        
-        <!-- <button type="submit">Send reminder link</button> -->
+        <form>
+            <table>
+                <tr>
+                    <td colspan = "2">
+                        <h4>
+                            <label for="Pre-ElectionMessage"><b>Custom invite message:</b></label>
+                        </h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan = "2" >
+                        <textarea spellcheck="True" wrap= hard id ="InvMsg" ></textarea><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan = "2">
+                        <label for="Post-ElectionMessage"><b>Custom reminder message:</b></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan = "2">
+                        <textarea spellcheck="True" wrap= hard id ="RmdMsg"></textarea><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" name ="action" value= "Update">Save</button>
+                        <button type="submit" name ="action" value="SendEmail">Send reminder link</button>
+                    </td>
+                </tr>
+                
+            </table>
+        </form>
+        <script>
+            onload = fillTA("InvMsg",{{invMsg | safe}});
+            onload = fillTA("RmdMsg",{{rmdMsg | safe }});
+        </script>
 
     </div>
     {% endblock %} 
