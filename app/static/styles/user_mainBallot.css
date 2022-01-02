@@ -55,17 +55,20 @@ body{
 }
 
 .role{
-  left:50%;
+  left:52%;
   position: absolute;
 }
 
 .status{
   color:red;
-  left:57%;
+  left:60%;
   position: absolute;
   text-align: center;
 }
 
+a {
+  text-decoration:none;
+}
 
 
 

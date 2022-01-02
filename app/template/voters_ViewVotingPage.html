@@ -1,0 +1,71 @@
+{% extends "voters_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewVotingPage.css') }}"/>
+<script type="text/javascript" src="static/js/voters_ViewVotingPage.js"></script>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<form id="mainform" method="post" action="/" onsubmit="return displayPopup()">
+	<table>
+		<tr>
+			{%for image in imagePath %}
+			<td class="candidateInfo">
+				<img src={{image}} >
+			</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			{%for name in namePath %}
+			<td class="candidateInfo">
+				{{ name }}
+			</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			{%for description in descriptions %}
+			<td class="candidateInfo">
+				{{ description }}
+			</td>
+			{% endfor %}
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td class="questionInfo">
+				{{question}}
+			</td>
+		</tr>
+		<tr>
+			<td class="answerInfo">
+				{%for name in namePath %}
+				<input type="radio" id={{name}} name={{name}} value={{name}}>
+				<label for={{name}}><b>{{name}}</b></label><br>
+				{% endfor %}
+				<br>
+					
+			</td>
+		</tr>
+		<tr>
+			<td class="center">
+				<input type="submit" id="popup" class="main-form-submit"></input>
+			</td>
+		</tr>
+	</table>
+</form>
+<!-- modal pop up-->
+<div class = "bg-modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h2>Are you sure you want to submit?</h2>
+		</div>
+		<div class="modal-body"></div>
+		<div class="modal-footer">
+			<button class="modal-button" id="cancel" >Cancel</button>
+			<input type="submit" id="confirm" class="modal-button-submit"></input>
+		</div>
+	</div>
+</div>
+{% endblock %}
