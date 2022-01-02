@@ -25,7 +25,7 @@ class user_viewElectionMessageBoundary:
 
 	# Other Methods
 	def displayPage(self):
-		controller = ElectionMsgController(projID = self.getProjID())
+		controller = ElectionMsgController(projID = self.projId)
 		preMsg = controller.retrieve_pre_election_msg()
 		postMsg = controller.retrieve_post_election_msg()
 		self.process_msg(preMsg, postMsg)
