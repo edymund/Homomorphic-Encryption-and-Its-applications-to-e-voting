@@ -1,4 +1,4 @@
-from ..entity.Electionmsgs import Electionmsgs
+from ..entity.ElectionMessage import ElectionMessage
 from ..entity.ProjectDetails import ProjectDetails
 
 class voters_ViewSubmittedVotePageController:
@@ -6,9 +6,9 @@ class voters_ViewSubmittedVotePageController:
 		pass
 
 	def getElectionMsg(self,projID):
-		entity = Electionmsgs(projID)
+		entity = ElectionMessage(projID)
 
-		return entity.postElectionMsg()
+		return entity.getPostMsg()
 
 	def getElectionTitle(self,projID):
 		entity = ProjectDetails(projID)
