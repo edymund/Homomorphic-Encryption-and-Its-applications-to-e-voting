@@ -1,10 +1,14 @@
-from ..entity.Administrator import Administrator
 from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
+from ..entity.ProjectDetails import ProjectDetails
 
 class admin_viewQuestionsController():
 	def __init__(self):
 		pass
+
+	def getProjectName(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getTitle()
 
 	def getQuestionsAndAnswers(self, projectID):
 		questionEntity = Questions()
