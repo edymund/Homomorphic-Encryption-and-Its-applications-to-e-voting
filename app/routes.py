@@ -104,12 +104,14 @@ def projectViewQuestions(projectID):
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
-@app.route("/edit_questions", methods=['GET'])
-def projectEditQuestions():
+@app.route("/<projectID>/edit_questions/<questionID>", methods=['GET'])
+@loginRequired
+@authorisationRequired
+def projectEditQuestions(projectID, questionID):
 	# Create boundary object
 	boundary = admin_editQuestionsBoundary()
 	if request.method =='GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID, questionID)
 
 @app.route("/edit_answers", methods=['GET'])
 def projectEditAnswer():

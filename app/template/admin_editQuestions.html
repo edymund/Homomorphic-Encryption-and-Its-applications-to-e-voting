@@ -7,22 +7,33 @@
 
 {% block body %}
     <h2>Edit Question</h2>
-    <form>
+    <form action="">
         <label for="name">Project:</label>
-        <input type="text" id="name" name="name" value="Project name here" disabled/><br />
+        <input type="text" id="name" name="name" value={{ projectName}} /><br />
         <h3>Question 1</h3>
-		<label for="questionField">Status:</label>
-        <input type="text" id="questionField" value="Which candidate do you vote for"/> <br />
+		<label for="questionField">Question:</label>
+        <input type="text" 
+			   id="questionField"
+			   value=
+			   	{% if question is not none %}
+					question.question
+			   	{% else %}
+					""
+			   	{% endif %}
+			   	/> <br />
 		<div>
-			Answers:
+			Answers (Click to edit options):
 			<input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}">
 		</div>
 		<div>
 			<ol>
-				<li><button name="option 1" type="submit" value="candidateID">John</button></li>
-				<li><button name="option 2" type="submit" value="candidateID">Jack</button></li>
-				<li><button name="option 3" type="submit" value="candidateID">Johnson</button></li>
-				<li><button name="option 4" type="submit" value="candidateID">Abraham Lincon</button></li>
+				{% for candidate in candidates %}
+				<li>
+					<a href="../edit_answers/{{ candidate.candidateID }}">
+						{{ candidate.candidateOption }}
+					</a>
+				</li>
+				{% endfor %}
 			</ol>
 		</div> 
         <input type="submit" name="saveQuestion" value="Save" /> </br>

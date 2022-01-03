@@ -6,7 +6,7 @@ class Administrator:
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
-		# If the NRIC is provided, fill the object with details from database
+		# If the userID is provided, fill the object with details from database
 		hasResult = False
 		if userID is not None:
 			# Select User from database and populate instance variables

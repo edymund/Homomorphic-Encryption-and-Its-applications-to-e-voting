@@ -6,7 +6,7 @@ class Questions:
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
-		# If the NRIC is provided, fill the object with details from database
+		# If the questionID is provided, fill the object with details from database
 		hasResult = False
 		if questionID is not None:
 			# Select User from database and populate instance variables
@@ -57,6 +57,29 @@ class Questions:
 				
 				allResults.append(questionDetails)
 			return allResults
+
+	def getQuestion(self, questionID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if questionID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT questionsID, questions, questionDesc
+								FROM questions
+								WHERE questionsID = (?)""", (questionID,)).fetchone()
+		
+		dbDisconnect(connection)
+		
+		if result is None:
+			return None
+		else:
+			questionDetails = {}
+			questionDetails['questionID'] = result[0]
+			questionDetails['questionNo'] = result[1]
+			questionDetails['question']  = result[2]
+				
+
 
 	def addQuestion(self, projectID):
 		# Connect to database
