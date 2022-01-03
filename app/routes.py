@@ -153,7 +153,7 @@ def view_emailSetting(projectID):
 		rmdMsg = request.form['RmdMsg']
 		invMsg = request.form['InvMsg']
 		if request.form["action"] =="Update":
-			response = boundary.onSubmit(rmdMsg,invMsg)
+			response = boundary.onSubmit(invMsg,rmdMsg)
 		if request.form["action"] =="SendEmail":
 			boundary.send_reminder(rmdMsg)
 		

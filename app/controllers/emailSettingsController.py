@@ -51,13 +51,12 @@ class EmailSettingsController:
         return self.rmdMsg
         
     def send_reminder(self):
-        EMAIL_PASSWORD="vxdvwcgecpdkndkj"
+        EMAIL_PASSWORD="eccqringtcgtolnf"
         EMAIL_ADDRESS="fyp21s403@gmail.com"
         voter_entity = Voter(self.projID)
         Election_entity = ElectionMessage(self.projID)
         
         #get Reminder message
-
         rmd_msg = Election_entity.getReminderMsg()
         all_voters = voter_entity.get_all_voters()
 
@@ -67,7 +66,6 @@ class EmailSettingsController:
         # voter_email = ["abcd@gmail.com"]
             email = EmailMessage()
             new_email = self.set_mail(EMAIL_ADDRESS, voter_email[0],rmd_msg, email)
-            print(new_email["To"])
             self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, new_email)
     
     def set_mail(self, sender, receiver, message,email):
