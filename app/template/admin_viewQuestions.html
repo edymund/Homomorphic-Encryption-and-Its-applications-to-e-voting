@@ -8,17 +8,17 @@
 {% block body %}
     <h2>Manage Questions</h2>
 	<div id="header">
-		<form action="edit_questions/new_question" method="post">
+		<form action="edit_questions/new_question" method="GET">
 			<label for="projectNameField">Project Name:</label>
 			<input type="text" id="projectNameField" value="Project Name Here" disabled/>
-			<button name="action" type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
+			<button type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
 			<!-- <input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}"> -->
 		</form>
 	</div>
 
 	{% set count = 1 %}
 	{% for record in questionSet %}
-	<a class="questionBox" href="editQuestion/{{ record.question.questionID }}">
+	<a class="questionBox" href="edit_questions/{{ record.question.questionID }}">
 		<div class="questions">
 			<span>
 				<b>{{ record.question.questionNo}}.</b>

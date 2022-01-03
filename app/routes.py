@@ -109,12 +109,25 @@ def projectViewQuestions(projectID):
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
-@app.route("/edit_questions", methods=['GET'])
-def projectEditQuestions():
+@app.route("/<projectID>/edit_questions/<questionID>", methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def projectEditQuestions(projectID, questionID):
 	# Create boundary object
 	boundary = admin_editQuestionsBoundary()
-	if request.method =='GET':
-		return boundary.displayPage()
+	if request.method == 'GET':
+		return boundary.displayPage(projectID, questionID)
+	
+	if request.method == 'POST':
+		question = request.form['question']
+		action = request.form['action']
+		if questionID == "new_question" :
+			return boundary.addQuestion(projectID, question)
+		else:
+			if action == "Save":
+				return boundary.saveQuestion(projectID, questionID, question)
+			if action == "Delete":
+				return boundary.deleteQuestion(projectID, questionID)
 
 @app.route("/edit_answers", methods=['GET'])
 def projectEditAnswer():

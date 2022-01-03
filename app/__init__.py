@@ -39,9 +39,9 @@ def authorisationRequired(function):
 		try:
 			# If user is authenticated, proceed as per normal
 			accessedResource = kwargs.get("projectID")
-			print(accessedResource)
-			print(session['adminProjectID'])
-			print(session['subAdminProjectID'])
+			# print(accessedResource)
+			# print(session['adminProjectID'])
+			# print(session['subAdminProjectID'])
 			if int(accessedResource) in session['adminProjectID']:
 				print("User is admin of project")
 				return function(*args, **kwargs)
