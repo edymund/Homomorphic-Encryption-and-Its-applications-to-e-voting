@@ -56,8 +56,8 @@ create = ["""
             adminStatus varchar(255) NOT NULL,
             approval BOOLEAN,
             UNIQUE (administratorsID),
-            FOREIGN KEY (userID) REFERENCES users (userID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (userID) REFERENCES users (userID) ON DELETE CASCADE,
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             ) 
 			""",
             """
@@ -81,7 +81,7 @@ create = ["""
             projectID int(11) NOT NULL,
             password varchar(255) NOT NULL,
             UNIQUE (voterID),
-            FOREIGN KEY (projectID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (projectID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             )
 			""",
 			"""
@@ -93,7 +93,7 @@ create = ["""
             inviteMsg varchar(255) DEFAULT NULL,
             reminderMsg varchar(255) DEFAULT NULL,
             UNIQUE (electionMsgsID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             )
 			""",
 			"""
@@ -103,7 +103,7 @@ create = ["""
             questions varchar(255) NOT NULL,
             questionDesc varchar(255) NOT NULL,
             UNIQUE (questionsID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             )
 			""",
 			"""
@@ -115,8 +115,8 @@ create = ["""
             image varchar(255) DEFAULT NULL,
             description varchar(255) DEFAULT NULL,
             UNIQUE (candidateID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID),
-            FOREIGN KEY (questionID) REFERENCES questions (questionsID)
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE,
+            FOREIGN KEY (questionID) REFERENCES questions (questionsID) ON DELETE CASCADE
             ) 
 			""",
             """
@@ -126,8 +126,8 @@ create = ["""
             candidateID int(11) NOT NULL,
             encryptedAnswer varchar(255) NOT NULL,
             UNIQUE (answerID),
-            FOREIGN KEY (voterID) REFERENCES voter (voterID),
-            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID)
+            FOREIGN KEY (voterID) REFERENCES voter (voterID) ON DELETE CASCADE,
+            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID) ON DELETE CASCADE
             ) 
 			"""]
 

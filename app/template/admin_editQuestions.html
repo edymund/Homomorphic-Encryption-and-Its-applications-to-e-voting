@@ -7,16 +7,16 @@
 
 {% block body %}
     <h2>Edit Question</h2>
-    <form action="">
+    <form action="" method="post">
         <label for="name">Project:</label>
-        <input type="text" id="name" name="name" value={{ projectName}} /><br />
-        <h3>Question 1</h3>
+        <input type="text" id="name" name="name" value={{ projectName}} disabled /><br />
 		<label for="questionField">Question:</label>
         <input type="text" 
 			   id="questionField"
+			   name="question"
 			   value=
 			   	{% if question is not none %}
-					question.question
+					"{{question.question}}"
 			   	{% else %}
 					""
 			   	{% endif %}
@@ -36,7 +36,7 @@
 				{% endfor %}
 			</ol>
 		</div> 
-        <input type="submit" name="saveQuestion" value="Save" /> </br>
-		<input type="submit" name="deleteQuestion" value="Delete Question" />
+        <input type="submit" name="action" value="Save" /> </br>
+		<input type="submit" name="action" value="Delete" />
     </form>
 {% endblock %}
