@@ -47,6 +47,7 @@ class Candidates:
 									WHERE projID = (?)
 									ORDER BY questionID DESC""", (projectID,)).fetchall()
 
+			dbDisconnect(connection)
 			
 			if result is None:
 				return []
@@ -63,4 +64,4 @@ class Candidates:
 					allResults.append(candidateDetails)
 				return allResults
 				
-			dbDisconnect(connection)
+			

@@ -221,12 +221,12 @@ def viewSubmittedVotePage(projID):
 	if request.method == 'GET':
 		return boundary.displayPage(projID)
 
-@app.route('/ViewEncryptedVotePage', methods=['GET'])
-def viewEncryptedVotePage():
+@app.route('/<projID>/ViewEncryptedVotePage', methods=['GET'])
+def viewEncryptedVotePage(projID):
 	# Create a boundary object
 	boundary = voters_ViewEncryptedVotePage()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projID)
 
 ###############################################
 
