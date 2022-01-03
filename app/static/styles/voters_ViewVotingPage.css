@@ -3,6 +3,19 @@ table{
 	margin-right: auto;
 }
 
+.question{
+	transform: scale(0.98);
+	border: 1px solid black;
+	border-radius: 10px;
+	transition: transform .3s, box-shadow .3s, background-color .3s;
+}
+
+.question:hover {
+	transform: scale(1);
+	box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, 0.2);
+	background-color:rgb(245, 222, 192);
+}
+
 .candidateInfo{
 	text-align: center;
 	font-family: Arial, Helvetica, sans-serif;
