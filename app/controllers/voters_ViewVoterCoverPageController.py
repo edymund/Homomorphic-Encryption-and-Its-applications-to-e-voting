@@ -1,5 +1,5 @@
 from ..entity.Electionmsgs import Electionmsgs
-from ..entity.Projectdetails import Projectdetails
+from ..entity.ProjectDetails import ProjectDetails
 
 class voters_ViewVoterCoverPageController:
 	def __init__(self):
@@ -15,7 +15,7 @@ class voters_ViewVoterCoverPageController:
 	def getElectionTitle(self,projID):
 
 		# Create a project details object containing the ID of the project
-		projectDetails = Projectdetails(projID)
+		projectDetails = ProjectDetails(projID)
 
-		return projectDetails.getElectionTitle()
+		return projectDetails.getTitle()
 
