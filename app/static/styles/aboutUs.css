@@ -1,0 +1,42 @@
+
+/* adding inline block to bold elements so that textbox are align */
+b {
+    display: inline-block;
+    width: 100px;
+}
+
+.content {
+    margin-top:5%;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+	float: left;
+	margin-top:3%;
+	width: 20%;
+	padding: 12px;
+}
+  
+/* Clear floats after the columns */
+.row:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.top_column {
+	margin-top:3%;
+	margin-left:22%;
+	width: 55%;
+	padding: 15px;
+}
+
+.material-icons-outlined.groups {
+    font-size:100px;
+    margin-left:40%;
+}
+
+.material-icons-outlined {
+    font-size:30px;
+    margin-left:15%;
+}

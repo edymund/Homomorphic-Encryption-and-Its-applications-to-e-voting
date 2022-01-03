@@ -18,6 +18,11 @@ from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
+from .boundary.logoutBoundary import logoutBoundary
+from .boundary.user_settingsBoundary import user_settingsBoundary
+from .boundary.resetPasswordBoundary import resetPasswordBoundary
+from .boundary.contactUsBoundary import contactUsBoundary
+from .boundary.aboutUsBoundary import aboutUsBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 
@@ -214,7 +219,26 @@ def registrationPage():
 	else:
 		return boundary.displayError(message=response)
 
+@app.route('/settings', methods=['GET','POST'])
+@loginRequired
+def settingsPage():
+	# Create a boundary object
+	boundary = user_settingsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+	if request.method == 'POST':
+		first_name = request.form['fname']
+		last_name = request.form['lname']
+		email = request.form['email']
+		company_name = request.form['companyName']
+		response = boundary.onSubmit(first_name,last_name,email,company_name)	
+	if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displaySuccess()
+	else:
+		return boundary.displayError(message=response)
+
 @app.route('/changepassword', methods=['GET','POST'])
+@loginRequired
 def changePasswordPage():
 	# Create a boundary object
 	boundary = user_changePasswordBoundary()
@@ -231,11 +255,62 @@ def changePasswordPage():
 		return boundary.displayError(message=response)
 
 @app.route('/mainballot', methods=['GET','POST'])
+@loginRequired
 def mainBallotPage():
 	# Create a boundary object
 	boundary = user_mainBallotBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+
+@app.route('/resetpassword', methods=['GET','POST'])
+def resetPasswordPage():
+	# Create a boundary object
+	boundary = resetPasswordBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+	if request.method == 'POST':
+		email = request.form['email']
+		response = boundary.onSubmit(email)	
+	if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displaySuccess()
+	else:
+		return boundary.displayError(message=response)
+
+@app.route('/contactUs', methods=['GET','POST'])
+def contactUsPage():
+	# Create a boundary object
+	boundary = contactUsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+	if request.method == 'POST':
+		email = request.form['email']
+		name = request.form['name']
+		subject = request.form['subject']
+		feedback = request.form['feedback']
+		response = boundary.onSubmit(email,name,subject,feedback)	
+	if response == boundary.RESPONSE_SUCCESS:
+		return boundary.displaySuccess()
+	else:
+		return boundary.displayError(message=response)
+
+@app.route('/aboutUs', methods=['GET'])
+def aboutUsPage():
+	# Create a boundary object
+	boundary = aboutUsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/logout', methods=['GET'])
+@loginRequired
+def logout():
+	# Initialise User_LogoutUI Object
+	user_logout = logoutBoundary()
+
+	# Log User Out
+	user_logout.logout()
+
+	# Redirect to login page
+	return user_logout.redirectToLogin()
 
 	# # Create PublicUser_ExposureStatusBoundary Object
 	# publicUser_exposureStatusBoundary = PublicUser_ExposureStatusUI()
