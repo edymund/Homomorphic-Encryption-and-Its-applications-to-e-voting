@@ -9,10 +9,10 @@
 <!-- Updates the <body> of the webpage -->
     {% block body %}
     <div class="content"> 
-        <h2>Election Message</h2>
+        <h2><b>Election Message</b></h2>
         <form method="POST" action="/{{projectID}}/view_electionMessage" >
         <!-- <form method="POST" action="/view_electionMessage" > -->
-            <table>
+            <!-- <table>
                 <tr>
                     <td>
                         <h4>
@@ -42,8 +42,22 @@
                     </td>
                 </tr>
                 
-            </table>
-        </form>
+            </table> -->
+        <!-- </form> -->
+        <div class = "flexbox-container">
+            <span>Pre-Election Message:</span>
+            <div class = "flexbox-item flexbox-item-1">
+                <textarea id = "preMsg" name ="preMsg" spellcheck="True" wrap= hard ></textarea><br>
+            </div>
+            <span> Post-Election Message:</span>
+            <div class = "flexbox-item flexbox-item-2">
+                <textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard ></textarea><br>
+            </div>
+            <button type="submit">Save</button>
+        </div>
+        <div class ="space"></div>
+
+    </form>
         <script>
             onload = fillTA("postMsg",{{postMsg | safe}});
             onload = fillTA("preMsg",{{preMsg | safe }});
