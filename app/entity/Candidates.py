@@ -6,7 +6,7 @@ class Candidates:
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
-		# If the NRIC is provided, fill the object with details from database
+		# If the candidateID is provided, fill the object with details from database
 		hasResult = False
 		if candidateID is not None:
 			# Select User from database and populate instance variables
@@ -36,10 +36,11 @@ class Candidates:
 		dbDisconnect(connection)
 
 	def getCandidates(self, projectID):
-			# Connect to database
-			connection = dbConnect()
-			db = connection.cursor()
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
 
+<<<<<<< HEAD
 			if projectID is not None:
 				# Select User from database and populate instance variables
 				result = db.execute("""SELECT candidateID, questionID, candidateOption, image, description
@@ -65,3 +66,74 @@ class Candidates:
 				return allResults
 				
 			
+=======
+		if projectID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT candidateID, questionID, candidateOption, image, description
+								FROM candidates
+								WHERE projID = (?)
+								ORDER BY questionID DESC""", (projectID,)).fetchall()
+		dbDisconnect(connection)
+		
+		if result is None:
+			return []
+		else:
+			allResults = []
+			for items in result:
+				candidateDetails = {}
+				candidateDetails['candidateID'] = items[0]
+				candidateDetails['questionID'] = items[1]
+				candidateDetails['candidateOption']  = items[2]
+				candidateDetails['imageFilename'] = items[3]
+				candidateDetails['description'] = items[4]
+				
+				allResults.append(candidateDetails)
+			return allResults
+	
+	def getCandidatesByQuestion(self, questionID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if questionID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT candidateID, questionID, candidateOption, image, description
+								FROM candidates
+								WHERE questionID = (?)
+								ORDER BY candidateID ASC""", (questionID,)).fetchall()
+		
+		
+		dbDisconnect(connection)
+		
+		if result is None:
+			return []
+		else:
+			allResults = []
+			for items in result:
+				candidateDetails = {}
+				candidateDetails['candidateID'] = items[0]
+				candidateDetails['questionID'] = items[1]
+				candidateDetails['candidateOption']  = items[2]
+				candidateDetails['imageFilename'] = items[3]
+				candidateDetails['description'] = items[4]
+				
+				allResults.append(candidateDetails)
+			return allResults
+
+	def deleteCandidatesByQuestionID(self, projectID, questionID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if questionID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""DELETE FROM candidates 
+								WHERE questionID = (?) AND
+										projID = (?)""", (questionID, projectID))
+		
+		connection.commit()
+		
+		dbDisconnect(connection)
+	
+		return True
+>>>>>>> 6e9f17c092b2fa8337c233007fd8a9313eb314fd
