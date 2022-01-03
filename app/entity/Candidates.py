@@ -40,33 +40,6 @@ class Candidates:
 		connection = dbConnect()
 		db = connection.cursor()
 
-<<<<<<< HEAD
-			if projectID is not None:
-				# Select User from database and populate instance variables
-				result = db.execute("""SELECT candidateID, questionID, candidateOption, image, description
-									FROM candidates
-									WHERE projID = (?)
-									ORDER BY questionID DESC""", (projectID,)).fetchall()
-
-			dbDisconnect(connection)
-			
-			if result is None:
-				return []
-			else:
-				allResults = []
-				for items in result:
-					candidateDetails = {}
-					candidateDetails['candidateID'] = items[0]
-					candidateDetails['questionID'] = items[1]
-					candidateDetails['candidateOption']  = items[2]
-					candidateDetails['imageFilename'] = items[3]
-					candidateDetails['description'] = items[4]
-					
-					allResults.append(candidateDetails)
-				return allResults
-				
-			
-=======
 		if projectID is not None:
 			# Select User from database and populate instance variables
 			result = db.execute("""SELECT candidateID, questionID, candidateOption, image, description
@@ -136,4 +109,3 @@ class Candidates:
 		dbDisconnect(connection)
 	
 		return True
->>>>>>> 6e9f17c092b2fa8337c233007fd8a9313eb314fd
