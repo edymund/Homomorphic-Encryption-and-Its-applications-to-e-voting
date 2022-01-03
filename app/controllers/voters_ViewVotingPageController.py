@@ -1,21 +1,17 @@
-from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
-from ..entity.ProjectDetails import ProjectDetails
+from ..entity.Questions import Questions
 
-class admin_viewQuestionsController():
+class voters_ViewVotingPageController:
+
 	def __init__(self):
 		pass
-
-	def getProjectName(self, projectID):
-		projectDetails = ProjectDetails(projectID)
-		return projectDetails.getTitle()
-
-	def getQuestionsAndAnswers(self, projectID):
+	
+	def getQuestionNCandidate(self,projID):
 		questionEntity = Questions()
 		CandidateEntity = Candidates()
 
-		questions = questionEntity.getQuestions(projectID)
-		candidates = CandidateEntity.getCandidates(projectID)
+		questions = questionEntity.getQuestions(projID)
+		candidates = CandidateEntity.getCandidates(projID)
 
 		questionArray = []
 		for item in questions:
