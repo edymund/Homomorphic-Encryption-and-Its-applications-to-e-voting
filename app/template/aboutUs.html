@@ -1,0 +1,47 @@
+<!-- Extends the basic html template -->
+{% extends "guest_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/aboutUs.css') }}"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<div class="content">
+    <h2>Who we are</h2>
+    <div class="row">
+        <div class="top_column">
+            <h3><span class="material-icons-outlined groups">groups</span></h3>
+            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h3><span class="material-icons-outlined">person</span></h3>
+            <p>Edmund, Project Manager</p>
+        </div>
+        <div class="column">
+            <h3><span class="material-icons-outlined">person</span></h3>
+            <p>Clement, Developer</p>
+        </div>
+        <div class="column">
+            <h3><span class="material-icons-outlined">person</span></h3>
+            <p>Daniel, Developer</p>
+        </div>
+        <div class="column">
+            <h3><span class="material-icons-outlined">person</span></h3>
+            <p>Issac, Developer</p>
+        </div>
+        <div class="column">
+            <h3><span class="material-icons-outlined">person</span></h3>
+            <p>Cai Hong, Developer</p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

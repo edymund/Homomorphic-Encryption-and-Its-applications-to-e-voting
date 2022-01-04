@@ -8,28 +8,31 @@
 <!-- Updates the <body> of the webpage -->
 {% block body %}
 	<h2><u>All Encrypted Votes</u></h2>
-	{%for questions in completeinfo  %}
+	{%for questions in voteResults %}
 	<table class="content-table">
 		<tr>
 			<th>
-				{{ questions[0] }}
+				{{questions.question.questionNo}} {{questions.question.question}}
 			</th>
 		</tr>
 		<tr>
 			<th class="content-head">
 				id/candidates
 			</th>
-			{%for name in candidatename %}
+			{%for name in questions.option %}
 			<th class="content-head">
-				{{ name }}
+				{{ name.candidateOption }}
 			</th>
 			{% endfor %}
 		</tr>
-		{%for info in questions[1] %}
+		{%for voter in questions.info %}
 		<tr class="content-body">
-			{%for details in info %}
 			<td>
-				{{ details }}
+				{{voter.voterID}}
+			</td>
+			{%for ans in voter.encryptedAnswer %}
+			<td>
+				{{ans}}
 			</td>
 			{% endfor %}
 		</tr>
