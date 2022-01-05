@@ -27,10 +27,13 @@ class ElectionMsgController:
     def update_pre_election_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
         entity.setPreMsg(msg)
+        self.preMsg = entity.getPreMsg()
+
     
     def update_post_election_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
         entity.setPostMsg(msg)
+        self.postMsg = entity.getPostMsg()
 
     def retrieve_pre_election_msg(self):
         entity = ElectionMessage(projID= self.projID)
@@ -42,15 +45,6 @@ class ElectionMsgController:
         self.postMsg = entity.getPostMsg()
         return self.postMsg
     
-    @staticmethod
-    def retrieve_proj_detail(url):
-	# url = "www.123/1/abc"
-        for i in range(1):
-            slash = url.find("/")
-            new_url = url[slash+1:]
-        next_slash = new_url.find("/")
-        proj_details = new_url[:next_slash]
-        return proj_details
 
 
     
