@@ -22,9 +22,8 @@ class user_viewImportVoterListBoundary:
 		# pass
 		controller = ImportVoterListController(projID = self.getProjID())
 		if controller.processVoterList(fileName):
-			# display in text area
-			# self.populateTextArea()
 			controller.update_voter(self.projectID)
+		
 
 	def populateTextArea(self):
 		controller = ImportVoterListController(projID = self.getProjID())

@@ -36,16 +36,19 @@ class Voter:
         return self.__email
 
     #insert 
-    def insert_to_table(self, new_email, projectID):
+    def insert_to_table(self, hash,email,projectID,password):
         # Open connection to database
         connection = dbConnect()
         db = connection.cursor()
         db.execute("""
-        INSERT INTO voter(email, projectID)
-        VALUES( (?) ,(?))
-        """,( new_email, projectID))
+        INSERT INTO voter(voterNumber, email, projectID, password)
+        VALUES( (?) ,(?) ,(?) ,(?))
+        """,( hash, email, projectID,password))
         # Commit the update to the database
         connection.commit()
+        # VoterId, Voter Number, Email, Project ID, password
+        # random generate password
+
 
         # Close the connection to the database
         dbDisconnect(connection)
@@ -63,21 +66,6 @@ class Voter:
             return True
         elif result[0] <1:
             return False
-        # Close the connection to the database
-        # dbDisconnect(connection)
-
-    # def highest_voterID(self, projID):
-    #     connection = dbConnect()
-    #     db = connection.cursor()
-    #     result = db.execute(""" 
-    #     SELECT MAX(voterID)
-    #     FROM Voter
-    #     WHERE projectID = (?)
-    #     """,(projID))
-    #     if result == None:
-    #         return 0
-    #     else:
-    #         return result
 
     def get_all_voters(self, projID ):
         connection = dbConnect()
@@ -123,14 +111,14 @@ class Voter:
         db.execute(""" 
         DELETE FROM
         Answer where
-        answerID in
+        Answer.voterID in
         (select answer.answerID
         FROM answer 
-        INNER JOIN record
+        INNER JOIN voter
         ON
-        answer.recordID = record.recordID
+        answer.voterID = voter.voterID
         WHERE 
-        answer.voterID = (?) and record.projID =(?))
+        answer.voterID = (?) and voter.projectID =(?))
         """,(voterID,projID,))
 
         # Commit the update to the database
