@@ -1,5 +1,5 @@
 from ..entity.ElectionMessage import ElectionMessage
-from ..entity.ProjectDetails import ProjectDetails
+from ..entity.Projectdetails import ProjectDetails
 
 class voters_ViewSubmittedVotePageController:
 	def __init__(self):
