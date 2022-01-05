@@ -67,11 +67,11 @@ class user_viewElectionMessageBoundary:
 			self.setPostMsg(default_post_msg)
 
 
-	def get_post_msg(self):
-		controller = ElectionMsgController(projID = self.getProjID())
-		return controller.retrieve_post_election_msg()
+	# def get_post_msg(self):
+	# 	controller = ElectionMsgController(projID = self.getProjID())
+	# 	return controller.retrieve_post_election_msg()
 
-	def get_pre_msg(self):
-		controller = ElectionMsgController(projID = self.getProjID())
-		return controller.retrieve_pre_election_msg()
+	# def get_pre_msg(self):
+	# 	controller = ElectionMsgController(projID = self.getProjID())
+	# 	return controller.retrieve_pre_election_msg()
 
