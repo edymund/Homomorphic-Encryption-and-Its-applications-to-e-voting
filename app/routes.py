@@ -42,34 +42,6 @@ def editProfilePage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/ViewVoterCoverPage', methods=['GET'])
-def viewVoterCoverPage():
-	# Create a boundary object
-	boundary = voters_ViewVoterCoverPage()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
-@app.route('/ViewVotingPage', methods=['GET'])
-def viewVotingPage():
-	# Create a boundary object
-	boundary = voters_ViewVotingPage()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
-@app.route('/ViewSubmittedVotePage', methods=['GET'])
-def viewSubmittedVotePage():
-	# Create a boundary object
-	boundary = voters_ViewSubmittedVotePage()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
-@app.route('/ViewEncryptedVotePage', methods=['GET'])
-def viewEncryptedVotePage():
-	# Create a boundary object
-	boundary = voters_ViewEncryptedVotePage()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
 @app.route('/overview', methods = ['GET', 'POST'])
 def projectOverviewPage():
 	# Create a boundary object
@@ -303,6 +275,34 @@ def viewEncryptedVotePage(projID):
 	boundary = voters_ViewEncryptedVotePage()
 	if request.method == 'GET':
 		return boundary.displayPage(projID)
+
+# @app.route('/ViewVoterCoverPage', methods=['GET'])
+# def viewVoterCoverPage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewVoterCoverPage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
+
+# @app.route('/ViewVotingPage', methods=['GET'])
+# def viewVotingPage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewVotingPage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
+
+# @app.route('/ViewSubmittedVotePage', methods=['GET'])
+# def viewSubmittedVotePage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewSubmittedVotePage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
+
+# @app.route('/ViewEncryptedVotePage', methods=['GET'])
+# def viewEncryptedVotePage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewEncryptedVotePage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
 
 ###############################################
 @app.route('/resetpassword', methods=['GET','POST'])
