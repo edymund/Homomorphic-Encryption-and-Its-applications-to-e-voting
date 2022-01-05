@@ -1,6 +1,6 @@
 from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
-from ..entity.ProjectDetails import ProjectDetails
+from ..entity.Projectdetails import ProjectDetails
 
 class admin_viewQuestionsController():
 	def __init__(self):

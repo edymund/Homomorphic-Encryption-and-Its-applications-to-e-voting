@@ -9,6 +9,7 @@
 <!-- Updates the <body> of the webpage -->
 {% block body %}
 <form id="mainform" method="post" action="/{{projID}}/ViewVotingPage" onsubmit="return displayPopup()">
+	{%set count = [1] %}
 	{%for questions in question %}
 	<div class="question">
 		<span><b>{{questions.question.questionNo}}</b></span>
@@ -45,8 +46,8 @@
 				
 				<td class="answerInfo">
 					{% for candidate in questions.option %}
-					<input type="radio" id=candidateRadio name=candidate value={{candidate.candidateOption}}>
-					<label for=candidateRadio><b>{{candidate.candidateOption}}</b></label><br>
+					<input type="radio" id=candidateRadio{{count}} name=candidate{{count}} value={{candidate.candidateOption}}>
+					<label for=candidateRadio{{count}}><b>{{candidate.candidateOption}}</b></label><br>
 					{% endfor %}
 					<br>
 				</td>
@@ -54,6 +55,7 @@
 			</tr>
 		</table>
 	</div>
+	{% if count.append(count.pop() + 1) %}{% endif %}
 	{% endfor %}
 		<table>
 			<tr>
