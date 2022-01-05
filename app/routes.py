@@ -32,14 +32,6 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/overview', methods = ['GET'])
-@app.route('/edit_profile', methods=['GET'])
-def editProfilePage():
-	# Create a boundary object
-	boundary = user_editProfileBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
 @app.route('/overview', methods = ['GET', 'POST'])
 def projectOverviewPage():
 	# Create a boundary object
