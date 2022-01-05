@@ -51,7 +51,6 @@ class user_viewElectionMessageBoundary:
 			controller.update_post_election_msg(default_post_msg)
 			self.setPostMsg(default_post_msg)
 		
-
 	def process_msg(self, preMsg, postMsg):
 		controller = ElectionMsgController(projID = self.projectID)
 		if controller.check_election_msg(preMsg):
@@ -65,13 +64,3 @@ class user_viewElectionMessageBoundary:
 		elif not controller.check_election_msg(postMsg):
 			default_post_msg = "Hope you enjoyed your vote"
 			self.setPostMsg(default_post_msg)
-
-
-	# def get_post_msg(self):
-	# 	controller = ElectionMsgController(projID = self.getProjID())
-	# 	return controller.retrieve_post_election_msg()
-
-	# def get_pre_msg(self):
-	# 	controller = ElectionMsgController(projID = self.getProjID())
-	# 	return controller.retrieve_pre_election_msg()
-
