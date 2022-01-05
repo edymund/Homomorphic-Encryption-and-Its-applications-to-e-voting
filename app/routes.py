@@ -1,6 +1,5 @@
 # from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
-from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
 from .boundary.voters_ViewSubmittedVotePage import voters_ViewSubmittedVotePage
@@ -14,7 +13,6 @@ from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
 # from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
-# from .boundary.registrationBoundary import registrationBoundary
 from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
 from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
@@ -32,13 +30,6 @@ from flask import request
 def landingPage():
 	# Creates a boundary object
 	boundary = landingPageBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-
-@app.route('/edit_profile', methods=['GET'])
-def editProfilePage():
-	# Create a boundary object
-	boundary = user_editProfileBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 
@@ -164,13 +155,6 @@ def loginPage():
 			return boundary.displaySuccess()
 		else:
 			return boundary.displayError(message=response)
-
-# @app.route('/registration', methods=['GET','POST'])
-# def registrationPage():
-# 	# Create a boundary object
-# 	boundary = registrationBoundary()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
 
 @app.route('/registration', methods=['GET','POST'])
 def registrationPage():
