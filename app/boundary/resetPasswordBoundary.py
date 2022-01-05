@@ -24,7 +24,7 @@ class resetPasswordBoundary:
 			server.starttls()
 			# login(email address, password)
 			server.login(email_address, "fyp_21_s4_03")
-			msg = 'From: ' + email_address + '\r\nTo: ' + email_address + '\r\n\r\nYour Password has been reset to: ' + str(new_password)
+			msg = 'From: ' + email_address + '\r\nTo: ' + email_address + '\r\nSubject: Reset Password \r\n\r\nYour Password has been reset to: ' + str(new_password)
 			# sendmail(sender,receiver,message)
 			server.sendmail(email_address,email_address,msg)
 

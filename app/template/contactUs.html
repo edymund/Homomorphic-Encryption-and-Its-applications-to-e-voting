@@ -1,0 +1,34 @@
+<!-- Extends the basic html template -->
+{% extends "guest_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/contactUs.css') }}"/>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<div class="content">
+
+	<h2>Contact Us</h2>
+    <form method="POST" action="/contactUs">
+        <label for="Your Email"><b>Email: </b></label>
+        <input type="text" placeholder="Enter Your Email" name="email" required> <br>
+        
+        <label for="name"><b>Name: </b></label>
+        <input type="text" placeholder="Enter Your Name" name="name" required> <br>
+
+        <label for="subject"><b>Subject: </b></label>
+        <input type="text" placeholder="Enter Subject" name="subject" required> <br>
+
+        <div class="formfield">
+            <label for="textarea"><b>How can we help?</b></label>
+            <textarea class="feedback" placeholder="Enter Feedback" name="feedback" required ></textarea>
+        </div>
+
+        
+        <button type="submit">Send</button> <br> <br>
+        
+    </form>
+</div>
+{% endblock %} 

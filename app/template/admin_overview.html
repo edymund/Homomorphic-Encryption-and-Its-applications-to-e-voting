@@ -6,7 +6,7 @@
 
 {% block body %}
     <h2>Project Details</h2>
-    <form>
+    <form method="POST" action="/overview">
         <label for="name">Project:</label>
         <input type="text" id="name" name="name" /><br />
         <label for="status">Status:</label>
@@ -16,7 +16,7 @@
         <label for="endDateTime">End Date & Time:</label>
         <input type="datetime-local" id="endDateTime" name="endDateTime" /> <br />
         <label for="publicKey">Public Key:</label>
-        <input type="text" id="publicKey" /><br />
+        <input type="text" id="publicKey" name="publicKey" /><br />
         <input type="submit" value="Save details" />
     </form>
 {% endblock %}
