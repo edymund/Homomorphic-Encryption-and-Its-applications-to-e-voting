@@ -1,4 +1,3 @@
-# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
@@ -9,8 +8,8 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
+from .boundary.user_viewImportVoterListBoundary import user_viewImportVoterListBoundary
 from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
-# from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
@@ -132,14 +131,26 @@ def view_electionMessage(projectID):
 		response = boundary.onSubmit(preMsg, postMsg)
 		return boundary.displayPage(projectID)
 
-# @app.route('/view_importList', methods=['GET'])
-# def view_importList():
-# 	# Create a boundary object
-# 	boundary = user_viewImportVoterListBoundary()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
+@app.route('/<projectID>/view_importList',  methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_importList(projectID):	
+	# Create a boundary object
+	boundary = user_viewImportVoterListBoundary(projectID)
+	boundary.setProjID(projectID)
+
+	votersList = boundary.populateTextArea()
+	if request.method == 'GET':		
+		return boundary.displayPage(votersList)
+	elif request.method == 'POST':
+		file = request.files['filename']
+		response = boundary.onSubmit(file)
+		votersList = boundary.populateTextArea()
+		return boundary.displayPage(votersList)
+
 
 @app.route('/view_emailSettings',methods=['GET', 'POST'])
+
 def view_emailSetting():
 	# get url
 	base_url = request.base_url

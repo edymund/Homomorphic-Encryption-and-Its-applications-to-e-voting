@@ -1,5 +1,6 @@
 from ..entity.Voter import Voter
 import pandas as pd
+import random 
 
 class ImportVoterListController:
     def __init__(self,voterList = [], projID = None):
@@ -29,8 +30,16 @@ class ImportVoterListController:
                 for value in id:
                     voter.delete_child(value, projID)
             voter.delete_allVoters(projID)
+        
         for email in self.voterList:
-            voter.insert_to_table(email, self.getProjID())
+            password = self.get_random()
+            hash = random.getrandbits(24)
+            hash = str(hex(hash))[2:]
+            voter.insert_to_table(hash,email, self.getProjID(),password)
+
+
+    def get_random(self):
+       return random.randint(0, 100000000)
 
     def get_all_voters_email(self):
         voter = Voter()
@@ -59,6 +68,16 @@ class ImportVoterListController:
             for data in proc_datas:
                 self.voterList.append(data)
         return validity
+    
+    @staticmethod
+    def retrieve_proj_detail(url):
+        # url = "www.123/1/abc"
+        for i in range(1):
+            slash = url.find("/")
+            new_url = url[slash+1:]
+        next_slash = new_url.find("/")
+        proj_details = new_url[:next_slash]
+        return proj_details
 
 
         # with open ("try.txt","w") as f:
