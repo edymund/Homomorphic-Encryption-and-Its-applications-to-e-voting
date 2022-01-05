@@ -2,17 +2,16 @@ from ..dbConfig import dbConnect, dbDisconnect
 
 class ProjDetails:
 	# Constructor for user
-	def __init__(self, title = None):
+	def __init__(self, projectID = None):
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
-		# If the NRIC is provided, fill the object with details from database
 		hasResult = False
-		if title is not None:
+		if projectID is not None:
 			# Select User from database and populate instance variables
 			result = db.execute("""SELECT *
 								FROM projdetails
-								WHERE title = (?)""", (title,)).fetchone()
+								WHERE projDetailsID = (?)""", (projectID,)).fetchone()
 
 			# If a result is returned, populate object with data
 			if result is not None:
@@ -38,6 +37,30 @@ class ProjDetails:
 				self.__publicKey = None
 
 		dbDisconnect(connection)
+
+	def getProjectID(self):
+		return self.__projectID
+	
+	def getTitle(self):
+		return self.__title
+
+	def getStatus(self):
+		return self.__status
+	
+	def getStartDate(self):
+		return self.__startDate
+	
+	def getStartTime(self):
+		return self.__startTime
+
+	def getEndDate(self):
+		return self.__endDate
+	
+	def getEndTime(self):
+		return self.__endTime
+	
+	def getPublicKey(self):
+		return self.__publicKey
 
 	# Verify if the user is an admin and authorized to view the page
 	def insertNewProject(self,userID, title, startDate, startTime, endDate, endTime, publicKey):

@@ -8,10 +8,12 @@
 {% block body %}
     <h2>Manage Questions</h2>
 	<div id="header">
-		<label for="projectNameField">Project Name:</label>
-		<input type="text" id="projectNameField" value="{{ projectName }}" disabled/>
-		<a href="edit_questions/new_question" ><button type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button></a>
-		<!-- <input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}"> -->
+		<form action="edit_questions/new_question" method="GET">
+			<label for="projectNameField">Project Name:</label>
+			<input type="text" id="projectNameField" value="{{ projectName }}" disabled/>
+			<button type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
+			<!-- <input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}"> -->
+		</form>
 	</div>
 
 	{% set count = 1 %}

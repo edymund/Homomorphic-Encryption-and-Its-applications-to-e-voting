@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 # from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
@@ -25,8 +27,8 @@ from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
-
 from flask import request
+from werkzeug.utils import secure_filename
 
 @app.route('/', methods=['GET'])
 def landingPage():
@@ -112,11 +114,41 @@ def projectEditQuestions(projectID, questionID):
 			if action == "Delete":
 				return boundary.deleteQuestion(projectID, questionID)
 
-@app.route("/edit_answers", methods=['GET'])
-def projectEditAnswer():
+@app.route("/<projectID>/edit_answers/<questionID>/<candidateID>", methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def projectEditAnswer(projectID, questionID ,candidateID):
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
-	return boundary.displayPage()
+
+	if request.method == 'GET':
+		return boundary.displayPage(projectID, questionID, candidateID)
+	
+	if request.method == 'POST':
+		action = request.form['action']
+		if action == "Save":
+			# Get Form Fields
+			candidateName = request.form['candidateName']
+			candidateDescription = request.form['candidateDescription']
+
+			# Store image and filename
+			if boundary.hasPermission(projectID, questionID, candidateID):
+				file = request.files['candidateImageFile']
+				filename = None
+				if file.filename != '':
+					filename = secure_filename(file.filename)
+
+				# Create Directory if it does not exists
+				if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
+					os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
+
+				# Save file to directory
+				if filename is not None:
+					file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
+
+			return boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+			
+			
 
 # @app.route('/view_electionMessage', methods=['GET'])
 # def view_electionMessage():

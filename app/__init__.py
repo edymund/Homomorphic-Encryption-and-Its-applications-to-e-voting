@@ -1,6 +1,7 @@
 import os
 from flask import Flask, session, redirect, flash
 from functools import wraps
+
 import sqlite3
 
 # Set templates and static directory
@@ -9,6 +10,7 @@ static_dir = os.path.abspath('./app/static')
 
 # Configure app to run from this file
 application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+application.config['UPLOAD_FOLDER'] = "./static/images/projectImages/{}"
 
 # Sessions secret key
 application.secret_key="mykey123456"

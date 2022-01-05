@@ -29,7 +29,7 @@
 			<ol>
 				{% for candidate in candidates %}
 				<li>
-					<a href="../edit_answers/{{ candidate.candidateID }}">
+					<a href="../edit_answers/{{candidate.questionID}}/{{ candidate.candidateID }}">
 						{{ candidate.candidateOption }}
 					</a>
 				</li>

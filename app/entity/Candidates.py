@@ -34,6 +34,24 @@ class Candidates:
 				self.__description = None
 
 		dbDisconnect(connection)
+	
+	def getCandidateID(self):
+		return self.__candidateID
+	
+	def getProjectID(self):
+		return self.__projID
+	
+	def getQuestionID(self):
+		return self.__questionID
+	
+	def getOption(self):
+		return self.__option
+	
+	def getImageFilename(self):
+		return self.__imageFilename
+
+	def getDescription(self):
+		return self.__description
 
 	def getCandidates(self, projectID):
 		# Connect to database
@@ -62,6 +80,31 @@ class Candidates:
 				
 				allResults.append(candidateDetails)
 			return allResults
+
+	def getCandidateDetails(self, candidateID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if candidateID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT candidateID, questionID, candidateOption, image, description
+								FROM candidates
+								WHERE candidateID = (?)""", (candidateID,)).fetchone()
+		dbDisconnect(connection)
+		
+		if result is None:
+			print("Candidate is None")
+			return None
+		else:
+			candidateDetails = {}
+			candidateDetails['candidateID'] = result[0]
+			candidateDetails['questionID'] = result[1]
+			candidateDetails['candidateOption']  = result[2]
+			candidateDetails['imageFilename'] = result[3]
+			candidateDetails['description'] = result[4]
+			print(candidateDetails)
+			return candidateDetails
 	
 	def getCandidatesByQuestion(self, questionID):
 		# Connect to database
@@ -109,3 +152,48 @@ class Candidates:
 		dbDisconnect(connection)
 	
 		return True
+
+	def checkExists(self, projectID, questionID, candidateID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if questionID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT *
+								FROM candidates
+								WHERE questionID = (?)
+								AND projID = (?)
+								AND candidateID = (?)""", (questionID, projectID, candidateID)).fetchone()
+		
+		dbDisconnect(connection)
+
+		if result is not None:
+			return True
+		return False
+
+	def updateCandidate(self, candidateID, candidateName, candidateDescription, filename):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if filename is not None:
+			result = db.execute("""UPDATE candidates SET candidateOption = ?, 
+														image = ?, 
+														description = ?
+									WHERE candidateID = ?""", 
+							(candidateName, filename, candidateDescription, candidateID))
+		else:
+			result = db.execute("""UPDATE candidates SET candidateOption = ?, 
+														description = ?
+									WHERE candidateID = ?""", 
+							(candidateName, candidateDescription, candidateID))
+		
+		connection.commit()
+		# Disconnect from database
+		dbDisconnect(connection)
+
+		if result.rowcount == 1:
+			# print("Updated Successfully in Database")
+			return True
+		return False
