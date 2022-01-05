@@ -67,14 +67,14 @@ class Voter:
         elif result[0] <1:
             return False
 
-    def get_all_voters(self, projID ):
+    def get_all_voters(self):
         connection = dbConnect()
         db = connection.cursor()
         result = db.execute(""" 
         SELECT email
         FROM Voter
         WHERE projectID = (?)
-        """,(projID,)).fetchall()
+        """,(self.projectID,)).fetchall()
         return result
         # Close the connection to the database
         # dbDisconnect(connection)

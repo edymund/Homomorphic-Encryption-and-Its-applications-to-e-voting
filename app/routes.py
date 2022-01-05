@@ -114,7 +114,6 @@ def projectEditAnswer():
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
 
-# @app.route('/view_electionMessage', methods=['GET','POST'])
 @app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
 @loginRequired
 @authorisationRequired
@@ -148,30 +147,20 @@ def view_importList(projectID):
 		votersList = boundary.populateTextArea()
 		return boundary.displayPage(votersList)
 
-
-@app.route('/view_emailSettings',methods=['GET', 'POST'])
-
-def view_emailSetting():
-	# get url
-	base_url = request.base_url
-	# with open("url.txt","w") as f:
-	# 	f.write(url)
-	# 	f.write("/n")
-	# 	f.write(base_url)
-	# 	f.close()
-
+@app.route('/<projectID>/view_emailSettings',methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_emailSetting(projectID):
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
-	projID = boundary.retrieve_proj_details_from_url(base_url)
-	# boundary.retrieve_proj_details_from_url(url)
-	boundary.setProjID(projID)
+	boundary.setProjID(projectID)
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
 		rmdMsg = request.form['RmdMsg']
 		invMsg = request.form['InvMsg']
 		if request.form["action"] =="Update":
-			response = boundary.onSubmit(rmdMsg,invMsg)
+			response = boundary.onSubmit(invMsg,rmdMsg)
 		if request.form["action"] =="SendEmail":
 			boundary.send_reminder(rmdMsg)
 		
