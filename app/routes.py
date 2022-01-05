@@ -97,15 +97,16 @@ def projectViewQuestions(projectID):
 def projectEditQuestions(projectID, questionID):
 	# Create boundary object
 	boundary = admin_editQuestionsBoundary()
+	
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID)
 	
 	if request.method == 'POST':
 		question = request.form['question']
-		action = request.form['action']
 		if questionID == "new_question" :
 			return boundary.addQuestion(projectID, question)
 		else:
+			action = request.form['action']
 			if action == "Save":
 				return boundary.saveQuestion(projectID, questionID, question)
 			if action == "Delete":
@@ -115,6 +116,7 @@ def projectEditQuestions(projectID, questionID):
 def projectEditAnswer():
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
+	return boundary.displayPage()
 
 # @app.route('/view_electionMessage', methods=['GET'])
 # def view_electionMessage():

@@ -88,9 +88,14 @@ class Questions:
 		print("Total Count is ", count[0])
 
 		result = db.execute("""INSERT INTO questions(projID, questions, questionDesc)
-								VALUES (?, ?, ?)""", (projectID, count[0], question))
+								VALUES (?, ?, ?)""", (projectID, count[0]+1, question))
+
+		connection.commit()
+
 		# Disconnect from database
 		dbDisconnect(connection)
+		
+		return int(count[0]) + 1
 
 	def updateQuestion(self, projectID, questionID, question):
 		# Connect to database

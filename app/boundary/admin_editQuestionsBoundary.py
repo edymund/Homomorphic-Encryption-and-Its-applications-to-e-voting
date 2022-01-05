@@ -8,6 +8,8 @@ class admin_editQuestionsBoundary:
 
 	def checkPermission(self, projectID, questionID):
 		controller = admin_editQuestionsController()
+		if questionID == "new_question":
+			return True
 		return controller.checkPermission(projectID, questionID)
 
 	def displayPage(self, projectID, questionID):
@@ -26,9 +28,10 @@ class admin_editQuestionsBoundary:
 														   question=questionDetails,
 														   candidates=candidateDetails)
 
-	def addQuestion(self, projectID, projectName):
+	def addQuestion(self, projectID, question):
 		controller = admin_editQuestionsController()
-	
+		questionID = controller.addQuestion(projectID, question)
+		return self.displaySuccess(projectID)
 
 	def saveQuestion(self, projectID, questionID, question):
 		# Check if user has permission to save to this link
