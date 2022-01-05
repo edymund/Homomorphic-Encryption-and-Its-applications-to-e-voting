@@ -7,7 +7,7 @@ class User:
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
-		# If the NRIC is provided, fill the object with details from database
+		# If the username is provided, fill the object with details from database
 		hasResult = False
 		if username is not None:
 			# Select User from database and populate instance variables

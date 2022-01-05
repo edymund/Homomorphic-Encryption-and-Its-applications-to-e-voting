@@ -3,57 +3,67 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/voters_ViewVotingPage.css') }}"/>
-<script type="text/javascript" src="static/js/voters_ViewVotingPage.js"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='js/voters_ViewVotingPage.js') }}"></script>
 {% endblock %} 
 
 <!-- Updates the <body> of the webpage -->
 {% block body %}
-<form id="mainform" method="post" action="/" onsubmit="return displayPopup()">
-	<table>
-		<tr>
-			{%for image in imagePath %}
-			<td class="candidateInfo">
-				<img src={{image}} >
-			</td>
-			{% endfor %}
-		</tr>
-		<tr>
-			{%for name in namePath %}
-			<td class="candidateInfo">
-				{{ name }}
-			</td>
-			{% endfor %}
-		</tr>
-		<tr>
-			{%for description in descriptions %}
-			<td class="candidateInfo">
-				{{ description }}
-			</td>
-			{% endfor %}
-		</tr>
-	</table>
-	<table>
-		<tr>
-			<td class="questionInfo">
-				{{question}}
-			</td>
-		</tr>
-		<tr>
-			<td class="answerInfo">
-				{%for name in namePath %}
-				<input type="radio" id={{name}} name={{name}} value={{name}}>
-				<label for={{name}}><b>{{name}}</b></label><br>
+<form id="mainform" method="post" action="/{{projID}}/ViewVotingPage" onsubmit="return displayPopup()">
+	{%set count = [1] %}
+	{%for questions in question %}
+	<div class="question">
+		<span><b>{{questions.question.questionNo}}</b></span>
+		<table>
+			<tr>
+				{% for candidate in questions.option %}
+				<td class="candidateInfo">
+					<img src={{candidate.imageFilename}} >
+				</td>
 				{% endfor %}
-				<br>
-					
-			</td>
-		</tr>
-		<tr>
-			<td class="center">
-				<input type="submit" id="popup" class="main-form-submit"></input>
-			</td>
-		</tr>
-	</table>
+			</tr>
+			<tr>
+				{% for candidate in questions.option %}
+				<td class="candidateInfo">
+					{{ candidate.candidateOption }}
+				</td>
+				{% endfor %}
+			</tr>
+			<tr>
+				{% for candidate in questions.option %}
+				<td class="candidateInfo">
+					{{ candidate.description }}
+				</td>
+				{% endfor %}
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td class="questionInfo">
+					{{questions.question.question}}
+				</td>
+			</tr>
+			<tr>
+				
+				<td class="answerInfo">
+					{% for candidate in questions.option %}
+					<input type="radio" id=candidateRadio{{count}} name=candidate{{count}} value={{candidate.candidateOption}}>
+					<label for=candidateRadio{{count}}><b>{{candidate.candidateOption}}</b></label><br>
+					{% endfor %}
+					<br>
+				</td>
+				
+			</tr>
+		</table>
+	</div>
+	{% if count.append(count.pop() + 1) %}{% endif %}
+	{% endfor %}
+		<table>
+			<tr>
+				<td class="center">
+					<input type="submit" id="popup" class="main-form-submit"></input>
+				</td>
+			</tr>
+		</table>
 </form>
 <!-- modal pop up-->
 <div class = "bg-modal">
