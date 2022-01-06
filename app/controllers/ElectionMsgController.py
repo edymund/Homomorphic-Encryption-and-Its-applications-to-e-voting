@@ -27,13 +27,10 @@ class ElectionMsgController:
     def update_pre_election_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
         entity.setPreMsg(msg)
-        self.preMsg = entity.getPreMsg()
-
     
     def update_post_election_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
         entity.setPostMsg(msg)
-        self.postMsg = entity.getPostMsg()
 
     def retrieve_pre_election_msg(self):
         entity = ElectionMessage(projID= self.projID)
