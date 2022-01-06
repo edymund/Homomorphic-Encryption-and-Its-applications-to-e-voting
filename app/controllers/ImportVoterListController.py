@@ -35,7 +35,7 @@ class ImportVoterListController:
             password = self.get_random()
             hash = random.getrandbits(24)
             hash = str(hex(hash))[2:]
-            voter.insert_to_table(hash,email, self.getProjID(),password)
+            voter.insert_to_table(hash,email, self.projID,password)
 
 
     def get_random(self):
@@ -43,7 +43,7 @@ class ImportVoterListController:
 
     def get_all_voters_email(self):
         voter = Voter()
-        list_of_voter = voter.get_all_voters(projID = self.getProjID())
+        list_of_voter = voter.get_all_voters(projectID = self.getProjID())
         return list_of_voter
     
     def processVoterList(self,voterList):
@@ -68,23 +68,6 @@ class ImportVoterListController:
             for data in proc_datas:
                 self.voterList.append(data)
         return validity
-    
-    @staticmethod
-    def retrieve_proj_detail(url):
-        # url = "www.123/1/abc"
-        for i in range(1):
-            slash = url.find("/")
-            new_url = url[slash+1:]
-        next_slash = new_url.find("/")
-        proj_details = new_url[:next_slash]
-        return proj_details
 
-
-        # with open ("try.txt","w") as f:
-        #     proc_datas = datas.Email.to_list()
-        #     for data in proc_datas:
-        #         f.write(str(data).strip()) 
-        #         f.write("\n")
-        #     f.close()
 
         
