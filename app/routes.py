@@ -14,7 +14,7 @@ from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBounda
 from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
 from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
-from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
+from .boundary.organizer_mainBallotBoundary import organizer_mainBallotBoundary
 from .boundary.logoutBoundary import logoutBoundary
 from .boundary.user_settingsBoundary import user_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
@@ -242,7 +242,7 @@ def changePasswordPage():
 @loginRequired
 def mainBallotPage():
 	# Create a boundary object
-	boundary = user_mainBallotBoundary()
+	boundary = organizer_mainBallotBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 
