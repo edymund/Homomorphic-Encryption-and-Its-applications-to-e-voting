@@ -19,11 +19,11 @@ class resetPasswordBoundary:
 		if controller.checkifEmailexists(email) == True:
 			new_password = random.randint(100, 999) 
 			controller.resetPw(email,new_password)
-			email_address = "fyp.21.s4.03fyp@gmail.com"
+			email_address = "fyp21s403@gmail.com"
 			server = smtplib.SMTP("smtp.gmail.com",587)
 			server.starttls()
 			# login(email address, password)
-			server.login(email_address, "fyp_21_s4_03")
+			server.login(email_address, "eccqringtcgtolnf")
 			msg = 'From: ' + email_address + '\r\nTo: ' + email_address + '\r\nSubject: Reset Password \r\n\r\nYour Password has been reset to: ' + str(new_password)
 			# sendmail(sender,receiver,message)
 			server.sendmail(email_address,email_address,msg)

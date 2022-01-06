@@ -1,4 +1,4 @@
-from ..entity.User import User
+from ..entity.Organizers import Organizers
 
 class resetPasswordController:
 	def __init__(self):
@@ -7,7 +7,7 @@ class resetPasswordController:
 	def checkifEmailexists(self, email):
 
 		# Create a user object containing details of the NRIC owner
-		user = User(email)
+		user = Organizers(email)
 
 		# Update the password of the user
 		return user.checkEmail(email)
@@ -15,7 +15,7 @@ class resetPasswordController:
 	def resetPw(self, email, new_password):
 
 		# Create a user object containing details of the NRIC owner
-		user = User(email)
+		user = Organizers(email)
 
 		# Update the password of the user
 		return user.resetPassword(new_password)
