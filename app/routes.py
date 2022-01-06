@@ -1,4 +1,3 @@
-# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
@@ -9,8 +8,8 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
-# from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
+from .boundary.user_viewImportVoterListBoundary import user_viewImportVoterListBoundary
+from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
@@ -115,42 +114,53 @@ def projectEditAnswer():
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
 
-# @app.route('/view_electionMessage', methods=['GET'])
-# def view_electionMessage():
-# 	# Create a boundary object
-# 	boundary = user_viewElectionMessageBoundary()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
+@app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_electionMessage(projectID):
+	# Create a boundary object
+	boundary = user_viewElectionMessageBoundary()
+	boundary.setProjID(projectID)
 
-# @app.route('/view_importList', methods=['GET'])
-# def view_importList():
-# 	# Create a boundary object
-# 	boundary = user_viewImportVoterListBoundary()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
+	if request.method == 'GET':
+		return boundary.displayPage(projectID)
+	elif request.method == 'POST':
+		preMsg = request.form['preMsg']
+		postMsg = request.form['postMsg']
+		response = boundary.onSubmit(preMsg, postMsg)
+		return boundary.displayPage(projectID)
 
-@app.route('/view_emailSettings',methods=['GET', 'POST'])
-def view_emailSetting():
-	# get url
-	base_url = request.base_url
-	# with open("url.txt","w") as f:
-	# 	f.write(url)
-	# 	f.write("/n")
-	# 	f.write(base_url)
-	# 	f.close()
+@app.route('/<projectID>/view_importList',  methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_importList(projectID):	
+	# Create a boundary object
+	boundary = user_viewImportVoterListBoundary(projectID)
+	boundary.setProjID(projectID)
 
+	votersList = boundary.populateTextArea()
+	if request.method == 'GET':		
+		return boundary.displayPage(votersList)
+	elif request.method == 'POST':
+		file = request.files['filename']
+		response = boundary.onSubmit(file)
+		votersList = boundary.populateTextArea()
+		return boundary.displayPage(votersList)
+
+@app.route('/<projectID>/view_emailSettings',methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_emailSetting(projectID):
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
-	projID = boundary.retrieve_proj_details_from_url(base_url)
-	# boundary.retrieve_proj_details_from_url(url)
-	boundary.setProjID(projID)
+	boundary.setProjID(projectID)
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
 		rmdMsg = request.form['RmdMsg']
 		invMsg = request.form['InvMsg']
 		if request.form["action"] =="Update":
-			response = boundary.onSubmit(rmdMsg,invMsg)
+			response = boundary.onSubmit(invMsg,rmdMsg)
 		if request.form["action"] =="SendEmail":
 			boundary.send_reminder(rmdMsg)
 		
