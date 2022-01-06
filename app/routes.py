@@ -21,6 +21,7 @@ from .boundary.user_settingsBoundary import user_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
+from .boundary.admin_publishBoundary import publishBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 
@@ -30,6 +31,13 @@ from flask import request
 def landingPage():
 	# Creates a boundary object
 	boundary = landingPageBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/publish', methods=['GET', 'POST'])
+def publishPage():
+	# Creates a boundary object
+	boundary = publishBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 
