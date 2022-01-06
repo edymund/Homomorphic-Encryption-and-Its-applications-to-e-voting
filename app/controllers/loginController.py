@@ -1,4 +1,4 @@
-from ..entity.User import User
+from ..entity.Organizers import Organizers
 from ..entity.Administrator import Administrator
 
 class loginController:
@@ -12,29 +12,29 @@ class loginController:
 		"""
 
 		# Create a user object containing details of the NRIC owner
-		user = User(username)
+		user = Organizers(username)
 
 		# Verify if the NRIC and password is correct
 		return user.verifyLoginDetails(username, password)
 	
-	def getUserID(self, username):
+	def getOrganizerID(self, username):
 		"""
 		Check if the account type of the user
 		Returns a string of the account type
 		"""
 
 		# Create a user object containing details of the NRIC owner
-		user = User(username)
+		user = Organizers(username)
 
 		# Get the type of account that is tied to the NRIC 
-		return user.getUserID()
+		return user.getOrganizerID()
 
-	def getProjectID_Admin(self, userID):
-		administrator = Administrator(userID)
+	def getProjectID_Admin(self, organizerID):
+		administrator = Administrator(organizerID)
 
-		return administrator.getProjectsAsAdmin(userID)
+		return administrator.getProjectsAsAdmin(organizerID)
 
-	def getProjectID_SubAdmin(self, userID):
-		administrator = Administrator(userID)
+	def getProjectID_SubAdmin(self, organizerID):
+		administrator = Administrator(organizerID)
 
-		return administrator.getProjectsAsSubadmin(userID)
+		return administrator.getProjectsAsSubadmin(organizerID)
