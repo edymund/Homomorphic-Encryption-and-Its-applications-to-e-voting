@@ -1,6 +1,7 @@
 window.onload = function () {
 	var elem = document.getElementById("display-image");
-	if (elem.getAttribute("src") != "") {
+	if ((elem.getAttribute("src") != "/") && (elem.getAttribute("src") != "")) 
+	{
 		document.getElementById("display-image").style.display = "block";
 	}
 };

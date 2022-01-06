@@ -1,5 +1,5 @@
 import os
-from pathlib import Path
+import shutil
 # from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.user_editProfileBoundary import user_editProfileBoundary
@@ -131,22 +131,40 @@ def projectEditAnswer(projectID, questionID ,candidateID):
 			candidateName = request.form['candidateName']
 			candidateDescription = request.form['candidateDescription']
 
-			# Store image and filename
-			if boundary.hasPermission(projectID, questionID, candidateID):
-				file = request.files['candidateImageFile']
-				filename = None
-				if file.filename != '':
-					filename = secure_filename(file.filename)
+			newCandidate = False
+			if candidateID == "new_candidate":
+				newCandidate = True
 
+			# Store image and filename
+			filename = None
+			if not boundary.hasPermission(projectID, questionID, candidateID):
+				return boundary.displayError(projectID, boundary.ERROR_UNAUTHROIZED)
+			
+			file = request.files['candidateImageFile']
+			if file.filename != '':
+				filename = secure_filename(file.filename)
+
+			if newCandidate:
+				candidateID = boundary.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+			else:
+				boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+			
+			if filename is not None:
 				# Create Directory if it does not exists
+				print("candidate ID is ", candidateID)
 				if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
 					os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
 
 				# Save file to directory
 				if filename is not None:
 					file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
-
-			return boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+			
+			return boundary.displaySuccess(projectID, questionID)
+		
+		if action == "Delete":
+			# Detele candidate
+			shutil.rmtree(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID), ignore_errors=True)
+			return boundary.deleteCandidate(projectID, questionID, candidateID)
 			
 			
 

@@ -19,12 +19,12 @@
 		<br/>
 
 		<!-- Display Upload Image button -->
-		<label for="candidateImage">Candidate's Image (JPEG only*): </label>
+		<label>Candidate's Image (JPEG only*): </label>
 		<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()"/>
 		<br/>
 
 		<!-- Space to Display Candidate's Image probably -->
-		<img id="display-image" src={% if candidate is not none %}"{{url_for('static', filename='images/uploads')}}/{{candidate.candidateID}}/{{candidate.imageFilename}}" {% endif %}/><br />
+		<img id="display-image" src="{% if candidate is not none %}{% if candidate.imageFilename is not none %}{{url_for('static', filename='images/uploads')}}/{{candidate.candidateID}}/{{candidate.imageFilename}} {% endif %} {% endif %}"/><br />
 
 		<!-- Display Candidate's Description Entered -->
 		<label for="candidateDescription">Candidate's Description: </label>

@@ -152,6 +152,23 @@ class Candidates:
 		dbDisconnect(connection)
 	
 		return True
+	
+	def deleteCandidateByCandidateID(self, projectID, questionID, candidateID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if questionID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""DELETE FROM candidates 
+								WHERE questionID = (?) AND
+										projID = (?) and candidateID = (?)""", (questionID, projectID, candidateID))
+		
+		connection.commit()
+		
+		dbDisconnect(connection)
+	
+		return True
 
 	def checkExists(self, projectID, questionID, candidateID):
 		# Connect to database
@@ -197,3 +214,28 @@ class Candidates:
 			# print("Updated Successfully in Database")
 			return True
 		return False
+
+	def addNewCandidate(self, projectID, questionID, candidateID, candidateName, candidateDescription, filename):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""INSERT INTO candidates(projID, questionID, candidateOption, image, description)
+								VALUES (?, ?, ?, ?, ?)""", (projectID, questionID, candidateName, filename, candidateDescription))
+		
+		# print("new id is ", db.lastrowid)
+		# count = db.execute("""SELECT candidateID
+		# 					FROM candidates
+		# 					WHERE projID = (?) AND
+		# 					questionID = (?) AND
+		# 					candidateOption = (?) AND
+		# 					image = (?) AND
+		# 					description = (?)""", (projectID, questionID, candidateName, filename, candidateDescription)).fetchone()
+		
+
+		connection.commit()
+
+		# Disconnect from database
+		dbDisconnect(connection)
+		
+		return str(db.lastrowid)

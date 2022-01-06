@@ -25,6 +25,7 @@ class admin_editQuestionsBoundary:
 
 		return render_template('admin_editQuestions.html', projectID=projectID, 
 														   projectName=projectName,
+														   questionID=questionID,
 														   question=questionDetails,
 														   candidates=candidateDetails)
 
@@ -65,6 +66,5 @@ class admin_editQuestionsBoundary:
 	def displaySuccess(self, projectID):
 		return redirect("../../{}/view_questions".format(projectID))
 	
-	def redirect(self):
-		pass
+	
 
