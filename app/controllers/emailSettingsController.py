@@ -31,13 +31,11 @@ class EmailSettingsController:
 
     def update_inv_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
-        invMsg = entity.setInviteMsg(msg)
-        self.invMsg = invMsg
+        entity.setInviteMsg(msg)
     
     def update_rmd_msg(self,msg):
         entity = ElectionMessage(projID= self.projID)
-        rmdMsg =entity.setReminderMsg(msg)
-        self.invMsg = rmdMsg
+        entity.setReminderMsg(msg)
         
 
     def retrieve_inv_msg(self):
@@ -61,9 +59,6 @@ class EmailSettingsController:
         all_voters = voter_entity.get_all_voters()
 
         for voter_email in all_voters: 
-        #     print (type(voter_email[0]))
-        #     print(rmd_msg)
-        # voter_email = ["abcd@gmail.com"]
             email = EmailMessage()
             new_email = self.set_mail(EMAIL_ADDRESS, voter_email[0],rmd_msg, email)
             self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, new_email)
