@@ -21,7 +21,6 @@ input[type=text], input[type=password] {
     border: none;
     resize: none;
     height:250px;
-    text-indent: 14px;
     overflow: hidden;
 }
 
