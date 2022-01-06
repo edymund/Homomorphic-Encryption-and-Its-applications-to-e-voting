@@ -1,6 +1,7 @@
 import os
 from flask import Flask, session, redirect, flash
 from functools import wraps
+from .controllers.loginController import loginController
 
 import sqlite3
 
@@ -25,6 +26,7 @@ def loginRequired(function):
 			if session['organizer']:
 				print("User authenticated")
 				print(session['organizer'])
+				session['userType'] = None
 				return function(*args, **kwargs)
 			
 		except KeyError as e:
@@ -39,16 +41,23 @@ def authorisationRequired(function):
 	def decorated_function(*args, **kwargs):
 		# If user is not authorised
 		try:
+			controller = loginController()
 			# If user is authenticated, proceed as per normal
+			session['adminProjectID'] = controller.getProjectID_Admin(session['organizerID'])
+			session['subAdminProjectID'] = controller.getProjectID_SubAdmin(session['organizerID'])
+
+
 			accessedResource = kwargs.get("projectID")
 			# print(accessedResource)
 			# print(session['adminProjectID'])
 			# print(session['subAdminProjectID'])
 			if int(accessedResource) in session['adminProjectID']:
+				session['userType'] = "Admin"
 				print("User is admin of project")
 				return function(*args, **kwargs)
 
 			elif int(accessedResource) in session['subAdminProjectID']:
+				session['userType'] = "SubAdmin"
 				print("User is sub-admin of project")
 				return function(*args, **kwargs)
 
