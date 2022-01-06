@@ -83,4 +83,3 @@ class ProjectDetails:
 		 				VALUES ((?), (?), (?)); """, (organizerID,projID,'administrator',))
 		connection.commit()
 		dbDisconnect(connection)
-	
