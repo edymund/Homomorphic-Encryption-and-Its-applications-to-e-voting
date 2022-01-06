@@ -20,9 +20,9 @@ def loginRequired(function):
 		# If user is not authenticated
 		try:
 			# If user is authenticated, proceed as per normal
-			if session['user']:
+			if session['organizer']:
 				print("User authenticated")
-				print(session['user'])
+				print(session['organizer'])
 				return function(*args, **kwargs)
 			
 		except KeyError as e:

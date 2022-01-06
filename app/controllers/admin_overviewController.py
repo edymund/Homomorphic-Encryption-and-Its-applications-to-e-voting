@@ -1,4 +1,4 @@
-from ..entity.ProjDetails import ProjDetails
+from ..entity.Projectdetails import ProjectDetails
 from ..entity.User import User
 import datetime
 
@@ -11,7 +11,7 @@ class admin_overviewController:
 		Returns True if successfully added
 		Returns False if an error occured
 		"""
-		projDetailsEntity = ProjDetails()
+		ProjectDetailsEntity = ProjectDetails()
 		startDateTimeSplit = datetime.datetime.strptime(startDateTime, "%Y" + "-" + "%m" + "-" + "%d" +"T"+ "%H" + ":" + "%M")
 		startDate = (startDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
 		startTime = (startDateTimeSplit.strftime("%H" + ":" + "%M"))
@@ -20,4 +20,4 @@ class admin_overviewController:
 		endTime = (endDateTimeSplit.strftime("%H" + ":" + "%M"))
 		# Ensure that user has rights to projectID
 		if userID:
-			projDetailsEntity.insertNewProject( userID, title, startDate, startTime, endDate, endTime, publicKey)
+			ProjectDetailsEntity.insertNewProject( userID, title, startDate, startTime, endDate, endTime, publicKey)
