@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import os
 import shutil
 # from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
-=======
->>>>>>> 902fcdaeda26ae8b32969019c3375c26147193cc
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
