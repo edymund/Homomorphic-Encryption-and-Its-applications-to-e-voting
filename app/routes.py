@@ -13,10 +13,10 @@ from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageB
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
-from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
+from .boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
 from .boundary.organizer_mainBallotBoundary import organizer_mainBallotBoundary
 from .boundary.logoutBoundary import logoutBoundary
-from .boundary.user_settingsBoundary import user_settingsBoundary
+from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
@@ -207,7 +207,7 @@ def registrationPage():
 @loginRequired
 def settingsPage():
 	# Create a boundary object
-	boundary = user_settingsBoundary()
+	boundary = organizer_settingsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
@@ -225,7 +225,7 @@ def settingsPage():
 @loginRequired
 def changePasswordPage():
 	# Create a boundary object
-	boundary = user_changePasswordBoundary()
+	boundary = organizer_changePasswordBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':

@@ -1,6 +1,6 @@
-from ..entity.User import User
+from ..entity.Organizers import Organizers
 
-class user_changePasswordController:
+class organizer_changePasswordController:
 	def __init__(self):
 		pass
 
@@ -12,7 +12,7 @@ class user_changePasswordController:
 		"""
 
 		# Create a user object containing details of the NRIC owner
-		user = User(email)
+		user = Organizers(email)
 
 		# Update the password of the user
 		return user.updatePassword(old_password, new_password)
