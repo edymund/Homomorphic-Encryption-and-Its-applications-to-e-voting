@@ -1,9 +1,9 @@
 from sqlite3.dbapi2 import IntegrityError
 from flask import render_template, session, flash, redirect
-from ..controllers.user_settingsController import user_settingsController
+from ..controllers.organizer_settingsController import organizer_settingsController
 import re
 
-class user_settingsBoundary:
+class organizer_settingsBoundary:
 	# Constructor
 	def __init__(self):
 		self.RESPONSE_SUCCESS = "Success"
@@ -12,7 +12,7 @@ class user_settingsBoundary:
 
 	# Other Methods
 	def displayPage(self):
-		return render_template('user_settings.html')
+		return render_template('organizer_settings.html')
 
 	def __checkIsValidFirstName(self, first_name):
 		# Check first name, last name 
@@ -44,7 +44,7 @@ class user_settingsBoundary:
 			self.__checkEmailFormat(email):
 			try:
 				username = session['user']
-				controller = user_settingsController
+				controller = organizer_settingsController
 				controller.updateUserDetails(self,username,first_name,last_name,email,company_name)
 				return self.RESPONSE_SUCCESS
 			except IntegrityError:
