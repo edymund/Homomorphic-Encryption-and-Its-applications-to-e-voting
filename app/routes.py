@@ -34,12 +34,12 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/publish', methods=['GET', 'POST'])
-def publishPage():
+@app.route('/<projectID>/publish', methods=['GET', 'POST'])
+def publishPage(projectID):
 	# Creates a boundary object
 	boundary = publishBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
 
 @app.route('/overview', methods = ['GET', 'POST'])
 def projectOverviewPage():

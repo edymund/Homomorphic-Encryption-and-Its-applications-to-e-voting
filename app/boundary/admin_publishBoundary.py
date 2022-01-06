@@ -7,5 +7,5 @@ class publishBoundary:
 		pass
 
 	# Other Methods
-	def displayPage(self):
-		return render_template('admin_publish.html')
+	def displayPage(self,projectID):
+		return render_template('admin_publish.html',projectID=projectID)
