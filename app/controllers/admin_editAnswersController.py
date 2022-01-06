@@ -14,7 +14,7 @@ class admin_editAnswersController():
 		return candidates.checkExists(projectID, questionID, candidateID)
 
 	def getProjectName(self, projectID):
-		projectDetails = ProjDetails(projectID)
+		projectDetails = ProjectDetails(projectID)
 		return projectDetails.getTitle()
 	
 	def getCandidateDetails(self, candidateID):
