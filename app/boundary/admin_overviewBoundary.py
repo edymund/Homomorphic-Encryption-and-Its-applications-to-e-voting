@@ -10,9 +10,9 @@ class admin_overviewBoundary:
 		return render_template('admin_overview.html')
 
 	def onSubmit(self, title, startDateTime, endDateTime, publicKey):
-		userID = session['userID'];   
+		organizerID = session['organizerID'];   
 		controller = admin_overviewController()
-		controller.addNewProj(userID, title, startDateTime, endDateTime, publicKey)
+		controller.addNewProj(organizerID, title, startDateTime, endDateTime, publicKey)
 		return self.RESPONSE_SUCCESS
 
 	#display success

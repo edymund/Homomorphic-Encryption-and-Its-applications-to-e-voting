@@ -1,8 +1,10 @@
+<<<<<<< HEAD
 import os
 import shutil
 # from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
+=======
+>>>>>>> 902fcdaeda26ae8b32969019c3375c26147193cc
 from .boundary.landingPageBoundary import landingPageBoundary
-from .boundary.user_editProfileBoundary import user_editProfileBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
 from .boundary.voters_ViewSubmittedVotePage import voters_ViewSubmittedVotePage
@@ -12,19 +14,19 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
-# from .boundary.user_viewImportVoterList import user_viewImportVoterListBoundary
+from .boundary.user_viewImportVoterListBoundary import user_viewImportVoterListBoundary
+from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
-# from .boundary.registrationBoundary import registrationBoundary
 from .boundary.registrationBoundary import registrationBoundary
-from .boundary.user_changePasswordBoundary import user_changePasswordBoundary
-from .boundary.user_mainBallotBoundary import user_mainBallotBoundary
+from .boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
+from .boundary.organizer_mainBallotBoundary import organizer_mainBallotBoundary
 from .boundary.logoutBoundary import logoutBoundary
-from .boundary.user_settingsBoundary import user_settingsBoundary
+from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
+from .boundary.admin_publishBoundary import publishBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 from flask import request
@@ -37,12 +39,12 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/edit_profile', methods=['GET'])
-def editProfilePage():
-	# Create a boundary object
-	boundary = user_editProfileBoundary()
+@app.route('/<projectID>/publish', methods=['GET', 'POST'])
+def publishPage(projectID):
+	# Creates a boundary object
+	boundary = publishBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
 
 @app.route('/overview', methods = ['GET', 'POST'])
 def projectOverviewPage():
@@ -121,89 +123,53 @@ def projectEditAnswer(projectID, questionID ,candidateID):
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
 
+@app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_electionMessage(projectID):
+	# Create a boundary object
+	boundary = user_viewElectionMessageBoundary()
+	boundary.setProjID(projectID)
+
 	if request.method == 'GET':
-		return boundary.displayPage(projectID, questionID, candidateID)
-	
-	if request.method == 'POST':
-		action = request.form['action']
-		if action == "Save":
-			# Get Form Fields
-			candidateName = request.form['candidateName']
-			candidateDescription = request.form['candidateDescription']
+		return boundary.displayPage(projectID)
+	elif request.method == 'POST':
+		preMsg = request.form['preMsg']
+		postMsg = request.form['postMsg']
+		response = boundary.onSubmit(preMsg, postMsg)
+		return boundary.displayPage(projectID)
 
-			newCandidate = False
-			if candidateID == "new_candidate":
-				newCandidate = True
+@app.route('/<projectID>/view_importList',  methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_importList(projectID):	
+	# Create a boundary object
+	boundary = user_viewImportVoterListBoundary(projectID)
+	boundary.setProjID(projectID)
 
-			# Store image and filename
-			filename = None
-			if not boundary.hasPermission(projectID, questionID, candidateID):
-				return boundary.displayError(projectID, boundary.ERROR_UNAUTHROIZED)
-			
-			file = request.files['candidateImageFile']
-			if file.filename != '':
-				filename = secure_filename(file.filename)
+	votersList = boundary.populateTextArea()
+	if request.method == 'GET':		
+		return boundary.displayPage(votersList)
+	elif request.method == 'POST':
+		file = request.files['filename']
+		response = boundary.onSubmit(file)
+		votersList = boundary.populateTextArea()
+		return boundary.displayPage(votersList)
 
-			if newCandidate:
-				candidateID = boundary.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
-			else:
-				boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
-			
-			if filename is not None:
-				# Create Directory if it does not exists
-				print("candidate ID is ", candidateID)
-				if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
-					os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
-
-				# Save file to directory
-				if filename is not None:
-					file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
-			
-			return boundary.displaySuccess(projectID, questionID)
-		
-		if action == "Delete":
-			# Detele candidate
-			shutil.rmtree(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID), ignore_errors=True)
-			return boundary.deleteCandidate(projectID, questionID, candidateID)
-			
-			
-
-# @app.route('/view_electionMessage', methods=['GET'])
-# def view_electionMessage():
-# 	# Create a boundary object
-# 	boundary = user_viewElectionMessageBoundary()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
-
-# @app.route('/view_importList', methods=['GET'])
-# def view_importList():
-# 	# Create a boundary object
-# 	boundary = user_viewImportVoterListBoundary()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
-
-@app.route('/view_emailSettings',methods=['GET', 'POST'])
-def view_emailSetting():
-	# get url
-	base_url = request.base_url
-	# with open("url.txt","w") as f:
-	# 	f.write(url)
-	# 	f.write("/n")
-	# 	f.write(base_url)
-	# 	f.close()
-
+@app.route('/<projectID>/view_emailSettings',methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def view_emailSetting(projectID):
 	# Create a boundary object
 	boundary = user_viewEmailSettingsBoundary()
-	projID = boundary.retrieve_proj_details_from_url(base_url)
-	# boundary.retrieve_proj_details_from_url(url)
-	boundary.setProjID(projID)
+	boundary.setProjID(projectID)
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
 		rmdMsg = request.form['RmdMsg']
 		invMsg = request.form['InvMsg']
 		if request.form["action"] =="Update":
-			response = boundary.onSubmit(rmdMsg,invMsg)
+			response = boundary.onSubmit(invMsg,rmdMsg)
 		if request.form["action"] =="SendEmail":
 			boundary.send_reminder(rmdMsg)
 		
@@ -226,13 +192,6 @@ def loginPage():
 			return boundary.displaySuccess()
 		else:
 			return boundary.displayError(message=response)
-
-# @app.route('/registration', methods=['GET','POST'])
-# def registrationPage():
-# 	# Create a boundary object
-# 	boundary = registrationBoundary()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
 
 @app.route('/registration', methods=['GET','POST'])
 def registrationPage():
@@ -257,7 +216,7 @@ def registrationPage():
 @loginRequired
 def settingsPage():
 	# Create a boundary object
-	boundary = user_settingsBoundary()
+	boundary = organizer_settingsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
@@ -275,7 +234,7 @@ def settingsPage():
 @loginRequired
 def changePasswordPage():
 	# Create a boundary object
-	boundary = user_changePasswordBoundary()
+	boundary = organizer_changePasswordBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
@@ -292,7 +251,7 @@ def changePasswordPage():
 @loginRequired
 def mainBallotPage():
 	# Create a boundary object
-	boundary = user_mainBallotBoundary()
+	boundary = organizer_mainBallotBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 

@@ -1,4 +1,4 @@
-from ..entity.User import User
+from ..entity.Organizers import Organizers
 
 class registrationController:
 	def __init__(self):
@@ -6,7 +6,7 @@ class registrationController:
 	
 	def addUser(self,email,password,companyName,firstName,lastName):
 		# Create user entity object
-		user = User()
+		user = Organizers()
 
 		# Create a new user
 		return user.addNewUser(email,password,companyName,firstName,lastName)

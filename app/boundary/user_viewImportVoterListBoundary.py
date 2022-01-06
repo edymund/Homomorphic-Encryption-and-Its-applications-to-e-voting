@@ -16,19 +16,17 @@ class user_viewImportVoterListBoundary:
 
 	# Other Methods
 	def displayPage(self,vList=None):
-		return render_template('user_importVotersList.html',voterList =json.dumps(vList))
+		return render_template('user_importVotersList.html',voterList =json.dumps(vList), projID = self.projectID)
 	
 	def onSubmit(self, fileName):
 		# pass
 		controller = ImportVoterListController(projID = self.getProjID())
 		if controller.processVoterList(fileName):
-			# display in text area
-			# self.populateTextArea()
 			controller.update_voter(self.projectID)
+		
 
 	def populateTextArea(self):
 		controller = ImportVoterListController(projID = self.getProjID())
 		# controller.setProjID()
 		voters_list = controller.get_all_voters_email()
 		return voters_list
-
