@@ -37,7 +37,6 @@ class ImportVoterListController:
             hash = str(hex(hash))[2:]
             voter.insert_to_table(hash,email, self.projID,password)
 
-
     def get_random(self):
        return random.randint(0, 100000000)
 
