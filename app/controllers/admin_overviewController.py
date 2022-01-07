@@ -36,5 +36,5 @@ class admin_overviewController:
 		endDate = (endDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
 		endTime = (endDateTimeSplit.strftime("%H" + ":" + "%M"))
 
-		ProjectDetailsEntity.updateProject(projectID, title, "DRAFT", startDate, startTime, endDate, endTime, publicKey)
-		return
+		return ProjectDetailsEntity.updateProject(projectID, title, "DRAFT", startDate, startTime, endDate, endTime, publicKey)
+		

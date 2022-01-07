@@ -15,14 +15,16 @@ class admin_overviewBoundary:
 	def onSubmit(self, projectID, title, startDateTime, endDateTime, publicKey):
 		organizerID = session['organizerID'];   
 		controller = admin_overviewController()
-		controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime, publicKey)
-		# controller.addNewProj(organizerID, title, startDateTime, endDateTime, publicKey)
-		return self.RESPONSE_SUCCESS
+		if controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime, publicKey):
+			return self.displaySuccess(projectID)
+		else:
+			return self.displayError(projectID, "Failed to update details")
 
 	#display success
 	def displaySuccess(self, projectID):
 		flash("Details Updated Successfully")
 		return self.displayPage(projectID)
 
-	def displayError(self, message):  
-		return self.displayPage(message)
+	def displayError(self, projectID, message): 
+		flash(message)
+		return self.displayPage(projectID)

@@ -120,3 +120,7 @@ class ProjectDetails:
 		
 		connection.commit()
 		dbDisconnect(connection)
+
+		if db.rowcount == 1:
+			return True
+		return False

@@ -55,11 +55,7 @@ def projectOverviewPage(projectID):
 		startDateTime = request.form['startDateTime']
 		endDateTime = request.form['endDateTime']
 		publicKey = request.form['publicKey']
-		response = boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
-		if response == boundary.RESPONSE_SUCCESS:
-			return boundary.displaySuccess(projectID)
-		else:
-			return boundary.displayError(message=response)
+		return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired

@@ -16,7 +16,7 @@ class user_viewImportVoterListBoundary:
 
 	# Other Methods
 	def displayPage(self,vList=None):
-		return render_template('user_importVotersList.html',voterList =json.dumps(vList), projID = self.projectID)
+		return render_template('user_importVotersList.html',voterList =json.dumps(vList), projectID = self.projectID)
 	
 	def onSubmit(self, fileName):
 		# pass
