@@ -8,7 +8,7 @@
 
 <div class="content">
 	<h2>Publish</h2>
-	<p>Once published, cannot be changed</p>
+	<p>Once the project is published, the details cannot be changed</p>
 	
 	<form method="POST" action="">
 		<label for="proj_name"><b>Project Name: </b></label>
@@ -44,10 +44,14 @@
 		<p>Project will be published automatically when all sub-admins have approved the project details</p>
 		
 		{% if userType == "admin" %}
-			<button type="submit" name="action" value="requestVerification" {% if errorMessages|length > 0 %} disabled {% endif %}>Request Verification</button>
-		{% else if userType == "sub-admin" %}
-			<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Click to verify that the project details is correct</button>
-		{% endif }
+			{% if projectDetails.status == 'DRAFT' %}
+				<button type="submit" name="action" value="requestVerification" {% if errorMessages|length > 0 %} disabled {% endif %}>Request Verification</button>
+			{% endif %}
+		{% elif userType == "sub-admin" %}
+			{% if projectDetails.status == 'PENDING APPROVAL' %}
+				<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Verify the project details and approve the project</button>
+			{% endif %}
+		{% endif %}
 		<br/> <br/> 
 		</form>
 </div>

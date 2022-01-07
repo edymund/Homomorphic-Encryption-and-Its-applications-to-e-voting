@@ -163,20 +163,48 @@ class ProjectDetails:
 		connection = dbConnect()
 		db = connection.cursor()
 
-		result = db.execute("""UPDATE projDetails SET title = (?), 
-												status = (?), 
-												startDate = (?),
-												startTime = (?),
-												endDate = (?),
-												endTime = (?),
-												publicKey = (?)
-						WHERE projDetailsID = (?)""", 
-						(title, status, startDate, startTime, endDate, endTime, publicKey, projectID))
+		result = db.execute("""UPDATE projDetails SET status = 'PENDING APPROVAL'
+								WHERE projDetailsID = (?)""", 
+								(projectID, ))
 		
 		connection.commit()
 		dbDisconnect(connection)
 
-		if result[0] == 'DRAFT':
+		if db.rowcount == 1:
 			return True
 		else:
 			return False
+
+	def isPendingVerification(projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""SELECT status
+								FROM projdetails
+								WHERE projDetailsID = (?)""", 
+								(projectID,)).fetchone()
+		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if result[0] == 'PENDING VERIFICATION':
+			return True
+		else:
+			return False
+
+	def setStatusAsPublished(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET status = 'PUBLISHED'
+								WHERE projDetailsID = (?)""", 
+								(projectID, ))
+		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if db.rowcount == 1:
+			return True
+		else:
+			return False
+		
