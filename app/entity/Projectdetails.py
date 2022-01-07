@@ -101,5 +101,22 @@ class ProjectDetails:
 		projectDetails['startDateTime'] = result[3] + "T" + result[4]
 		projectDetails['endDateTime'] = result[5] + "T" + result[6]
 		projectDetails['publicKey'] = result[7]
-		
+
 		return projectDetails
+
+	def updateProject(self, projectID, title, status, startDate, startTime, endDate, endTime, publicKey):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET title = (?), 
+														status = (?), 
+														startDate = (?),
+														startTime = (?),
+														endDate = (?),
+														endTime = (?),
+														publicKey = (?)
+								WHERE projDetailsID = (?)""", 
+								(title, status, startDate, startTime, endDate, endTime, publicKey, projectID))
+		
+		connection.commit()
+		dbDisconnect(connection)

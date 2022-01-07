@@ -163,8 +163,8 @@ mycursor.executemany(organizerInsertquery, organizerInsertvalues)
 projDetailsInsertquery = "INSERT INTO projdetails (title, status, startDate, startTime, endDate, endTime, publicKey) VALUES (?,?,?,?,?,?,?)"
 ## storing values in a variable
 projDetailsInsertvalues = [
-   ("foodpoll","draft","2022-01-08","09:00","2022-01-08","12:00","abababba"),
-   ("president","draft","2022-01-10","10:00","2022-01-11","17:00","vavavava")
+   ("foodpoll","DRAFT","2022-01-08","09:00","2022-01-08","12:00","abababba"),
+   ("president","DRAFT","2022-01-10","10:00","2022-01-11","17:00","vavavava")
 ]
 
 ## executing the query with values

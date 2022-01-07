@@ -49,15 +49,15 @@ def projectOverviewPage(projectID):
 	boundary = admin_overviewBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
-		
+
 	if request.method == 'POST':
 		title = request.form['name']
 		startDateTime = request.form['startDateTime']
 		endDateTime = request.form['endDateTime']
 		publicKey = request.form['publicKey']
-		response = boundary.onSubmit(title, startDateTime, endDateTime, publicKey)
+		response = boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
 		if response == boundary.RESPONSE_SUCCESS:
-			return boundary.displaySuccess()
+			return boundary.displaySuccess(projectID)
 		else:
 			return boundary.displayError(message=response)
 

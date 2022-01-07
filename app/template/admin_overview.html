@@ -6,7 +6,7 @@
 
 {% block body %}
     <h2>Project Details</h2>
-    <form method="POST" action="/overview">
+    <form method="POST" action="">
         <label for="name">Project:</label>
         <input type="text" id="name" name="name" {% if projectDetails %} value={{projectDetails.title}} {% endif %}/><br />
         
