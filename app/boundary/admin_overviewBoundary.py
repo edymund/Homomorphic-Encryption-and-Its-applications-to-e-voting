@@ -28,3 +28,10 @@ class admin_overviewBoundary:
 	def displayError(self, projectID, message): 
 		flash(message)
 		return self.displayPage(projectID)
+
+	def deleteProject(self, projectID):
+		controller = admin_overviewController()
+		if controller.deleteProject(projectID):
+			return redirect("/mainballot")
+		else:
+			self.displayError("Failed to delete project")

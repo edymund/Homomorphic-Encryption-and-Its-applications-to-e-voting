@@ -51,11 +51,14 @@ def projectOverviewPage(projectID):
 		return boundary.displayPage(projectID)
 
 	if request.method == 'POST':
-		title = request.form['name']
-		startDateTime = request.form['startDateTime']
-		endDateTime = request.form['endDateTime']
-		publicKey = request.form['publicKey']
-		return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
+		if request.form['action'] == "Delete":
+			return boundary.deleteProject(projectID)
+		elif request.form['action'] == "Save":
+			title = request.form['name']
+			startDateTime = request.form['startDateTime']
+			endDateTime = request.form['endDateTime']
+			publicKey = request.form['publicKey']
+			return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired
@@ -248,6 +251,8 @@ def mainBallotPage():
 	boundary = organizer_mainBallotBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+	if request.method == 'POST':
+		return boundary.addNewProject()
 
 ###############################################
 #				Voting Pages				  #

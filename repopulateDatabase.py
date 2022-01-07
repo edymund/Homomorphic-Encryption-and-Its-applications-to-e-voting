@@ -64,12 +64,12 @@ create = ["""
 			CREATE TABLE projdetails (
             projDetailsID INTEGER PRIMARY KEY AUTOINCREMENT,
             title varchar(255) NOT NULL,
-            status varchar(255) NOT NULL DEFAULT 'draft',
-            startDate date NOT NULL,
-            startTime time NOT NULL,
-            endDate date NOT NULL,
-            endTime time NOT NULL,
-            publicKey varchar(255) NOT NULL,
+            status varchar(255) NOT NULL DEFAULT 'DRAFT',
+            startDate date NULL,
+            startTime time NULL,
+            endDate date NULL,
+            endTime time NULL,
+            publicKey varchar(255) NULL,
             UNIQUE (projDetailsID)
             ) 
 			""",

@@ -10,31 +10,27 @@ class admin_overviewController:
 		projectDetails = ProjectDetails()
 		return projectDetails.getProjectDetails(projectID)
 
-	def addNewProj(self,userID, title, startDateTime, endDateTime, publicKey):
-		""" 
-		Returns True if successfully added
-		Returns False if an error occured
-		"""
-		ProjectDetailsEntity = ProjectDetails()
-		startDateTimeSplit = datetime.datetime.strptime(startDateTime, "%Y" + "-" + "%m" + "-" + "%d" +"T"+ "%H" + ":" + "%M")
-		startDate = (startDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
-		startTime = (startDateTimeSplit.strftime("%H" + ":" + "%M"))
-		endDateTimeSplit = datetime.datetime.strptime(endDateTime, "%Y" + "-" + "%m" + "-" + "%d" +"T"+ "%H" + ":" + "%M")
-		endDate = (endDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
-		endTime = (endDateTimeSplit.strftime("%H" + ":" + "%M"))
-		# Ensure that user has rights to projectID
-		if userID:
-			ProjectDetailsEntity.insertNewProject( userID, title, startDate, startTime, endDate, endTime, publicKey)
-
 	def updateProject(self, projectID, organizerID, title, startDateTime, endDateTime, publicKey):
 		ProjectDetailsEntity = ProjectDetails()
-
-		startDateTimeSplit = datetime.datetime.strptime(startDateTime, "%Y" + "-" + "%m" + "-" + "%d" +"T"+ "%H" + ":" + "%M")
-		startDate = (startDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
-		startTime = (startDateTimeSplit.strftime("%H" + ":" + "%M"))
-		endDateTimeSplit = datetime.datetime.strptime(endDateTime, "%Y" + "-" + "%m" + "-" + "%d" +"T"+ "%H" + ":" + "%M")
-		endDate = (endDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
-		endTime = (endDateTimeSplit.strftime("%H" + ":" + "%M"))
+		if startDateTime == "":
+			startDate = None
+			startTime = None
+		else:
+			startDateTimeSplit = datetime.datetime.strptime(startDateTime, "%Y" + "-" + "%m" + "-" + "%d" +"T"+ "%H" + ":" + "%M")
+			startDate = (startDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
+			startTime = (startDateTimeSplit.strftime("%H" + ":" + "%M"))
+		
+		if endDateTime == "":
+			endDate = None
+			endTime = None
+		else:
+			endDateTimeSplit = datetime.datetime.strptime(endDateTime, "%Y" + "-" + "%m" + "-" + "%d" +"T"+ "%H" + ":" + "%M")
+			endDate = (endDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
+			endTime = (endDateTimeSplit.strftime("%H" + ":" + "%M"))
 
 		return ProjectDetailsEntity.updateProject(projectID, title, "DRAFT", startDate, startTime, endDate, endTime, publicKey)
 		
+	def deleteProject(self, projectID):
+		projectDetails = ProjectDetails()
+
+		return projectDetails.deleteProject(projectID)

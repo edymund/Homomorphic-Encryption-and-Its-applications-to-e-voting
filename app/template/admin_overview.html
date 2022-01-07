@@ -20,8 +20,9 @@
         <input type="datetime-local" id="endDateTime" name="endDateTime" {% if projectDetails %} value={{projectDetails.endDateTime}} {% endif %}/> <br />
         
 		<label for="publicKey">Public Key:</label>
-        <input type="text" id="publicKey" name="publicKey" {% if projectDetails %} value={{projectDetails.publicKey}} {% endif %}/><br />
+        <input type="text" id="publicKey" name="publicKey" {% if projectDetails %} value="{{projectDetails.publicKey}}" {% endif %}/><br />
         
-		<input type="submit" value="Save details" />
+		<button type="submit" name="action" value="Save" >Save Project</button>
+		<button type="submit" name="action" value="Delete">Delete Project</button>
     </form>
 {% endblock %}
