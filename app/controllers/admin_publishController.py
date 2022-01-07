@@ -94,6 +94,8 @@ class admin_publishController():
 		
 		# Change status to pending verification
 		if projectDetails.setStatusToPendingVerification(projectID):
+			# Automatically publish if no sub-admin
+			self.updateProjectStatusToPublished(projectID)
 			return True
 		return False
 
