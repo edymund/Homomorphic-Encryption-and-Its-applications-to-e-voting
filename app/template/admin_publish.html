@@ -10,36 +10,46 @@
 	<h2>Publish</h2>
 	<p>Once published, cannot be changed</p>
 	
-	<form method="POST" action="/publish">
+	<form method="POST" action="">
 		<label for="proj_name"><b>Project Name: </b></label>
-		<input type="text" class="proj_name" placeholder="Enter Project Name" readonly > <br>
+		<input type="text" class="proj_name" value="{{ projectDetails.title }}" placeholder="Enter Project Name" readonly > <br>
 		
 		<label for="start_date"><b>Start Date: </b></label>
-		<input type="date" class="start_date" readonly> <br>
-
-		<label for="start_time"><b>Start Time: </b></label>
-		<input type="time" class="start_time" readonly> <br>
+		<input type="datetime-local" class="start_date" value="{{ projectDetails.startDateTime }}" readonly> <br>
 
 		<label for="end_date"><b>End Date: </b></label>
-		<input type="date" class="end_date" readonly> <br>
-
-		<label for="end_time"><b>End Time: </b></label>
-		<input type="time" class="end_time" readonly> <br>
+		<input type="datetime-local" class="end_date" value="{{ projectDetails.endDateTime }}" readonly> <br>
 
 		<div class="formfield">
 			<label for="textarea"><b>Custom Election Message:</b></label>
-			<textarea class="custom_msg" placeholder="Enter Custom Election Message" readonly></textarea> 
+			<textarea class="custom_msg" readonly>{{preElectionMessage}}</textarea> 
 		</div><br>
 
 		<div class="formfield">
 			<label for="textarea"><b>Custom Invitation Message:</b></label>
-			<textarea class="custom_invitation_msg" placeholder="Enter Invitation Message" readonly></textarea>
+			<textarea class="custom_invitation_msg" readonly>{{ invitationMessage }}</textarea>
 		</div>
 		
-		<p>Needs all sub-admins to approve before it is published</p>
+		{% if errorMessages is defined and errorMessages|length > 0 %}
+		<p>
+			<b>Warning</b> <br />
+			<ul>
+				{% for error in errorMessages %}
+					<li>{{ error }}</li> 
+				{% endfor %}
+			</ul>
+			
+		</p>
+		{% endif %}
+		<p>Project will be published automatically when all sub-admins have approved the project details</p>
 		
-		<button type="submit">Publish</button> <br> <br>
-	</form>
+		{% if userType == "admin" %}
+			<button type="submit" name="action" value="requestVerification" {% if errorMessages|length > 0 %} disabled {% endif %}>Request Verification</button>
+		{% else if userType == "sub-admin" %}
+			<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Click to verify that the project details is correct</button>
+		{% endif }
+		<br/> <br/> 
+		</form>
 </div>
 
 
