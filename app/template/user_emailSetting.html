@@ -1,34 +1,36 @@
 {% extends "user_baseTemplate.html" %}
 <!-- Updates the <head> of the webpage -->
-    {% block head %}
+	{% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_emailSettings.css') }}"/>
-    <script type=text/javascript src="{{ url_for('static',filename='js/user_emailSettings.js') }}"></script>
+	<script type=text/javascript src="{{ url_for('static',filename='js/user_emailSettings.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
 <!-- Updates the <body> of the webpage -->
-    {% block body %}
-    <div class="content">
+	{% block body %}
+	<div class="content">
 
-        <h2>Email Settings</h2>
-        <form action ="/{{ projectID }}/view_emailSettings" method="post">
-        
-            <span>Custom invite message:</span>
-            <div class = "flexbox-item flexbox-item-1">
-                <textarea spellcheck="True" wrap= hard name = InvMsg id ="InvMsg" ></textarea>
-            </div>
-                <span> Custom reminder message:</span>
-                <div class = "flexbox-item flexbox-item-2">
-                    <textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg"></textarea>
-                </div>
-                <button type="submit" name ="action" value= "Update">Save</button>
-                <button type="submit" name ="action" value="SendEmail">Send reminder link</button>
-            </div>
-            <div class ="space"></div>
-        </form>
-        <script>
-            onload = fillTA("InvMsg",{{invMsg | safe}});
-            onload = fillTA("RmdMsg",{{rmdMsg | safe }});
-        </script>
-    </div>
-    {% endblock %} 
+		<h2>Email Settings</h2>
+		<form action ="/{{ projectID }}/view_emailSettings" method="post">
+		
+			<span>Custom invite message:</span>
+			<div class = "flexbox-item flexbox-item-1">
+				<textarea spellcheck="True" wrap= hard name = InvMsg id ="InvMsg" {% if userType == "sub-admin" %} readonly {% endif %}></textarea>
+			</div>
+				<span> Custom reminder message:</span>
+				<div class = "flexbox-item flexbox-item-2">
+					<textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg" {% if userType == "sub-admin" %} readonly {% endif %}></textarea>
+				</div>
+				{% if userType == "admin" %} 
+					<button type="submit" name ="action" value= "Update">Save</button>
+					<button type="submit" name ="action" value="SendEmail">Send reminder link</button>
+				{% endif %}
+			</div>
+			<div class ="space"></div>
+		</form>
+		<script>
+			onload = fillTA("InvMsg",{{invMsg | safe}});
+			onload = fillTA("RmdMsg",{{rmdMsg | safe }});
+		</script>
+	</div>
+	{% endblock %} 

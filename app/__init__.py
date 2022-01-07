@@ -52,12 +52,12 @@ def authorisationRequired(function):
 			# print(session['adminProjectID'])
 			# print(session['subAdminProjectID'])
 			if int(accessedResource) in session['adminProjectID']:
-				session['userType'] = "Admin"
+				session['userType'] = "admin"
 				print("User is admin of project")
 				return function(*args, **kwargs)
 
 			elif int(accessedResource) in session['subAdminProjectID']:
-				session['userType'] = "SubAdmin"
+				session['userType'] = "sub-admin"
 				print("User is sub-admin of project")
 				return function(*args, **kwargs)
 

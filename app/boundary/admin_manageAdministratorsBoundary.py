@@ -8,7 +8,9 @@ class admin_manageAdministratorsBoundary:
 	def displayPage(self, projectID):
 		controller = admin_manageAdministratorsController()
 		subAdministrators = controller.getSubAdministrators(projectID)
-		return render_template('admin_manageAdministrators.html', projectID=projectID, subAdministrators=subAdministrators)
+		return render_template('admin_manageAdministrators.html', projectID=projectID, 
+																  subAdministrators=subAdministrators,
+																  userType=session['userType'])
 	
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage)
