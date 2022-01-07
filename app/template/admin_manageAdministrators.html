@@ -35,7 +35,7 @@
 						<form action ="/{{projectID}}/manage_administrators" method="post">
 							<input type="hidden" name="projectID" value="{{ projectID }}"/>
 							<input type="hidden" name="deleteID" value ={{ record.recordID }} />
-							<button name="action" type="submit" value="deleteSubAdmin"><img src={{ url_for('static',filename='images/cross.png') }}/></button>
+							<button name="action" class="cross_button" type="submit" value="deleteSubAdmin"><img class="cross" src={{ url_for('static',filename='images/cross.png') }} /></button>
 						</form>
 					</td>
 				{% endif %}
