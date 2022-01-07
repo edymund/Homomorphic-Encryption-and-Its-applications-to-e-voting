@@ -1,17 +1,17 @@
 {% extends "user_baseTemplate.html" %} 
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_editQuestions.css') }}" />
 {% endblock %} 
 
 {% block body %}
-    <h2>Edit Question</h2>
-    <form action="" method="post">
-        <label for="name">Project:</label>
-        <input type="text" id="name" value={{ projectName}} disabled /><br />
+	<h2>Edit Question</h2>
+	<form action="" method="post">
+		<label for="name">Project:</label>
+		<input type="text" id="name" value={{ projectName}} readonly /><br />
 		<label for="questionField">Question:</label>
-        <input type="text" 
+		<input type="text" 
 			   id="questionField"
 			   name="question"
 			   value=
@@ -20,10 +20,12 @@
 			   	{% else %}
 					""
 			   	{% endif %}
-			   	/> <br />
+			   	{% if userType == "sub-admin" %} readonly {% endif %}/> <br />
 		<div>
 			Answers (Click to edit options):
-			<a href="../edit_answers/{{ questionID }}/new_candidate"><img class="newQuestionImage" src={{ url_for('static',filename='images/plus.png') }}/></a>
+			{% if userType == "admin" %}
+				<a href="../edit_answers/{{ questionID }}/new_candidate"><img class="newQuestionImage" src={{ url_for('static',filename='images/plus.png') }}/></a>
+			{% endif %}
 		</div>
 		<div>
 			<ol>
@@ -36,7 +38,9 @@
 				{% endfor %}
 			</ol>
 		</div> 
-        <input type="submit" name="action" value="Save" /> </br>
-		<input type="submit" name="action" value="Delete" />
-    </form>
+		{% if userType == "admin" %} 
+			<input type="submit" name="action" value="Save" /> </br>
+			<input type="submit" name="action" value="Delete" />
+		{% endif %}
+	</form>
 {% endblock %}

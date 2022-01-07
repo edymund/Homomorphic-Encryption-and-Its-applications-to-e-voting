@@ -1,26 +1,28 @@
 {% extends "user_baseTemplate.html" %} 
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_editAnswers.css') }}" />
 	<script type=text/javascript src="/static/js/admin_editAnswers.js"></script>
 {% endblock %} 
 
 {% block body %}
-    <h2>Edit Answer</h2>
+	<h2>Edit Answer</h2>
 	<form action="" method="post" enctype="multipart/form-data">
 		<!-- Display Project Name -->
-        <label for="projectName">Project: </label>
-        <input type="text" id="projectName" value="{{projectName}}" disabled/><br />
-        
+		<label for="projectName">Project: </label>
+		<input type="text" id="projectName" value="{{projectName}}" readonly/><br />
+		
 		<!-- Display Question -->
 		<label for="candidateName">Candidate's Name: </label>
-		<input type="text" id="candidateName" name="candidateName" value="{% if candidate is not none %}{{candidate.candidateOption}}{% endif %}"/>
+		<input type="text" id="candidateName" name="candidateName" value="{% if candidate is not none %}{{candidate.candidateOption}}{% endif %}" {% if userType == "sub-admin" %} readonly {% endif %}/>
 		<br/>
 
 		<!-- Display Upload Image button -->
 		<label>Candidate's Image (JPEG only*): </label>
-		<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()"/>
+		{% if userType == "admin" %}
+			<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()"/>
+		{% endif %}
 		<br/>
 
 		<!-- Space to Display Candidate's Image probably -->
@@ -28,11 +30,13 @@
 
 		<!-- Display Candidate's Description Entered -->
 		<label for="candidateDescription">Candidate's Description: </label>
-		<textarea id="candidateDescription" name="candidateDescription">{% if candidate is not none %}{{candidate.description}}{% endif %}</textarea> 
+		<textarea id="candidateDescription" name="candidateDescription" {% if userType == "sub-admin" %} readonly {% endif %}>{% if candidate is not none %}{{candidate.description}}{% endif %}</textarea> 
 		<br />
 
 		<!-- Save & Delete Candidates Button -->
-		<input type="submit" name="action" value="Save" /> </br>
-		<input type="submit" name="action" value="Delete" />
-    </form>
+		{% if userType == "admin" %}
+			<input type="submit" name="action" value="Save" /> </br>
+			<input type="submit" name="action" value="Delete" />
+		{% endif %}
+	</form>
 {% endblock %}

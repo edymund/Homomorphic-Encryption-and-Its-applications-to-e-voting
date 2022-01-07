@@ -8,4 +8,4 @@ class publishBoundary:
 
 	# Other Methods
 	def displayPage(self,projectID):
-		return render_template('admin_publish.html',projectID=projectID)
+		return render_template('admin_publish.html',projectID=projectID, userType = session['userType'])

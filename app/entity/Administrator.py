@@ -196,3 +196,16 @@ class Administrator:
 		else:
 			print("Deleted {} records".format(result.rowcount))
 			return False
+
+	def addAdministrator(self, projectID, organizers_id):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if projectID is not None and organizers_id is not None:
+			result = db.execute("""INSERT INTO administrators 
+											(organizerID, projID, adminStatus, approval) 
+											VALUES (?,?,?,?)""", (organizers_id, projectID, "admin", None))
+		connection.commit()
+		dbDisconnect(connection)
+
+		return db.lastrowid

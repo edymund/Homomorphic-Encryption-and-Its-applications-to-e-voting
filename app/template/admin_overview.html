@@ -1,22 +1,30 @@
 {% extends "user_baseTemplate.html" %} 
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
 {% endblock %} 
 
 {% block body %}
-    <h2>Project Details</h2>
-    <form method="POST" action="/overview">
-        <label for="name">Project:</label>
-        <input type="text" id="name" name="name" /><br />
-        <label for="status">Status:</label>
-        <input type="text" id="status" value="DRAFT MODE" disabled /> <br />
-        <label for="startDateTime">Start Date & Time:</label>
-        <input type="datetime-local" id="startDateTime" name="startDateTime" /> <br />
-        <label for="endDateTime">End Date & Time:</label>
-        <input type="datetime-local" id="endDateTime" name="endDateTime" /> <br />
-        <label for="publicKey">Public Key:</label>
-        <input type="text" id="publicKey" name="publicKey" /><br />
-        <input type="submit" value="Save details" />
-    </form>
+	<h2>Project Details</h2>
+	<form method="POST" action="">
+		<label for="name">Project:</label>
+		<input type="text" id="name" name="name" {% if projectDetails %} value={{projectDetails.title}} {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/><br />
+		
+		<label for="status">Status:</label>
+		<input type="text" id="status" {% if projectDetails %} value={{projectDetails.status}} {% endif %} readonly /> <br />
+		
+		<label for="startDateTime">Start Date & Time:</label>
+		<input type="datetime-local" id="startDateTime" name="startDateTime" {% if projectDetails %} value={{projectDetails.startDateTime}} {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/> <br />
+		
+		<label for="endDateTime">End Date & Time:</label>
+		<input type="datetime-local" id="endDateTime" name="endDateTime" {% if projectDetails %} value={{projectDetails.endDateTime}} {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/> <br />
+		
+		<label for="publicKey">Public Key:</label>
+		<input type="text" id="publicKey" name="publicKey" {% if projectDetails %} value="{{projectDetails.publicKey}}" {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/><br />
+		
+		{% if userType == "admin" %}
+			<button type="submit" name="action" value="Save" >Save Project</button>
+			<button type="submit" name="action" value="Delete">Delete Project</button>
+		{% endif %}
+	</form>
 {% endblock %}
