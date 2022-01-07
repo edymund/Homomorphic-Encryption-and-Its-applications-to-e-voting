@@ -20,7 +20,9 @@
 
 		<!-- Display Upload Image button -->
 		<label>Candidate's Image (JPEG only*): </label>
-		<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()" {% if userType == "sub-admin" %} readonly {% endif %}/>
+		{% if userType == "admin" %}
+			<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()"/>
+		{% endif %}
 		<br/>
 
 		<!-- Space to Display Candidate's Image probably -->
