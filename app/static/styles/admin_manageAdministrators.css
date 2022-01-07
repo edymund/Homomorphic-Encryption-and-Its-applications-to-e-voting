@@ -31,3 +31,13 @@ td:nth-child(2) {
 td:nth-child(3) {
   width: 20%;
 }
+
+.cross {
+	width:50px; 
+	height:50px;
+}
+
+.cross_button {
+	background-color: transparent;
+	border:none;
+}
