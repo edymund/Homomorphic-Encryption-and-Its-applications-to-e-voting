@@ -45,6 +45,12 @@ def publishPage(projectID):
 	boundary = publishBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
+	if request.method == 'POST':
+		if request.form['action'] == "requestVerification":
+			return boundary.requestVerification(projectID)
+		elif request.form['action'] == "verify":
+			pass
+
 
 
 @app.route('/<projectID>/overview', methods = ['GET', 'POST'])
