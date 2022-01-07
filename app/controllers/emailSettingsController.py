@@ -56,7 +56,7 @@ class EmailSettingsController:
         
         #get Reminder message
         rmd_msg = Election_entity.getReminderMsg()
-        all_voters = voter_entity.get_all_voters()
+        all_voters = voter_entity.get_all_voters(self.projID)
 
         for voter_email in all_voters: 
             email = EmailMessage()
