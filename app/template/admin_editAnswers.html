@@ -3,29 +3,36 @@
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_editAnswers.css') }}" />
+	<script type=text/javascript src="/static/js/admin_editAnswers.js"></script>
 {% endblock %} 
 
 {% block body %}
     <h2>Edit Answer</h2>
-    <form>
-        <label for="name">Project:</label>
-        <input type="text" id="name" name="name" value="Project name here" disabled/><br />
-        {% set count = 1 %}
-		{% for record in subAdministrators %}
-		<h3>Question 1</h3>
-		<h3>Candidate Profile</h3>
-		<div>
-			<label for="candidateField">Enter Candidate Name: </label>
-        	<input type="text" id="candidateField" value="Candidate Name"/> <br />
-			<label for="candidateImage">Select candidate image:</label>
-			<input type="file" id="candidateImage" name="candidateImage" accept="image/jpeg" /> <br />
-			<label for="candidateDescription">Select candidate image:</label>
-			<textarea type="textarea" id="candidateDescription" name="candidateDescription">Enter Candidate Description Here</textarea>
-		</div>
+	<form action="" method="post" enctype="multipart/form-data">
+		<!-- Display Project Name -->
+        <label for="projectName">Project: </label>
+        <input type="text" id="projectName" value="{{projectName}}" disabled/><br />
+        
+		<!-- Display Question -->
+		<label for="candidateName">Candidate's Name: </label>
+		<input type="text" id="candidateName" name="candidateName" value="{% if candidate is not none %}{{candidate.candidateOption}}{% endif %}"/>
+		<br/>
 
-        <input type="submit" name="saveQuestion" value="Save" /> </br>
-		<input type="submit" name="deleteQuestion" value="Delete Question"/>
-			{% set count = count + 1 %}
-		{% endfor %}
+		<!-- Display Upload Image button -->
+		<label>Candidate's Image (JPEG only*): </label>
+		<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()"/>
+		<br/>
+
+		<!-- Space to Display Candidate's Image probably -->
+		<img id="display-image" src="{% if candidate is not none %}{% if candidate.imageFilename is not none %}{{url_for('static', filename='images/uploads')}}/{{candidate.candidateID}}/{{candidate.imageFilename}} {% endif %} {% endif %}"/><br />
+
+		<!-- Display Candidate's Description Entered -->
+		<label for="candidateDescription">Candidate's Description: </label>
+		<textarea id="candidateDescription" name="candidateDescription">{% if candidate is not none %}{{candidate.description}}{% endif %}</textarea> 
+		<br />
+
+		<!-- Save & Delete Candidates Button -->
+		<input type="submit" name="action" value="Save" /> </br>
+		<input type="submit" name="action" value="Delete" />
     </form>
 {% endblock %}
