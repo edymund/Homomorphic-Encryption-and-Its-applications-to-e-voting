@@ -63,23 +63,81 @@ class ProjectDetails:
 		return self.__publicKey
 
 	# Verify if the user is an admin and authorized to view the page
-	def insertNewProject(self,organizerID, title, startDate, startTime, endDate, endTime, publicKey):
+	def insertNewProject(self):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		# Insert project details into projdetails table
 		db.execute("""INSERT INTO projdetails (title, startDate, startTime, endDate, endTime, publicKey)
-                        VALUES((?), (?), (?), (?), (?), (?)); """, (title,startDate,startTime,endDate,endTime,publicKey,)) 
+                        VALUES((?), (?), (?), (?), (?), (?)); """, ("New Project", None, None, None, None, None)) 
 
-		# select proj id
-		result = db.execute("""SELECT *
-							FROM projdetails
-							WHERE title = (?)""", (title,)).fetchone()	
-		# convert result to int variable
-		projID = int(result[0])
-							
-		# Insert projID with userID and the adminstatus as administrator into administrator table
-		db.execute("""INSERT INTO administrators (organizerID, projID, adminStatus)
-		 				VALUES ((?), (?), (?)); """, (organizerID,projID,'administrator',))
 		connection.commit()
 		dbDisconnect(connection)
+
+		return db.lastrowid
+
+	def getProjectDetails(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""SELECT projDetailsID, title, status, startDate, startTime, endDate, endTime, publicKey
+								FROM projdetails
+								WHERE projDetailsID = (?)""", (projectID, )).fetchone()
+		
+		dbDisconnect(connection)
+
+		projectDetails = {}
+		projectDetails['id'] = result[0]
+		projectDetails['title'] = result[1]
+		projectDetails['status'] = result[2]
+
+		if result[3] is None or result[4] is None:
+			projectDetails['startDateTime'] = None
+		else:
+			projectDetails['startDateTime'] = result[3] + "T" + result[4]
+
+		if result[3] is None or result[4] is None:
+			projectDetails['endDateTime'] = None
+		else:
+			projectDetails['endDateTime'] = result[5] + "T" + result[6]
+		
+		
+		projectDetails['publicKey'] = result[7] if result[7] is not None else ""
+
+		return projectDetails
+
+	def updateProject(self, projectID, title, status, startDate, startTime, endDate, endTime, publicKey):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET title = (?), 
+														status = (?), 
+														startDate = (?),
+														startTime = (?),
+														endDate = (?),
+														endTime = (?),
+														publicKey = (?)
+								WHERE projDetailsID = (?)""", 
+								(title, status, startDate, startTime, endDate, endTime, publicKey, projectID))
+		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if db.rowcount == 1:
+			return True
+		return False
+
+	def deleteProject(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""DELETE FROM projDetails 
+								WHERE projDetailsID = (?)""", 
+								(projectID))
+		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if db.rowcount == 1:
+			return True
+		return False

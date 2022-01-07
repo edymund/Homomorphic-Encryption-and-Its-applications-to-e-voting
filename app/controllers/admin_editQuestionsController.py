@@ -36,3 +36,7 @@ class admin_editQuestionsController:
 		questions = Questions()
 		
 		return questions.checkQuestionIDBelongsToProject(questionID, projectID)
+
+	def addQuestion(self, projectID, question):
+		questions = Questions()
+		return questions.addQuestion(projectID, question)

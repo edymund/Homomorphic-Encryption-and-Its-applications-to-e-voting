@@ -1,3 +1,6 @@
+import os
+import shutil
+# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
@@ -23,8 +26,8 @@ from .boundary.aboutUsBoundary import aboutUsBoundary
 from .boundary.admin_publishBoundary import publishBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
-
 from flask import request
+from werkzeug.utils import secure_filename
 
 @app.route('/', methods=['GET'])
 def landingPage():
@@ -33,29 +36,35 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
+
 @app.route('/<projectID>/publish', methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
 def publishPage(projectID):
 	# Creates a boundary object
 	boundary = publishBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
-@app.route('/overview', methods = ['GET', 'POST'])
-def projectOverviewPage():
+
+@app.route('/<projectID>/overview', methods = ['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def projectOverviewPage(projectID):
 	# Create a boundary object
 	boundary = admin_overviewBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
+
 	if request.method == 'POST':
-		title = request.form['name']
-		startDateTime = request.form['startDateTime']
-		endDateTime = request.form['endDateTime']
-		publicKey = request.form['publicKey']
-		response = boundary.onSubmit(title, startDateTime, endDateTime, publicKey)
-		if response == boundary.RESPONSE_SUCCESS:
-			return boundary.displaySuccess()
-		else:
-			return boundary.displayError(message=response)
+		if request.form['action'] == "Delete":
+			return boundary.deleteProject(projectID)
+		elif request.form['action'] == "Save":
+			title = request.form['name']
+			startDateTime = request.form['startDateTime']
+			endDateTime = request.form['endDateTime']
+			publicKey = request.form['publicKey']
+			return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired
@@ -95,24 +104,72 @@ def projectViewQuestions(projectID):
 def projectEditQuestions(projectID, questionID):
 	# Create boundary object
 	boundary = admin_editQuestionsBoundary()
+	
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID)
 	
 	if request.method == 'POST':
 		question = request.form['question']
-		action = request.form['action']
 		if questionID == "new_question" :
 			return boundary.addQuestion(projectID, question)
 		else:
+			action = request.form['action']
 			if action == "Save":
 				return boundary.saveQuestion(projectID, questionID, question)
 			if action == "Delete":
 				return boundary.deleteQuestion(projectID, questionID)
 
-@app.route("/edit_answers", methods=['GET'])
-def projectEditAnswer():
+@app.route("/<projectID>/edit_answers/<questionID>/<candidateID>", methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def projectEditAnswer(projectID, questionID ,candidateID):
 	# Crate boundary object
 	boundary = admin_editAnswersBoundary()
+
+	if request.method == 'GET':
+		return boundary.displayPage(projectID, questionID, candidateID)
+	
+	if request.method == 'POST':
+		action = request.form['action']
+		if action == "Save":
+			# Get Form Fields
+			candidateName = request.form['candidateName']
+			candidateDescription = request.form['candidateDescription']
+
+			newCandidate = False
+			if candidateID == "new_candidate":
+				newCandidate = True
+
+			# Store image and filename
+			filename = None
+			if not boundary.hasPermission(projectID, questionID, candidateID):
+				return boundary.displayError(projectID, boundary.ERROR_UNAUTHROIZED)
+			
+			file = request.files['candidateImageFile']
+			if file.filename != '':
+				filename = secure_filename(file.filename)
+
+			if newCandidate:
+				candidateID = boundary.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+			else:
+				boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+			
+			if filename is not None:
+				# Create Directory if it does not exists
+				print("candidate ID is ", candidateID)
+				if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
+					os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
+
+				# Save file to directory
+				if filename is not None:
+					file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
+			
+			return boundary.displaySuccess(projectID, questionID)
+		
+		if action == "Delete":
+			# Detele candidate
+			shutil.rmtree(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID), ignore_errors=True)
+			return boundary.deleteCandidate(projectID, questionID, candidateID)
 
 @app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
 @loginRequired
@@ -245,6 +302,8 @@ def mainBallotPage():
 	boundary = organizer_mainBallotBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
+	if request.method == 'POST':
+		return boundary.addNewProject()
 
 ###############################################
 #				Voting Pages				  #
@@ -277,6 +336,34 @@ def viewEncryptedVotePage(projID):
 	boundary = voters_ViewEncryptedVotePage()
 	if request.method == 'GET':
 		return boundary.displayPage(projID)
+
+# @app.route('/ViewVoterCoverPage', methods=['GET'])
+# def viewVoterCoverPage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewVoterCoverPage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
+
+# @app.route('/ViewVotingPage', methods=['GET'])
+# def viewVotingPage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewVotingPage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
+
+# @app.route('/ViewSubmittedVotePage', methods=['GET'])
+# def viewSubmittedVotePage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewSubmittedVotePage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
+
+# @app.route('/ViewEncryptedVotePage', methods=['GET'])
+# def viewEncryptedVotePage():
+# 	# Create a boundary object
+# 	boundary = voters_ViewEncryptedVotePage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage()
 
 ###############################################
 @app.route('/resetpassword', methods=['GET','POST'])

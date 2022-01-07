@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, session
 from app.controllers.admin_editQuestionsController import admin_editQuestionsController
 from app.entity.Candidates import Candidates
 from app.entity.Questions import Questions
@@ -8,6 +8,8 @@ class admin_editQuestionsBoundary:
 
 	def checkPermission(self, projectID, questionID):
 		controller = admin_editQuestionsController()
+		if questionID == "new_question":
+			return True
 		return controller.checkPermission(projectID, questionID)
 
 	def displayPage(self, projectID, questionID):
@@ -23,12 +25,15 @@ class admin_editQuestionsBoundary:
 
 		return render_template('admin_editQuestions.html', projectID=projectID, 
 														   projectName=projectName,
+														   questionID=questionID,
 														   question=questionDetails,
-														   candidates=candidateDetails)
+														   candidates=candidateDetails,
+														   userType=session['userType'])
 
-	def addQuestion(self, projectID, projectName):
+	def addQuestion(self, projectID, question):
 		controller = admin_editQuestionsController()
-	
+		questionID = controller.addQuestion(projectID, question)
+		return self.displaySuccess(projectID)
 
 	def saveQuestion(self, projectID, questionID, question):
 		# Check if user has permission to save to this link
@@ -62,6 +67,5 @@ class admin_editQuestionsBoundary:
 	def displaySuccess(self, projectID):
 		return redirect("../../{}/view_questions".format(projectID))
 	
-	def redirect(self):
-		pass
+	
 

@@ -64,12 +64,12 @@ create = ["""
 			CREATE TABLE projdetails (
             projDetailsID INTEGER PRIMARY KEY AUTOINCREMENT,
             title varchar(255) NOT NULL,
-            status varchar(255) NOT NULL DEFAULT 'draft',
-            startDate date NOT NULL,
-            startTime time NOT NULL,
-            endDate date NOT NULL,
-            endTime time NOT NULL,
-            publicKey varchar(255) NOT NULL,
+            status varchar(255) NOT NULL DEFAULT 'DRAFT',
+            startDate date NULL,
+            startTime time NULL,
+            endDate date NULL,
+            endTime time NULL,
+            publicKey varchar(255) NULL,
             UNIQUE (projDetailsID)
             ) 
 			""",
@@ -163,8 +163,8 @@ mycursor.executemany(organizerInsertquery, organizerInsertvalues)
 projDetailsInsertquery = "INSERT INTO projdetails (title, status, startDate, startTime, endDate, endTime, publicKey) VALUES (?,?,?,?,?,?,?)"
 ## storing values in a variable
 projDetailsInsertvalues = [
-   ("foodpoll","draft","2022-01-08","09:00","2022-01-08","12:00","abababba"),
-   ("president","draft","2022-01-10","10:00","2022-01-11","17:00","vavavava")
+   ("foodpoll","DRAFT","2022-01-08","09:00","2022-01-08","12:00","abababba"),
+   ("president","DRAFT","2022-01-10","10:00","2022-01-11","17:00","vavavava")
 ]
 
 ## executing the query with values
