@@ -1,5 +1,5 @@
 from ..controllers.admin_editAnswersController import admin_editAnswersController
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, session
 
 class admin_editAnswersBoundary:
 	def __init__(self):
@@ -17,7 +17,9 @@ class admin_editAnswersBoundary:
 		projectName = controller.getProjectName(projectID)
 		candidateDetails = controller.getCandidateDetails(candidateID)
 
-		return render_template('admin_editAnswers.html', projectName=projectName, candidate=candidateDetails)
+		return render_template('admin_editAnswers.html', projectName=projectName, 
+														 candidate=candidateDetails,
+														 userType=session['userType'])
 	
 	def updateCandidate(self, projectID, questionID, candidateID, candidateName, candidateDescription, filename):
 		if not self.hasPermission(projectID, questionID, candidateID):
