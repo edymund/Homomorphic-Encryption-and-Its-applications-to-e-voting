@@ -43,12 +43,13 @@ def publishPage(projectID):
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
-@app.route('/overview', methods = ['GET', 'POST'])
-def projectOverviewPage():
+@app.route('/<projectID>/overview', methods = ['GET', 'POST'])
+def projectOverviewPage(projectID):
 	# Create a boundary object
 	boundary = admin_overviewBoundary()
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
+		
 	if request.method == 'POST':
 		title = request.form['name']
 		startDateTime = request.form['startDateTime']

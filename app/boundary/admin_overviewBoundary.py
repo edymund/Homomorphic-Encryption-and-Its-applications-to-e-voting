@@ -6,8 +6,11 @@ class admin_overviewBoundary:
 		self.RESPONSE_SUCCESS = "Success"
 		pass
 
-	def displayPage(self):
-		return render_template('admin_overview.html')
+	def displayPage(self, projectID):
+		controller = admin_overviewController()
+		projectDetails = controller.getProjectDetails(projectID)
+		print(projectDetails)
+		return render_template('admin_overview.html', projectID=projectID, projectDetails=projectDetails)
 
 	def onSubmit(self, title, startDateTime, endDateTime, publicKey):
 		organizerID = session['organizerID'];   
@@ -18,7 +21,7 @@ class admin_overviewBoundary:
 	#display success
 	def displaySuccess(self):
 		flash("Project added successfully. Please check the project in the main ballot page.", 'message')
-		return redirect('/mainballot')
+		return self.displayPage()
 
 	def displayError(self, message):  
 		return self.displayPage(message)

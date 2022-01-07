@@ -83,3 +83,23 @@ class ProjectDetails:
 		 				VALUES ((?), (?), (?)); """, (organizerID,projID,'administrator',))
 		connection.commit()
 		dbDisconnect(connection)
+
+	def getProjectDetails(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""SELECT projDetailsID, title, status, startDate, startTime, endDate, endTime, publicKey
+								FROM projdetails
+								WHERE projDetailsID = (?)""", (projectID, )).fetchone()
+		
+		dbDisconnect(connection)
+
+		projectDetails = {}
+		projectDetails['id'] = result[0]
+		projectDetails['title'] = result[1]
+		projectDetails['status'] = result[2]
+		projectDetails['startDateTime'] = result[3] + "T" + result[4]
+		projectDetails['endDateTime'] = result[5] + "T" + result[6]
+		projectDetails['publicKey'] = result[7]
+		
+		return projectDetails

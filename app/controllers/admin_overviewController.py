@@ -5,6 +5,10 @@ import datetime
 class admin_overviewController:
 	def __init__(self):
 		pass
+	
+	def getProjectDetails(self, projectID):
+		projectDetails = ProjectDetails()
+		return projectDetails.getProjectDetails(projectID)
 
 	def addNewProj(self,userID, title, startDateTime, endDateTime, publicKey):
 		""" 
