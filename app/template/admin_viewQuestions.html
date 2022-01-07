@@ -1,17 +1,19 @@
 {% extends "user_baseTemplate.html" %} 
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_viewQuestions.css') }}" />
 {% endblock %} 
 
 {% block body %}
-    <h2>Manage Questions</h2>
+	<h2>Manage Questions</h2>
 	<div id="header">
 		<form action="edit_questions/new_question" method="GET">
 			<label for="projectNameField">Project Name:</label>
-			<input type="text" id="projectNameField" value="{{ projectName }}" disabled/>
-			<button type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
+			<input type="text" id="projectNameField" value="{{ projectName }}" readonly/>
+			{% if userType == "admin" %}
+				<button type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
+			{% endif %}
 			<!-- <input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}"> -->
 		</form>
 	</div>

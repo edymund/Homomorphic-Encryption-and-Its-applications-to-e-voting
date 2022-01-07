@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, session
 from app.controllers.admin_editQuestionsController import admin_editQuestionsController
 from app.entity.Candidates import Candidates
 from app.entity.Questions import Questions
@@ -27,7 +27,8 @@ class admin_editQuestionsBoundary:
 														   projectName=projectName,
 														   questionID=questionID,
 														   question=questionDetails,
-														   candidates=candidateDetails)
+														   candidates=candidateDetails,
+														   userType=session['userType'])
 
 	def addQuestion(self, projectID, question):
 		controller = admin_editQuestionsController()

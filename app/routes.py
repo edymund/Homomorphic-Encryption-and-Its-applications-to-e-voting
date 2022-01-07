@@ -36,14 +36,20 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
+
 @app.route('/<projectID>/publish', methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
 def publishPage(projectID):
 	# Creates a boundary object
 	boundary = publishBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
+
 @app.route('/<projectID>/overview', methods = ['GET', 'POST'])
+@loginRequired
+@authorisationRequired
 def projectOverviewPage(projectID):
 	# Create a boundary object
 	boundary = admin_overviewBoundary()

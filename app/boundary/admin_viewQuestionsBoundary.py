@@ -1,5 +1,5 @@
 from ..controllers.admin_viewQuestionsController import admin_viewQuestionsController
-from flask import render_template, flash
+from flask import render_template, flash, session
 
 
 class admin_viewQuestionsBoundary:
@@ -16,4 +16,4 @@ class admin_viewQuestionsBoundary:
 	
 	def displayError(self, projectID, error):
 		flash(error)
-		return self.displayPage(projectID)
+		return self.displayPage(projectID, userType=session['userType'])

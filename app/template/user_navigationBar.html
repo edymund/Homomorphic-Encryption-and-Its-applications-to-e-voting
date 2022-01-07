@@ -10,8 +10,8 @@
 		<a href="/{{ projectID }}/view_electionMessage">Manage Election Messages</a>
 		<a href="/{{ projectID }}/view_importList">Manage Voters</a>
 		<a href="/{{ projectID }}/view_emailSettings">Manage Email Notifications</a>
-		<a href="/{{ projectID }}/manage_administrators">
-			{% if userType == "Admin" %}
+		<a href="/{{ projectID }}/publish">
+			{% if userType == "admin" %}
 				Publish Event
 			{% else %}
 				Approve Event

@@ -11,34 +11,34 @@
 	<p>Once published, cannot be changed</p>
 	
 	<form method="POST" action="/publish">
-        <label for="proj_name"><b>Project Name: </b></label>
-        <input type="text" class="proj_name" placeholder="Enter Project Name" name="proj_name" required> <br>
-        
-        <label for="start_date"><b>Start Date: </b></label>
-        <input type="date" class="start_date" name="start_date" required> <br>
+		<label for="proj_name"><b>Project Name: </b></label>
+		<input type="text" class="proj_name" placeholder="Enter Project Name" readonly > <br>
+		
+		<label for="start_date"><b>Start Date: </b></label>
+		<input type="date" class="start_date" readonly> <br>
 
-        <label for="start_time"><b>Start Time: </b></label>
-        <input type="time" class="start_time" name="start_time" required> <br>
+		<label for="start_time"><b>Start Time: </b></label>
+		<input type="time" class="start_time" readonly> <br>
 
-        <label for="end_date"><b>End Date: </b></label>
-        <input type="date" class="end_date" name="end_date" required> <br>
+		<label for="end_date"><b>End Date: </b></label>
+		<input type="date" class="end_date" readonly> <br>
 
-        <label for="end_time"><b>End Time: </b></label>
-        <input type="time" class="end_time" name="end_time" required> <br>
+		<label for="end_time"><b>End Time: </b></label>
+		<input type="time" class="end_time" readonly> <br>
 
-        <div class="formfield">
-            <label for="textarea"><b>Custom Election Message:</b></label>
-            <textarea class="custom_msg" placeholder="Enter Custom Election Message" name="custom_msg" ></textarea> 
-        </div><br>
+		<div class="formfield">
+			<label for="textarea"><b>Custom Election Message:</b></label>
+			<textarea class="custom_msg" placeholder="Enter Custom Election Message" readonly></textarea> 
+		</div><br>
 
-        <div class="formfield">
-            <label for="textarea"><b>Custom Invitation Message:</b></label>
-            <textarea class="custom_invitation_msg" placeholder="Enter Invitation Message" name="custom_invitation_msg" required></textarea>
-        </div>
-        
-        <p>Needs all sub-admins to approve before it is published</p>
-        
-        <button type="submit">Publish</button> <br> <br>
+		<div class="formfield">
+			<label for="textarea"><b>Custom Invitation Message:</b></label>
+			<textarea class="custom_invitation_msg" placeholder="Enter Invitation Message" readonly></textarea>
+		</div>
+		
+		<p>Needs all sub-admins to approve before it is published</p>
+		
+		<button type="submit">Publish</button> <br> <br>
 	</form>
 </div>
 

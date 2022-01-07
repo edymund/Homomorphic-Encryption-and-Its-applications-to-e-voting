@@ -29,7 +29,10 @@ class user_viewElectionMessageBoundary:
 		preMsg = controller.retrieve_pre_election_msg()
 		postMsg = controller.retrieve_post_election_msg()
 		self.process_msg(preMsg, postMsg)
-		return render_template('user_viewElectionMessage.html',preMsg = json.dumps(self.preMsg), postMsg=json.dumps(self.postMsg), projectID=json.dumps(int(projectID)))
+		return render_template('user_viewElectionMessage.html', preMsg = json.dumps(self.preMsg), 
+																postMsg=json.dumps(self.postMsg), 
+																projectID=json.dumps(int(projectID)),
+																userType=session['userType'])
 
 	def onSubmit(self, preMsg, postMsg):
 		controller = ElectionMsgController(projID = self.projectID)
