@@ -9,7 +9,7 @@
     <h2>Edit Question</h2>
     <form action="" method="post">
         <label for="name">Project:</label>
-        <input type="text" id="name" name="name" value={{ projectName}} disabled /><br />
+        <input type="text" id="name" value={{ projectName}} disabled /><br />
 		<label for="questionField">Question:</label>
         <input type="text" 
 			   id="questionField"
@@ -23,13 +23,13 @@
 			   	/> <br />
 		<div>
 			Answers (Click to edit options):
-			<input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}">
+			<a href="../edit_answers/{{ questionID }}/new_candidate"><img class="newQuestionImage" src={{ url_for('static',filename='images/plus.png') }}/></a>
 		</div>
 		<div>
 			<ol>
 				{% for candidate in candidates %}
 				<li>
-					<a href="../edit_answers/{{ candidate.candidateID }}">
+					<a href="../edit_answers/{{candidate.questionID}}/{{ candidate.candidateID }}">
 						{{ candidate.candidateOption }}
 					</a>
 				</li>
