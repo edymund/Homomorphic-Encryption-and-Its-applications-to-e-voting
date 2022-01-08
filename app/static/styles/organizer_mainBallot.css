@@ -21,7 +21,6 @@ input {
 
 /* ballots */
 .all_ballots {
-  width:60%;
   height:100px;
   line-height:100px;
   margin-top:2%;
@@ -62,8 +61,9 @@ body{
 .status{
   color:red;
   left:60%;
-  position: absolute;
+  position: relative;
   text-align: center;
+  align-self: right;
 }
 
 a {

@@ -49,7 +49,7 @@ def publishPage(projectID):
 		if request.form['action'] == "requestVerification":
 			return boundary.requestVerification(projectID)
 		elif request.form['action'] == "verify":
-			pass
+			return boundary.verifyProject(projectID)
 
 
 

@@ -209,3 +209,45 @@ class Administrator:
 		dbDisconnect(connection)
 
 		return db.lastrowid
+	
+	def setVerified(self, projectID, organizers_id):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE administrators SET approval = (?) 
+								WHERE organizerID = (?) AND projID = (?)""", 
+								(True, organizers_id, projectID))
+		
+		connection.commit()
+		# Disconnect from database
+		dbDisconnect(connection)
+
+		if result.rowcount == 1:
+			# print("Updated Successfully in Database")
+			return True
+		return False
+
+	def allSubAdminApprovedProject(self, projectID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""SELECT COUNT(*)
+								FROM administrators 
+								WHERE projID = (?) AND
+									  adminStatus = 'sub-admin' AND
+									  approval IS NULL
+								""", 
+								(projectID, )).fetchone()
+		
+
+		# Disconnect from database
+		dbDisconnect(connection)
+
+		if result[0] == 0:
+			print("True")
+			return True
+		else:
+			print("False")
+			return False
