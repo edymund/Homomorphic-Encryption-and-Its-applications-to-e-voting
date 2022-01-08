@@ -33,7 +33,6 @@ class user_viewEmailSettingsBoundary:
 			controller.update_inv_msg(invMsg)
 			
 		else: 
-			print(f"invMsg")
 			self.invMsg = "This is a default message"
 			controller.update_inv_msg(self.invMsg)
 
