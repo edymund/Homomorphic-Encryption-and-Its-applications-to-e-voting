@@ -21,7 +21,10 @@ class user_viewEmailSettingsBoundary:
 		controller = EmailSettingsController(projID = self.getProjID())
 		invMsg = controller.retrieve_inv_msg()
 		rmdMsg = controller.retrieve_rmd_msg()
-		return render_template('user_emailSetting.html',invMsg =json.dumps(invMsg), rmdMsg =json.dumps(rmdMsg), projectID = self.projectID)
+		return render_template('user_emailSetting.html',invMsg =json.dumps(invMsg), 
+														rmdMsg =json.dumps(rmdMsg), 
+														projectID = self.projectID,
+														userType = session['userType'])
 	
 	def onSubmit(self,invMsg,rmdMsg):
 		controller = EmailSettingsController(projID = self.getProjID())

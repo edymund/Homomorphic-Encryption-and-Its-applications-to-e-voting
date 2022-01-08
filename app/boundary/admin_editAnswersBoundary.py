@@ -17,7 +17,8 @@ class admin_editAnswersBoundary:
 		projectName = controller.getProjectName(projectID)
 		candidateDetails = controller.getCandidateDetails(candidateID)
 
-		return render_template('admin_editAnswers.html', projectName=projectName, 
+		return render_template('admin_editAnswers.html', projectID=projectID, 
+														 projectName=projectName, 
 														 candidate=candidateDetails,
 														 userType=session['userType'])
 	

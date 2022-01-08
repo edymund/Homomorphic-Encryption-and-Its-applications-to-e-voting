@@ -29,11 +29,11 @@ class contactUsBoundary:
 	def onSubmit(self,sender_email,name,subject,feedback):
 		if self.__checkIsValidName(name) and \
 			self.__checkEmailFormat(sender_email):
-			our_email = "fyp.21.s4.03fyp@gmail.com"
+			our_email = "fyp21s403@gmail.com"
 			server = smtplib.SMTP("smtp.gmail.com",587)
 			server.starttls()
 			# login(email address, password)
-			server.login(our_email, "fyp_21_s4_03")
+			server.login(our_email, "eccqringtcgtolnf")
 			msg = 'From: ' + our_email + '\r\nTo: ' + our_email + '\r\nSubject: Feedback: ' + subject + '\r\n\r\nFeedback received from: ' + sender_email+ '\r\n\r\nName: ' + name + '\r\n\r\nFeedback: ' + feedback 
             # sendmail(sender,receiver,message)
 			server.sendmail(our_email,our_email,msg)
