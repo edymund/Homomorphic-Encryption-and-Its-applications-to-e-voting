@@ -1,0 +1,28 @@
+<!-- Extends the basic html template -->
+{% extends "guest_baseTemplate.html" %}
+
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/generateKeys.css') }}"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+<div class="content">
+    <h2>Generate Keys</h2>
+
+    <form method="POST" action="/generatekeys">
+
+        <button type="submit" onclick="location.href='#'">Generate Keys</button> <br> <br>
+
+		<label for="public_key"><b>Public Key: </b></label>
+		<input type="text" placeholder="Generated Public Key" name="public_key" autocomplete="off" disabled> <br>
+
+		<label for="private_key"><b>Private Key: </b></label>
+		<input type="text" placeholder="Generated Private Key" name="private_key" autocomplete="off" disabled> <br>
+	
+
+	</form>	
+</div>
+{% endblock %} 

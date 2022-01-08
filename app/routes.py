@@ -24,6 +24,7 @@ from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
 from .boundary.admin_publishBoundary import publishBoundary
+from .boundary.generateKeysBoundary import generateKeysBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 from flask import request
@@ -422,6 +423,14 @@ def logout():
 	# Redirect to login page
 	return user_logout.redirectToLogin()
 
+@app.route('/generatekeys', methods=['GET','POST'])
+def generateKeysPage():
+	# Creates a boundary object
+	boundary = generateKeysBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+	if request.method == 'POST':
+		return boundary.displayPage()
 	# # Create PublicUser_ExposureStatusBoundary Object
 	# publicUser_exposureStatusBoundary = PublicUser_ExposureStatusUI()
 
