@@ -12,12 +12,14 @@ class Answer:
 
 		if projID is not None:
 			# Select User from database and populate instance variables
-			result = db.execute("""SELECT voterID,answer.candidateID,encryptedAnswer,projID,questionID,candidateOption
+			result = db.execute("""SELECT voterNumber,answer.candidateID,encryptedAnswer,projID,questionID,candidateOption
 									FROM answer 
 									JOIN candidates
 									ON answer.candidateID=candidates.candidateID
+									JOIN voter
+									ON answer.voterID = voter.voterID
 									WHERE projID = (?)
-									ORDER BY voterID ASC, answer.candidateID ASC, questionID ASC""", (projID,)).fetchall()
+									ORDER BY voterNumber ASC, answer.candidateID ASC, questionID ASC""", (projID,)).fetchall()
 
 		dbDisconnect(connection)
 
@@ -38,7 +40,7 @@ class Answer:
 							allResults.append(answerDetails)
 						
 						answerDetails = {}
-						answerDetails['voterID'] = items[0]
+						answerDetails['voterNumber'] = items[0]
 						answerDetails['candidateID'] = items[1]
 						answerDetails['encryptedAnswer'] = [items[2]]
 						answerDetails['projID'] = items[3]
