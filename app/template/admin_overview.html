@@ -14,10 +14,10 @@
 		<input type="text" id="status" {% if projectDetails %} value="{{projectDetails.status}}"" {% endif %} readonly /> <br />
 		
 		<label for="startDateTime">Start Date & Time:</label>
-		<input type="datetime-local" id="startDateTime" name="startDateTime" {% if projectDetails %} value={{projectDetails.startDateTime}} {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/> <br />
+		<input type="datetime-local" id="startDateTime" name="startDateTime" {% if projectDetails %} value="{% if projectDetails.startDateTime %}{{projectDetails.startDateTime}}{% endif %}" {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/> <br />
 		
 		<label for="endDateTime">End Date & Time:</label>
-		<input type="datetime-local" id="endDateTime" name="endDateTime" {% if projectDetails %} value="{{projectDetails.endDateTime}}"" {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/> <br />
+		<input type="datetime-local" id="endDateTime" name="endDateTime" {% if projectDetails %} value="{% if projectDetails.endDateTime %}{{projectDetails.endDateTime}}{% endif %}" {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/> <br />
 		
 		<label for="publicKey">Public Key:</label>
 		<input type="text" id="publicKey" name="publicKey" {% if projectDetails %} value="{{projectDetails.publicKey}}" {% endif %} {% if userType == "sub-admin" %} readonly {% endif %}/><br />
