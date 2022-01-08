@@ -62,10 +62,6 @@ class Organizers:
 
 	#create user account
 	def addNewUser(self,email,password,companyName,firstName,lastName):
-		"""
-		Returns True if record is successfully added to database
-		"""
-		
 		# Open connection to database
 		connection = dbConnect()
 		db = connection.cursor()
