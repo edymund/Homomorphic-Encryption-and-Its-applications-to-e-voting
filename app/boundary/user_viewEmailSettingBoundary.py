@@ -34,12 +34,14 @@ class user_viewEmailSettingsBoundary:
 			
 		else: 
 			self.invMsg = "This is a default message"
+			controller.update_inv_msg(self.invMsg)
 
 		if controller.check_msg(rmdMsg):
 			self.rmdMsg = rmdMsg
 			controller.update_rmd_msg(rmdMsg)
 		else: 
 			self.rmdMsg = "This is a default message"
+			controller.update_inv_msg(self.rmdMsg)
 
 	def send_reminder(self, msg):
 		controller = EmailSettingsController(projID = self.getProjID())

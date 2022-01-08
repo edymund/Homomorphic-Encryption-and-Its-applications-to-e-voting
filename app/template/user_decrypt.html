@@ -1,5 +1,5 @@
 
-{% extends "user_baseTemplate.html" %}
+{% extends "guest_baseTemplate.html" %}
 <!-- Updates the <head> of the webpage -->
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_decrypt.css') }}"/>
@@ -9,45 +9,47 @@
 
 <!-- Updates the <body> of the webpage -->
     {% block body %}
-    <div class="content">
-   
-        <h2>Decrypt</h2>
-        <form method="POST" action="/decrypt">
-            <table style="width:80%; height:50%;">
-                <tr >
-                    <td style="width: 10%;">
-                        <label>Secret key:</label>
-                    </td>
-                    <td style="width:30%">	
-                        <input type="text" id = "secret_key"name ="secret_key">
-                    </td>
-                    <td  rowspan=4>
-                        <textarea class = "result" readonly spellcheck="True" wrap= hard placeholder ="Result"></textarea><br>
-                        <!--TextAREA SHOW RESULT-->
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 10%">
-                        <label>Upload file:</label>
-                    </td>
-                    <td style="width: 30%">
-                        <input type="file" name="data_file" id ="decrypt_file" accept =".csv">
-                    </td>
-                </tr>
-                <tr >
-                    <td style="width: 10%" colspan="2">
-                        <button type="Button">Decrypt</button>
-                    </td>
-                    <!-- <td></td> -->
-                </tr>
-                <tr>
-                    <td style="width: 10%" colspan="2">
-                        <button type="Button">Generate File</button>
-                    </td>
-                    <!-- <td></td> -->
-                </tr>
-                
-            </table>
-        </form>
+    <form method="POST" action="/decrypt">
+        <div class="content">
+            <div class="flex-container">
+                <h2>Decrypt</h2>
+            
+                <table >
+                    <tr >
+                        <td style="width: 10%;">
+                            <label>Secret key:</label>
+                        </td>
+                        <td style="width:30%">	
+                            <input type="text" id = "secret_key"name ="secret_key">
+                        </td>
+                        <td  rowspan=4>
+                            <textarea class = "result" readonly spellcheck="True" wrap= hard placeholder ="Result"></textarea><br>
+                            <!--TextAREA SHOW RESULT-->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%">
+                            <label>Upload file:</label>
+                        </td>
+                        <td style="width: 30%">
+                            <input type="file" name="data_file" id ="decrypt_file" accept =".csv">
+                        </td>
+                    </tr>
+                    <tr >
+                        <td style="width: 10%" colspan="2">
+                            <button type="Button">Decrypt</button>
+                        </td>
+                        <!-- <td></td> -->
+                    </tr>
+                    <tr>
+                        <td style="width: 10%" colspan="2">
+                            <button type="Button">Generate File</button>
+                        </td>
+                        <!-- <td></td> -->
+                    </tr>
+                    
+                </table>
+            </form>
+        </div>
         <!-- </form> -->
     {% endblock %} 
