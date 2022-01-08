@@ -1,5 +1,6 @@
 from ..entity.Administrator import Administrator
 from ..entity.Projectdetails import ProjectDetails
+from ..entity.ElectionMessage import ElectionMessage
 
 class organizer_mainBallotController:
 	def __init__(self):
@@ -12,8 +13,12 @@ class organizer_mainBallotController:
 	def addNewProject(self, organizers_id):
 		projectDetails = ProjectDetails()
 		administrator = Administrator()
+		electionMessage = ElectionMessage()
+
 		projectID = projectDetails.insertNewProject()
 		administrator = administrator.addAdministrator(projectID, organizers_id)
+		electionMessage.createNewRecord(projectID)
+
 		return 
 		
 

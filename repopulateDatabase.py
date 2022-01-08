@@ -87,8 +87,8 @@ create = ["""
 			"""
 			CREATE TABLE electionmsgs (
             electionMsgsID INTEGER PRIMARY KEY AUTOINCREMENT,
-            projID int(11) DEFAULT NULL,
-            preMsg varchar(255) NOT NULL,
+            projID int(11) NOT NULL,
+            preMsg varchar(255) DEFAULT NULL,
             postMsg varchar(255) DEFAULT NULL,
             inviteMsg varchar(255) DEFAULT NULL,
             reminderMsg varchar(255) DEFAULT NULL,
