@@ -17,7 +17,7 @@
 		</tr>
 		<tr>
 			<th class="content-head">
-				id/candidates
+				Voter ID/Candidates
 			</th>
 			{%for name in questions.option %}
 			<th class="content-head">
@@ -28,7 +28,7 @@
 		{%for voter in questions.info %}
 		<tr class="content-body">
 			<td>
-				{{voter.voterID}}
+				{{voter.voterNumber}}
 			</td>
 			{%for ans in voter.encryptedAnswer %}
 			<td>
