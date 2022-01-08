@@ -23,7 +23,22 @@ class publishBoundary:
 													 errorMessages=errorMessages,
 													 userType = session['userType'])
 	
+	def displayError(self, projectID, error):
+		flash(error)
+		return self.displayPage(projectID)
+
 	def requestVerification(self, projectID):
 		controller = admin_publishController()
-		result = controller.requestVerification(projectID)
-		
+		if controller.requestVerification(projectID):
+			return redirect('/mainballot')
+		else:
+			return self.displayError(projectID)
+
+	def verifyProject(self, projectID):
+		controller = admin_publishController()
+		# Set user's approval to True
+		if controller.verifyProject(projectID, session['organizerID']):
+			# Check if all user has approved, if yes change status of project
+			controller.updateProjectStatusToPublished(projectID)
+		return self.displayPage(projectID)
+
