@@ -1,6 +1,6 @@
 from ..dbConfig import dbConnect, dbDisconnect
 class Voter:
-	def __init__(self, projectID = None):
+	def __init__(self, voterID = None):
 		# Check email?
 
 		# Connect to database
@@ -8,26 +8,28 @@ class Voter:
 		db = connection.cursor()
 		hasResult = False
 
-		if projectID is not None:
+		if voterID is not None:
 			result = db.execute("""
-			SELECT voterID, email, projectID
+			SELECT voterID, voterNumber, email, projectID
 			FROM voter
-			WHERE projectID = (?)
-			""",(projectID,)).fetchone()
+			WHERE voterID = (?)
+			""",(voterID,)).fetchone()
 
 			# Populate private instance variables with value or None 
 			if result is not None:
 				hasResult = True
 				self.voterID    = result[0]
-				self.email      = result[1]
-				self.projectID  = result[2]
-
+				self.voterNuber = result[1]
+				self.email      = result[2]
+				self.projectID  = result[3]
+			
 
 		if not hasResult:
-		  self.electionMsgsID = None
-		  self.projID         = None
-		  self.preMsg         = None
-	  
+			self.voterID    = None
+			self.voterNuber = None
+			self.email      = None
+			self.projectID  = None
+		
 		# Disconnect from database
 		dbDisconnect(connection)
 
