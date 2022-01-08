@@ -1,6 +1,27 @@
 <div class="sidenav">
-	<a href="#">Home</a>
-	<a href="#">Manage Profile</a>
-	<a href="#">Create New Ballot</a>
+	<b>Project</b>
+	<a href="/mainballot">View All Projects</a>
+
+
+	{% if projectID %}
+		<a href="/{{ projectID }}/overview">Overview</a>
+		<a href="/{{ projectID }}/manage_administrators">Manage Administrators</a>
+		<a href="/{{ projectID }}/view_questions">Manage Questions</a>
+		<a href="/{{ projectID }}/view_electionMessage">Manage Election Messages</a>
+		<a href="/{{ projectID }}/view_importList">Manage Voters</a>
+		<a href="/{{ projectID }}/view_emailSettings">Manage Email Notifications</a>
+		<a href="/{{ projectID }}/publish">
+			{% if userType == "admin" %}
+				Publish Event
+			{% else %}
+				Approve Event
+			{% endif %}
+		</a>
+	{% endif %}
+	
+	<br/>
+	<b>Account</b>
+	<a href="/changepassword">Change Password</a>
 	<a href="/settings">Settings</a>
+	<a href="/logout">Log out</a>
 </div>

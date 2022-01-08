@@ -2,7 +2,7 @@
 
 <!-- Updates the <head> of the webpage  -->
 {% block head %}
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_settings.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_settings.css') }}"/>
 {% endblock %} 
 
 <!-- Updates the <body> of the webpage -->
@@ -24,8 +24,5 @@
 		<input type="text" placeholder="Company Name" name = "companyName"autocomplete="off"> <br>
 		<button type="submit">Update Particulars</button>
 	</form>
-
-	<button type="submit" onclick="location.href='/changepassword'">Change Password</button>
-
 </div>
 {% endblock %} 

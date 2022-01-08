@@ -11,12 +11,12 @@
 		Sub-administrators will be prompted to verify the details of the voting event before the voting event can go live.
 	</p>
 	
-
 	<form action ="/{{projectID}}/manage_administrators" method="post">
-		<input type="hidden" name="projectID" value="{{ projectID }}"/>
 		<label for="addSubAdminField">Add sub-administrator:</label>
-		<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name="addEmail"/>
-		<button name="action" type="submit" value="addSubAdmin">Add</button>
+		<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name="addEmail" {% if userType == "sub-admin" %} readonly {% endif %}/>
+		{% if userType == "admin" %}
+			<button name="action" type="submit" value="addSubAdmin">Add</button>
+		{% endif %}
 	</form>
 	
 	<table>
@@ -30,13 +30,15 @@
 			<tr>
 				<td>{{ count }}</td>
 				<td>{{ record.email }}</td>
-				<td>
-					<form action ="/{{projectID}}/manage_administrators" method="post">
-						<input type="hidden" name="projectID" value="{{ projectID }}"/>
-						<input type="hidden" name="deleteID" value ={{ record.recordID }} />
-						<button name="action" type="submit" value="deleteSubAdmin"><img src={{ url_for('static',filename='images/cross.png') }}/></button>
-					</form>
-				</td>
+				{% if userType == "admin" %} 
+					<td>
+						<form action ="/{{projectID}}/manage_administrators" method="post">
+							<input type="hidden" name="projectID" value="{{ projectID }}"/>
+							<input type="hidden" name="deleteID" value ={{ record.recordID }} />
+							<button name="action" class="cross_button" type="submit" value="deleteSubAdmin"><img class="cross" src={{ url_for('static',filename='images/cross.png') }} /></button>
+						</form>
+					</td>
+				{% endif %}
 			</tr>
 			{% set count = count + 1 %}
 		{% endfor %}

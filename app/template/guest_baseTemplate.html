@@ -8,8 +8,8 @@
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/guest_baseTemplate.css') }}"/>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script type=text/javascript src="{{url_for('static', filename='js/guest_baseTemplate.js') }}"></script>
-
+		<script type="text/javascript" src="{{url_for('static', filename='js/guest_baseTemplate.js') }}"></script>
+		<script type="text/javascript" src="{{url_for('static', filename='js/commonFunctions.js') }}"></script>
 
 		<!-- Header Block -->
 		{%block head %}
@@ -29,13 +29,13 @@
 		{% endfor %}
 
 		<div class="top-left">
-			<a href="/"><img src={{url_for('static', filename='images/icon.png')}} /></a>
+			<a href="/mainballot"><img src={{url_for('static', filename='images/icon.png')}} /></a>
 		</div>
 	
 		<div class="top-right">
 			<a href="/">Home</a>
-			<a href="#">About Us</a>
-			<a href="#">Contact Us</a>
+			<a href="/aboutUs">About Us</a>
+			<a href="/contactUs">Contact Us</a>
 			<a href="#">Generate Keys</a>
 			<a href="#">Decrypt Results</a>
 			<button type="button" class="login" onclick="location.href='/login'" >Sign up / Login</button>

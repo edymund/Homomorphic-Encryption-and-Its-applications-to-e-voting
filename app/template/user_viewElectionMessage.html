@@ -1,66 +1,33 @@
 {% extends "user_baseTemplate.html" %}
 <!-- Updates the <head> of the webpage -->
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_electionMessage.css') }}"/>
-    <script type=text/javascript src="{{ url_for('static',filename='js/user_viewElectionMsg.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_electionMessage.css') }}"/>
+	<script type=text/javascript src="{{ url_for('static',filename='js/user_viewElectionMsg.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
 <!-- Updates the <body> of the webpage -->
-    {% block body %}
-    <div class="content"> 
-        <h2><b>Election Message</b></h2>
-        <form method="POST" action="/{{projectID}}/view_electionMessage" >
-        <!-- <form method="POST" action="/view_electionMessage" > -->
-            <!-- <table>
-                <tr>
-                    <td>
-                        <h4>
-                            <label for="Pre-ElectionMessage"><b>Pre-Election Message: </b></label>
-                        </h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <textarea id = "preMsg" name ="preMsg" spellcheck="True" wrap= hard ></textarea><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h4>
-                            <label for="Post-ElectionMessage"><b>Post-Election Message: </b></label>
-                        </h4>
-                </tr>
-                <tr>
-                    <td>
-                        <textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard ></textarea><br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="submit">Save</button>
-                    </td>
-                </tr>
-                
-            </table> -->
-        <!-- </form> -->
-        <div class = "flexbox-container">
-            <span>Pre-Election Message:</span>
-            <div class = "flexbox-item flexbox-item-1">
-                <textarea id = "preMsg" name ="preMsg" spellcheck="True" wrap= hard ></textarea><br>
-            </div>
-            <span> Post-Election Message:</span>
-            <div class = "flexbox-item flexbox-item-2">
-                <textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard ></textarea><br>
-            </div>
-            <button type="submit">Save</button>
-        </div>
-        <div class ="space"></div>
+	{% block body %}
+	<div class="content"> 
+		<h2><b>Election Message</b></h2>
+		<form method="POST" action="/{{projectID}}/view_electionMessage" >
+		<div class = "flexbox-container">
+			<span>Pre-Election Message:</span>
+			<div class = "flexbox-item flexbox-item-1">
+				<textarea id = "preMsg" name ="preMsg" spellcheck="True" wrap= hard ></textarea><br>
+			</div>
+			<span> Post-Election Message:</span>
+			<div class = "flexbox-item flexbox-item-2">
+				<textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard ></textarea><br>
+			</div>
+			<button type="submit">Save</button>
+		</div>
+		<div class ="space"></div>
 
-    </form>
-        <script>
-            onload = fillTA("postMsg",{{postMsg | safe}});
-            onload = fillTA("preMsg",{{preMsg | safe }});
-        </script>
-    
-    {% endblock %} 
+	</form>
+		<script>
+			onload = fillTA("postMsg",{{postMsg | safe}});
+			onload = fillTA("preMsg",{{preMsg | safe }});
+		</script>
+	
+	{% endblock %} 

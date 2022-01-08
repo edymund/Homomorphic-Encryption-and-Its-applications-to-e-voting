@@ -1,6 +1,8 @@
 import os
 from flask import Flask, session, redirect, flash
 from functools import wraps
+from .controllers.loginController import loginController
+
 import sqlite3
 
 # Set templates and static directory
@@ -9,6 +11,7 @@ static_dir = os.path.abspath('./app/static')
 
 # Configure app to run from this file
 application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+application.config['UPLOAD_FOLDER'] = "./static/images/projectImages/{}"
 
 # Sessions secret key
 application.secret_key="mykey123456"
@@ -20,9 +23,10 @@ def loginRequired(function):
 		# If user is not authenticated
 		try:
 			# If user is authenticated, proceed as per normal
-			if session['user']:
+			if session['organizer']:
 				print("User authenticated")
-				print(session['user'])
+				print(session['organizer'])
+				session['userType'] = None
 				return function(*args, **kwargs)
 			
 		except KeyError as e:
@@ -37,16 +41,23 @@ def authorisationRequired(function):
 	def decorated_function(*args, **kwargs):
 		# If user is not authorised
 		try:
+			controller = loginController()
 			# If user is authenticated, proceed as per normal
+			session['adminProjectID'] = controller.getProjectID_Admin(session['organizerID'])
+			session['subAdminProjectID'] = controller.getProjectID_SubAdmin(session['organizerID'])
+
+
 			accessedResource = kwargs.get("projectID")
-			print(accessedResource)
-			print(session['adminProjectID'])
-			print(session['subAdminProjectID'])
+			# print(accessedResource)
+			# print(session['adminProjectID'])
+			# print(session['subAdminProjectID'])
 			if int(accessedResource) in session['adminProjectID']:
+				session['userType'] = "admin"
 				print("User is admin of project")
 				return function(*args, **kwargs)
 
 			elif int(accessedResource) in session['subAdminProjectID']:
+				session['userType'] = "sub-admin"
 				print("User is sub-admin of project")
 				return function(*args, **kwargs)
 

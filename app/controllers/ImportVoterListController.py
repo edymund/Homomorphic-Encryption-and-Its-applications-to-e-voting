@@ -1,5 +1,6 @@
 from ..entity.Voter import Voter
 import pandas as pd
+import random 
 
 class ImportVoterListController:
     def __init__(self,voterList = [], projID = None):
@@ -29,12 +30,19 @@ class ImportVoterListController:
                 for value in id:
                     voter.delete_child(value, projID)
             voter.delete_allVoters(projID)
+        
         for email in self.voterList:
-            voter.insert_to_table(email, self.getProjID())
+            password = self.get_random()
+            hash = random.getrandbits(24)
+            hash = str(hex(hash))[2:]
+            voter.insert_to_table(hash,email, self.projID,password)
+
+    def get_random(self):
+       return random.randint(0, 100000000)
 
     def get_all_voters_email(self):
         voter = Voter()
-        list_of_voter = voter.get_all_voters(projID = self.getProjID())
+        list_of_voter = voter.get_all_voters(projectID = self.getProjID())
         return list_of_voter
     
     def processVoterList(self,voterList):
@@ -60,12 +68,5 @@ class ImportVoterListController:
                 self.voterList.append(data)
         return validity
 
-
-        # with open ("try.txt","w") as f:
-        #     proc_datas = datas.Email.to_list()
-        #     for data in proc_datas:
-        #         f.write(str(data).strip()) 
-        #         f.write("\n")
-        #     f.close()
 
         

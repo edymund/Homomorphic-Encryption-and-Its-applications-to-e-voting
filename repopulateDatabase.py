@@ -33,43 +33,43 @@ mycursor.execute("DROP TABLE IF EXISTS  electionmsgs;")
 mycursor.execute("DROP TABLE IF EXISTS  candidates;")
 mycursor.execute("DROP TABLE IF EXISTS  questions;")
 mycursor.execute("DROP TABLE IF EXISTS  projdetails;")
-mycursor.execute("DROP TABLE IF EXISTS  users;")
+mycursor.execute("DROP TABLE IF EXISTS  organizers;")
 
 # Recreate all tables again
 create = ["""
-            CREATE TABLE users (
-            userID INTEGER PRIMARY KEY AUTOINCREMENT,
+            CREATE TABLE organizers (
+            organizerID INTEGER PRIMARY KEY AUTOINCREMENT,
             email varchar(255) NOT NULL,
             password varchar(255) NOT NULL,
             companyName varchar(255) NOT NULL,
             firstName varchar(255) NOT NULL,
             lastName varchar(255) DEFAULT NULL,
-            UNIQUE (userID),
+            UNIQUE (organizerID),
             UNIQUE (email)
             )
 			""",  
 			"""
 			CREATE TABLE administrators (
             administratorsID INTEGER PRIMARY KEY AUTOINCREMENT,
-            userID int(11) NOT NULL,
+            organizerID int(11) NOT NULL,
             projID int(11) NOT NULL,
             adminStatus varchar(255) NOT NULL,
             approval BOOLEAN,
             UNIQUE (administratorsID),
-            FOREIGN KEY (userID) REFERENCES users (userID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (organizerID) REFERENCES organizers (organizerID) ON DELETE CASCADE,
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             ) 
 			""",
             """
 			CREATE TABLE projdetails (
             projDetailsID INTEGER PRIMARY KEY AUTOINCREMENT,
             title varchar(255) NOT NULL,
-            status varchar(255) NOT NULL DEFAULT 'draft',
-            startDate date NOT NULL,
-            startTime time NOT NULL,
-            endDate date NOT NULL,
-            endTime time NOT NULL,
-            publicKey varchar(255) NOT NULL,
+            status varchar(255) NOT NULL DEFAULT 'DRAFT',
+            startDate date NULL,
+            startTime time NULL,
+            endDate date NULL,
+            endTime time NULL,
+            publicKey varchar(255) NULL,
             UNIQUE (projDetailsID)
             ) 
 			""",
@@ -81,7 +81,7 @@ create = ["""
             projectID int(11) NOT NULL,
             password varchar(255) NOT NULL,
             UNIQUE (voterID),
-            FOREIGN KEY (projectID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (projectID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             )
 			""",
 			"""
@@ -93,7 +93,7 @@ create = ["""
             inviteMsg varchar(255) DEFAULT NULL,
             reminderMsg varchar(255) DEFAULT NULL,
             UNIQUE (electionMsgsID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             )
 			""",
 			"""
@@ -103,7 +103,7 @@ create = ["""
             questions varchar(255) NOT NULL,
             questionDesc varchar(255) NOT NULL,
             UNIQUE (questionsID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID)
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             )
 			""",
 			"""
@@ -115,8 +115,8 @@ create = ["""
             image varchar(255) DEFAULT NULL,
             description varchar(255) DEFAULT NULL,
             UNIQUE (candidateID),
-            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID),
-            FOREIGN KEY (questionID) REFERENCES questions (questionsID)
+            FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE,
+            FOREIGN KEY (questionID) REFERENCES questions (questionsID) ON DELETE CASCADE
             ) 
 			""",
             """
@@ -126,8 +126,8 @@ create = ["""
             candidateID int(11) NOT NULL,
             encryptedAnswer varchar(255) NOT NULL,
             UNIQUE (answerID),
-            FOREIGN KEY (voterID) REFERENCES voter (voterID),
-            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID)
+            FOREIGN KEY (voterID) REFERENCES voter (voterID) ON DELETE CASCADE,
+            FOREIGN KEY (candidateID) REFERENCES candidates (candidateID) ON DELETE CASCADE
             ) 
 			"""]
 
@@ -136,42 +136,42 @@ for commands in create:
 	mydb.execute(commands)
 
 print('All tables have been created')
-# userEmail=['glen@hotmail.com','john@hotmail.com']
+# organizerEmail=['glen@hotmail.com','john@hotmail.com']
 # password=['1234','12a4']
 # companyName=['abs','abs']
 # firstName=['glen','john']
 # lastName=['lee','']
 # count = 0
-# for x in userEmail:
+# for x in organizerEmail:
 # 			count += 1
-# #Insert data for users table
-# mycursor.execute("INSERT INTO users (email, password, companyName, firstName, lastName) VALUES( (?), (?), (?), (?), (?) )", (x,password,companyName,firstName,lastName))
+# #Insert data for organizers table
+# mycursor.execute("INSERT INTO organizers (email, password, companyName, firstName, lastName) VALUES( (?), (?), (?), (?), (?) )", (x,password,companyName,firstName,lastName))
 
-#Insert data for users table
-userInsertquery = "INSERT INTO users (email, password, companyName, firstName, lastName) VALUES (?,?,?,?,?)"
+#Insert data for organizers table
+organizerInsertquery = "INSERT INTO organizers (email, password, companyName, firstName, lastName) VALUES (?,?,?,?,?)"
 ## storing values in a variable
-userInsertvalues = [
+organizerInsertvalues = [
     ("glen@hotmail.com","1234","abs","glen","lee"),
     ("john@hotmail.com","12a4","abs","john","NULL")
 ]
 
 ## executing the query with values
-mycursor.executemany(userInsertquery, userInsertvalues)
+mycursor.executemany(organizerInsertquery, organizerInsertvalues)
 
 
 #Insert data for projdetails table
 projDetailsInsertquery = "INSERT INTO projdetails (title, status, startDate, startTime, endDate, endTime, publicKey) VALUES (?,?,?,?,?,?,?)"
 ## storing values in a variable
 projDetailsInsertvalues = [
-   ("foodpoll","draft","2022-01-08","09:00","2022-01-08","12:00","abababba"),
-   ("president","draft","2022-01-10","10:00","2022-01-11","17:00","vavavava")
+   ("foodpoll","DRAFT","2022-01-08","09:00","2022-01-08","12:00","abababba"),
+   ("president","DRAFT","2022-01-10","10:00","2022-01-11","17:00","vavavava")
 ]
 
 ## executing the query with values
 mycursor.executemany(projDetailsInsertquery, projDetailsInsertvalues)
 
 #Insert data for administrators table
-administratorsInsertquery = "INSERT INTO administrators (userID, projID, adminStatus, approval)  VALUES (?,?,?,?)"
+administratorsInsertquery = "INSERT INTO administrators (organizerID, projID, adminStatus, approval)  VALUES (?,?,?,?)"
 ## storing values in a variable
 administratorsInsertvalues = [
    (1, 1, "admin",None),
@@ -286,14 +286,14 @@ mydb.commit()
 print('All entries committed to database')
 # #testing queries
 # #test which project has which admin and subadmins
-# mycursor.execute("SELECT projdetails.title,users.email, users.firstName,users.lastName,administrators.adminStatus FROM administrators INNER JOIN projdetails ON projdetails.projDetailsID = administrators.projID INNER JOIN users ON users.userID = administrators.userID ORDER BY administrators.projID")
+# mycursor.execute("SELECT projdetails.title,organizers.email, organizers.firstName,organizers.lastName,administrators.adminStatus FROM administrators INNER JOIN projdetails ON projdetails.projDetailsID = administrators.projID INNER JOIN organizers ON organizers.organizerID = administrators.organizerID ORDER BY administrators.projID")
 
 # #test to see if questions and candidates are added into the correct project
 # mycursor.execute("SELECT projdetails.title, questions.questions,questions.questionDesc,candidates.candidateOption FROM candidates INNER JOIN projdetails ON projdetails.projDetailsID = candidates.projID INNER JOIN questions ON questions.questionsID = candidates.questionID")
 
 # #test to see what all voters vote for (including voter 6 digit ID)
 # mycursor.execute("SELECT t2.title,t2.questions,t2.questionDesc,t2.candidateOption,t1.voterNumber,t1.email,t1.encryptedAnswer FROM (SELECT voter.voterNumber,voter.email,answer.encryptedAnswer, answer.candidateID FROM answer INNER JOIN voter ON voter.voterID = answer.voterID ORDER BY answer.answerID) AS t1 INNER JOIN (SELECT candidates.candidateID,projdetails.title, questions.questions,questions.questionDesc,candidates.candidateOption FROM candidates INNER JOIN projdetails ON projdetails.projDetailsID = candidates.projID INNER JOIN questions ON questions.questionsID = candidates.questionID) AS t2 ON t1.candidateID = t2.candidateID")
-# mycursor.execute("SELECT * FROM users;")
+# mycursor.execute("SELECT * FROM organizers;")
 # mycursor.execute("SELECT * FROM administrators;")
 myresult = mycursor.fetchall()
 

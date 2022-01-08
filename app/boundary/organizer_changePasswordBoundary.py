@@ -1,7 +1,7 @@
 from flask import render_template, session, flash, redirect
-from ..controllers.user_changePasswordController import user_changePasswordController
+from ..controllers.organizer_changePasswordController import organizer_changePasswordController
 
-class user_changePasswordBoundary:
+class organizer_changePasswordBoundary:
 	# Constructor
 	def __init__(self):
 		self.RESPONSE_SUCCESS = "Success"
@@ -9,7 +9,7 @@ class user_changePasswordBoundary:
 
 	# Other Methods
 	def displayPage(self):
-		return render_template('user_changePassword.html')
+		return render_template('organizer_changePassword.html')
 
 	def __checkIsValidPassword(self, new_password, cfm_password):
 		# Check if passwords match 
@@ -21,10 +21,10 @@ class user_changePasswordBoundary:
 	def onSubmit(self, old_password, new_password,cfm_password):
 		if self.__checkIsValidPassword(new_password, cfm_password):
 			# Create controller to update password
-			controller = user_changePasswordController()
+			controller = organizer_changePasswordController()
 			
 			# Calls the controller to update the user's password
-			email = session['user']
+			email = session['organizer']
 
 			result = controller.updatePassword(email ,old_password, new_password)
 			if result == False:

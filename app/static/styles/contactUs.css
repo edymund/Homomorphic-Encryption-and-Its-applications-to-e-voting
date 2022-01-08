@@ -1,0 +1,57 @@
+/* adding inline block to bold elements so that textbox are align */
+b {
+    display: inline-block;
+    width: 200px;
+}
+  
+/* input box and password */
+input[type=text], input[type=password] {
+    width: 30%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #FFFFFF
+}
+
+/* Textarea */
+.feedback {
+    overflow-wrap: break-word;
+    width: 30%;
+    border: none;
+    resize: none;
+    height:250px;
+    overflow: hidden;
+}
+
+/* Adjust label to be in the middle of textarea */
+.formfield * {
+    vertical-align: middle;
+}
+
+/* Adjust placeholder of textarea to be center */
+.feedback::-webkit-input-placeholder {
+    line-height:250px;
+}
+
+/* login button */
+button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 10px;
+    color: black;
+    background-color: #ddd;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #555;
+    color: white;
+}
+
+.content {
+    margin-top:5%;
+}

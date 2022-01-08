@@ -1,0 +1,60 @@
+{% extends "user_baseTemplate.html" %} 
+
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_publish.css') }}" />
+{% endblock %} 
+
+{% block body %}
+
+<div class="content">
+	<h2>Publish</h2>
+	<p>Once the project is published, the details cannot be changed</p>
+	
+	<form method="POST" action="">
+		<label for="proj_name"><b>Project Name: </b></label>
+		<input type="text" class="proj_name" value="{{ projectDetails.title }}" placeholder="Enter Project Name" readonly > <br>
+		
+		<label for="start_date"><b>Start Date: </b></label>
+		<input type="datetime-local" class="start_date" value="{{ projectDetails.startDateTime }}" readonly> <br>
+
+		<label for="end_date"><b>End Date: </b></label>
+		<input type="datetime-local" class="end_date" value="{{ projectDetails.endDateTime }}" readonly> <br>
+
+		<div class="formfield">
+			<label for="textarea"><b>Custom Election Message:</b></label>
+			<textarea class="custom_msg" readonly>{{preElectionMessage}}</textarea> 
+		</div><br>
+
+		<div class="formfield">
+			<label for="textarea"><b>Custom Invitation Message:</b></label>
+			<textarea class="custom_invitation_msg" readonly>{{ invitationMessage }}</textarea>
+		</div>
+		
+		{% if errorMessages is defined and errorMessages|length > 0 %}
+		<p>
+			<b>Warning</b> <br />
+			<ul>
+				{% for error in errorMessages %}
+					<li>{{ error }}</li> 
+				{% endfor %}
+			</ul>
+			
+		</p>
+		{% endif %}
+		<p>Project will be published automatically when all sub-admins have approved the project details</p>
+		
+		{% if userType == "admin" %}
+			{% if projectDetails.status == 'DRAFT' %}
+				<button type="submit" name="action" value="requestVerification" {% if errorMessages|length > 0 %} disabled {% endif %}>Request Verification</button>
+			{% endif %}
+		{% elif userType == "sub-admin" %}
+			{% if projectDetails.status == 'PENDING APPROVAL' %}
+				<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Verify the project details and approve the project</button>
+			{% endif %}
+		{% endif %}
+		<br/> <br/> 
+		</form>
+</div>
+
+
+{% endblock %}
