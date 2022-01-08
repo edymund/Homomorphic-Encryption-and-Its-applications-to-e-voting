@@ -3,6 +3,7 @@ from ..entity.ElectionMessage import ElectionMessage
 from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
 from ..entity.Voter import Voter
+from ..entity.Administrator import Administrator
 
 class admin_publishController():
 	def __init__(self):
@@ -92,9 +93,27 @@ class admin_publishController():
 			return False
 		
 		# Change status to pending verification
-		projectDetails.setStatusToPendingVerification(projectID)
+		if projectDetails.setStatusToPendingVerification(projectID):
+			# Automatically publish if no sub-admin
+			self.updateProjectStatusToPublished(projectID)
+			return True
+		return False
+
+	def getProjectIsPendingVerification(self, projectID):
+		projectDetails = ProjectDetails()
+		return projectDetails.isPendingVerification(projectID)
 		
-		
-		
+
+	def verifyProject(self, projectID, organizerID):
+		administrator = Administrator()
+		return administrator.setVerified(projectID, organizerID)
+	
+	def updateProjectStatusToPublished(self, projectID):
+		projectDetails = ProjectDetails()
+		administrator = Administrator()
+
+		if administrator.allSubAdminApprovedProject(projectID):
+			projectDetails.setStatusAsPublished(projectID)
+
 
 

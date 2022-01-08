@@ -24,6 +24,7 @@ from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
 from .boundary.admin_publishBoundary import publishBoundary
+from .boundary.user_decryptBoundary import user_decryptBoundary
 
 from app import application as app, boundary, loginRequired, authorisationRequired
 from flask import request
@@ -49,7 +50,7 @@ def publishPage(projectID):
 		if request.form['action'] == "requestVerification":
 			return boundary.requestVerification(projectID)
 		elif request.form['action'] == "verify":
-			pass
+			return boundary.verifyProject(projectID)
 
 
 
@@ -407,6 +408,13 @@ def contactUsPage():
 def aboutUsPage():
 	# Create a boundary object
 	boundary = aboutUsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage()
+
+@app.route('/decrypt', methods=['GET'])
+def user_decrypt():
+	# Create a boundary object
+	boundary = user_decryptBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage()
 
