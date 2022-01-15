@@ -21,25 +21,16 @@ class organizer_emailSettingBoundary:
 		controller = organizer_emailSettingsController(projID = self.getProjID())
 		invMsg = controller.retrieve_inv_msg()
 		rmdMsg = controller.retrieve_rmd_msg()
+		self.process_inv_msg(invMsg)
+		self.process_rmd_msg(rmdMsg)
 		return render_template('organizer_emailSetting.html',invMsg =json.dumps(invMsg), 
 														rmdMsg =json.dumps(rmdMsg), 
 														projectID = self.projectID,
 														userType = session['userType'])
 	
 	def onSubmit(self,invMsg,rmdMsg):
-		controller = organizer_emailSettingsController(projID = self.getProjID())
-		if controller.check_msg(invMsg):
-			controller.update_inv_msg(invMsg)
-		else: 
-			self.invMsg = "This is a default message"
-			controller.update_inv_msg(self.invMsg)
-
-		if controller.check_msg(rmdMsg):
-			self.rmdMsg = rmdMsg
-			controller.update_rmd_msg(rmdMsg)
-		else: 
-			self.rmdMsg = "This is a default message"
-			controller.update_rmd_msg(self.rmdMsg)
+		self.process_inv_msg(invMsg)
+		self.process_rmd_msg(rmdMsg)
 
 	def send_reminder(self, msg):
 		controller = organizer_emailSettingsController(projID = self.getProjID())
@@ -50,3 +41,25 @@ class organizer_emailSettingBoundary:
 			self.rmdMsg = "This is a default message"
 			controller.update_rmd_msg(self.rmdMsg)
 		controller.send_reminder()
+
+	# check if msg is valid
+	def process_rmd_msg(self, rmdMsg):
+		controller = organizer_emailSettingsController(projID = self.projectID)
+		if controller.check_msg(rmdMsg):
+			self.preMsg = rmdMsg
+			controller.update_rmd_msg(rmdMsg)
+		elif not controller.check_msg(rmdMsg):
+			msg = "Remember to vote"
+			self.preMsg = msg
+			controller.update_rmd_msg(msg)
+
+	# check if msg is valid
+	def process_inv_msg(self, invMsg):
+		controller = organizer_emailSettingsController(projID = self.projectID)
+		if controller.check_msg(invMsg):
+			self.postMsg = invMsg
+			controller.update_inv_msg(invMsg)
+		elif not controller.check_msg(invMsg):
+			msg = "You are invited"
+			self.postMsg = msg
+			controller.update_inv_msg(msg)
