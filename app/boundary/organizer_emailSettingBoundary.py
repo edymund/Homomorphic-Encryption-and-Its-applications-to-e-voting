@@ -1,8 +1,8 @@
 from flask import render_template, redirect, session
-from ..controllers.emailSettingsController import EmailSettingsController
+from ..controllers.organizer_emailSettingsController import organizer_emailSettingsController
 import json
 
-class user_viewEmailSettingsBoundary:
+class organizer_emailSettingBoundary:
 	# Constructor
 	def __init__(self, projectID= None):
 		self.projectID = projectID
@@ -18,7 +18,7 @@ class user_viewEmailSettingsBoundary:
 
 	# Other Methods
 	def displayPage(self):
-		controller = EmailSettingsController(projID = self.getProjID())
+		controller = organizer_emailSettingsController(projID = self.getProjID())
 		invMsg = controller.retrieve_inv_msg()
 		rmdMsg = controller.retrieve_rmd_msg()
 		return render_template('organizer_emailSetting.html',invMsg =json.dumps(invMsg), 
@@ -27,7 +27,7 @@ class user_viewEmailSettingsBoundary:
 														userType = session['userType'])
 	
 	def onSubmit(self,invMsg,rmdMsg):
-		controller = EmailSettingsController(projID = self.getProjID())
+		controller = organizer_emailSettingsController(projID = self.getProjID())
 		if controller.check_msg(invMsg):
 			controller.update_inv_msg(invMsg)
 		else: 
@@ -42,7 +42,7 @@ class user_viewEmailSettingsBoundary:
 			controller.update_rmd_msg(self.rmdMsg)
 
 	def send_reminder(self, msg):
-		controller = EmailSettingsController(projID = self.getProjID())
+		controller = organizer_emailSettingsController(projID = self.getProjID())
 		if controller.check_msg(msg):
 			self.rmdMsg = msg
 			controller.update_rmd_msg(msg)

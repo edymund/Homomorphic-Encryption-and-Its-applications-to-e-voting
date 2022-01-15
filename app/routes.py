@@ -13,7 +13,7 @@ from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
 from .boundary.user_viewImportVoterListBoundary import user_viewImportVoterListBoundary
 from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
-from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
+from .boundary.organizer_emailSettingBoundary import organizer_emailSettingBoundary
 from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
 from .boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
@@ -220,7 +220,7 @@ def view_importList(projectID):
 @authorisationRequired
 def view_emailSetting(projectID):
 	# Create a boundary object
-	boundary = user_viewEmailSettingsBoundary(projectID)
+	boundary = organizer_emailSettingBoundary(projectID)
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':

@@ -3,7 +3,7 @@ from ..entity.Voter import Voter
 import smtplib
 from email.message import EmailMessage
 
-class EmailSettingsController:
+class organizer_emailSettingsController:
     def __init__(self, projID = None):
         self.projID = projID
         self.invMsg = ""
