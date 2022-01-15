@@ -220,8 +220,7 @@ def view_importList(projectID):
 @authorisationRequired
 def view_emailSetting(projectID):
 	# Create a boundary object
-	boundary = user_viewEmailSettingsBoundary()
-	boundary.setProjID(projectID)
+	boundary = user_viewEmailSettingsBoundary(projectID)
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
