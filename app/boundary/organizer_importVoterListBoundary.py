@@ -1,8 +1,8 @@
 from flask import render_template, redirect, session
-from ..controllers.ImportVoterListController import ImportVoterListController
+from ..controllers.organizer_ImportVoterListController import organizer_importVoterListController
 import json
 
-class user_viewImportVoterListBoundary:
+class organizer_importVoterListBoundary:
 	# Constructor
 	def __init__(self,projectID= None):
 		self.projectID = projectID
@@ -16,19 +16,19 @@ class user_viewImportVoterListBoundary:
 
 	# Other Methods
 	def displayPage(self,vList=None):
-		return render_template('user_importVotersList.html', voterList =json.dumps(vList), 
+		return render_template('organizer_ImportVotersList.html', voterList =json.dumps(vList), 
 															 projectID = self.projectID,
 															 userType=session['userType'])
 	
 	def onSubmit(self, fileName):
 		# pass
-		controller = ImportVoterListController(projID = self.getProjID())
+		controller = organizer_importVoterListController(projID = self.getProjID())
 		if controller.processVoterList(fileName):
 			controller.update_voter(self.projectID)
 		
 
 	def populateTextArea(self):
-		controller = ImportVoterListController(projID = self.getProjID())
+		controller = organizer_importVoterListController(projID = self.getProjID())
 		# controller.setProjID()
 		voters_list = controller.get_all_voters_email()
 		return voters_list

@@ -11,7 +11,7 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-from .boundary.user_viewImportVoterListBoundary import user_viewImportVoterListBoundary
+from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
 from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
@@ -203,7 +203,7 @@ def view_electionMessage(projectID):
 @authorisationRequired
 def view_importList(projectID):	
 	# Create a boundary object
-	boundary = user_viewImportVoterListBoundary(projectID)
+	boundary = organizer_importVoterListBoundary(projectID)
 	boundary.setProjID(projectID)
 
 	votersList = boundary.populateTextArea()

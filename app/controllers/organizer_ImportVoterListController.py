@@ -2,7 +2,7 @@ from ..entity.Voter import Voter
 import pandas as pd
 import random 
 
-class ImportVoterListController:
+class organizer_importVoterListController:
     def __init__(self,voterList = [], projID = None):
         self.voterList = voterList
         self.projID = projID
