@@ -6,23 +6,9 @@ class organizer_importVoterListController:
     def __init__(self,voterList = [], projID = None):
         self.voterList = voterList
         self.projID = projID
-
-    # accessor
-    def getProjID(self):
-        return self.projID
-
-    # mutator 
-    def setProjID(self,projID):
-        self.projID = projID
-
-    def valid_email(self, email):
-        voter = Voter(self.projID)
-        if voter.email_exist(self.projID,email) == False and email.find("@") > 0 :
-            return True
-        else:
-            return False
         
-    def update_voter(self, projID):
+    def update_voter(self, projID,vList):
+        print("Edmund")
         voter = Voter(projID)
         all_id = voter.get_all_voters_id(projID)
         if len(all_id) >0:
@@ -31,7 +17,7 @@ class organizer_importVoterListController:
                     voter.delete_child(value, projID)
             voter.delete_allVoters(projID)
         
-        for email in self.voterList:
+        for email in vList:
             password = self.get_random()
             hash = random.getrandbits(24)
             hash = str(hex(hash))[2:]
@@ -42,31 +28,10 @@ class organizer_importVoterListController:
 
     def get_all_voters_email(self):
         voter = Voter()
-        list_of_voter = voter.get_all_voters(projectID = self.getProjID())
+        tup_of_voter = voter.get_all_voters(projectID = self.projID)
+        list_of_voter = []
+        for voter in tup_of_voter:
+            list_of_voter.append(voter[0])
         return list_of_voter
-    
-    def processVoterList(self,voterList):
-        """
-        read through the whole file and valid_email it
-        if all True
-        add to list
-        else return to Boundary to display error
-        """
-        col_names=["Email"]
-        datas = pd.read_csv(voterList, names = col_names)
-        validity = False
-        # actual code
-        proc_datas = datas.Email.to_list()
-        
-        for data in proc_datas:
-            if self.valid_email(data) == True:
-                validity = True
-            elif self.valid_email(data) == False:
-                return False
-        if validity == True:
-            for data in proc_datas:
-                self.voterList.append(data)
-        return validity
-
 
         
