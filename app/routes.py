@@ -11,7 +11,7 @@ from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
 from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
-from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
+from .boundary.organizer_viewElectionMessageBoundary import organizer_viewElectionMessageBoundary
 from .boundary.organizer_emailSettingBoundary import organizer_emailSettingBoundary
 from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
