@@ -151,8 +151,8 @@ print('All tables have been created')
 organizerInsertquery = "INSERT INTO organizers (email, password, companyName, firstName, lastName) VALUES (?,?,?,?,?)"
 ## storing values in a variable
 organizerInsertvalues = [
-    ("glen@hotmail.com","1234","abs","glen","lee"),
-    ("john@hotmail.com","12a4","abs","john","NULL")
+    ("glen@hotmail.com","a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3","abs","glen","lee"),
+    ("john@hotmail.com","a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3","abs","john","NULL")
 ]
 
 ## executing the query with values

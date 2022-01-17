@@ -50,23 +50,23 @@ class Organizers:
 		return self.__organizerID
 
 	#verify login credentials
-	def verifyLoginDetails(self, username, password):
+	def verifyLoginDetails(self, username, encrypted_password):
 		""" 
 		Verify the login details against retrieved data from database
 		Returns True if verified successfully
 		Returns False if verification does not match
 		"""
-		if self.__email == username and self.__password == password:
+		if self.__email == username and self.__password == encrypted_password:
 			return True
 		return False
 
 	#create user account
-	def addNewUser(self,email,password,companyName,firstName,lastName):
+	def addNewUser(self,email,encrypted_password,companyName,firstName,lastName):
 		# Open connection to database
 		connection = dbConnect()
 		db = connection.cursor()
 		db.execute("""INSERT INTO organizers (email, password, companyName, firstName, lastName)
-		VALUES((?), (?), (?), (?), (?))""",(email,password,companyName,firstName,lastName,))
+		VALUES((?), (?), (?), (?), (?))""",(email,encrypted_password,companyName,firstName,lastName,))
 		# insert new user record
 		# Commit the update to the database
 		connection.commit()
@@ -74,7 +74,7 @@ class Organizers:
 		# Close the connection to the database
 		dbDisconnect(connection)
 
-	def updatePassword(self, old_pw, new_pw):
+	def updatePassword(self, encrypted_old_password, encrypted_new_password):
 		""" 
 		Updates the password of the user. 
 		Returns True if updated successfully
@@ -82,12 +82,12 @@ class Organizers:
 		"""
 
 		#if old password is NOT equal to database return false
-		if old_pw != self.__password:
+		if encrypted_old_password != self.__password:
 			return False
 		
 		else:
 			# Update the object's recorded password"
-			self.__password = new_pw
+			self.__password = encrypted_new_password
 			# Open connection to database
 			connection = dbConnect()
 			db = connection.cursor()
@@ -95,7 +95,7 @@ class Organizers:
 			# Update the password for the user
 			db.execute("""UPDATE organizers
 						SET password = (?)
-						WHERE email = (?)""", (new_pw, self.__email))
+						WHERE email = (?)""", (encrypted_new_password, self.__email))
 			
 			# Commit the update to the database
 			connection.commit()
@@ -110,7 +110,7 @@ class Organizers:
 			# If no rows has been updated
 			return False	
 
-	def resetPassword(self, new_password):
+	def resetPassword(self, encrypted_password):
 		# Open connection to database
 		connection = dbConnect()
 		db = connection.cursor()
@@ -118,7 +118,7 @@ class Organizers:
 		# Update the password for the user
 		db.execute("""UPDATE organizers
 					SET password = (?)
-					WHERE email = (?)""", (new_password, self.__email))
+					WHERE email = (?)""", (encrypted_password, self.__email))
 		
 		# Commit the update to the database
 		connection.commit()

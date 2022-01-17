@@ -1,15 +1,21 @@
 from ..entity.Organizers import Organizers
+import hashlib
 
 class registrationController:
 	def __init__(self):
 		pass
 	
+	# def encrypt_pw(self,password):
+	# 	encoded_password = password.encode()
+	# 	encrypted_password = hashlib.sha256(encoded_password).hexdigest()
+	# 	return encrypted_password
+		
 	def addUser(self,email,password,companyName,firstName,lastName):
-		# Create user entity object
 		user = Organizers()
+		# encrypted_password = self.encrypt_pw(password)
+		encoded_password = password.encode()
+		encrypted_password = hashlib.sha256(encoded_password).hexdigest()
 
-		# Create a new user
-		return user.addNewUser(email,password,companyName,firstName,lastName)
+		return user.addNewUser(email,encrypted_password,companyName,firstName,lastName)
 
 
-	
