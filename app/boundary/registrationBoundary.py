@@ -35,10 +35,21 @@ class registrationBoundary:
 				return False
 		return True
 
+	def __checkPasswordRequirements(self, password):
+		# Check if passwords match 
+		if not re.search('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$', password):
+			self.ERROR = "Password needs to contain at least 1 lowercase, 1 uppercase and 1 digit"
+			return False
+		if not re.search('.{8}$', password):
+			self.ERROR = "Password must have minimum length of 8 characters"
+			return False
+		return True
+
 	def onSubmit(self,email,password,cfm_password,companyName,firstName,lastName):
 		if self.__checkIsValidFullName(firstName, lastName) and \
 			self.__checkIsValidPassword(password, cfm_password) and \
-			self.__checkEmailFormat(email):
+			self.__checkEmailFormat(email) and \
+			self.__checkPasswordRequirements(password):
 			try:
 				controller = registrationController
 				controller.addUser(self,email,password,companyName,firstName,lastName)
