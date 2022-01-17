@@ -1,0 +1,59 @@
+{% extends "user_baseTemplate.html" %}
+<!-- Updates the <head> of the webpage -->
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_ImportVotersList.css') }}"/>
+	<script type=text/javascript src="{{ url_for('static',filename='js/organizer_ImportVotersList.js') }}"></script>
+{% endblock %} 
+
+<!-- Updates the <body> of the webpage -->
+{% block body %}
+	<div class="content" >
+	
+		<h2>Import voters list</h2>
+		<form method="POST" action="/{{ projectID }}/view_importList" enctype="multipart/form-data">
+
+		<div class = "flexbox-container" >
+			<div class = "flexbox-container-sub">
+				<div class = "flexbox-item flexbox-item-upload">
+					<span>Upload file:</span>
+					<input type="text" id ="voter-list-tb" readonly>
+					<input type="file" id="myFile" name= "filename" onchange = "showname();" accept =".csv" hidden>
+					{% if userType == "admin" %}
+						<input type="button" name="filename-btn" value ="File" onclick="openfile();" >
+					{% endif %}
+					{% if userType == "admin" %}
+					<button type="submit">Upload</button>
+				{% endif %}
+					<span id="errorMsg"></span>
+
+				</div>
+				<div class = "flexbox-item flexbox-item-image">
+					<span>Csv file format</span>
+					<!-- trigger modal -->
+					<img id="myImg" src={{ url_for('static',filename='images/voterlist-sample.JPG') }}  alt="voterlist" onclick= "imgclick()">
+					<!-- modal -->
+					<div id="myModal" class="modal">
+						<!-- The Close Button -->
+						<span class="close" onclick = "spanclose()">&times;</span>
+						<!-- Modal Content (The Image) -->
+						<img class="modal-content" id="imgVL">
+
+						<!-- Modal Caption (Image Text) -->
+						<div id="caption"></div>
+					</div>
+				</div>
+			</div>
+			<div class = "flexbox-item flexbox-item-list">
+				<span>Voters</span>
+				<ol>
+					{% for voter in voterList %}
+						<li>{{voter}}</li>
+					{% endfor %}
+				</ol>
+
+			</div>
+			
+		</div>
+	</div>
+	
+	{% endblock %} 
