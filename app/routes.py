@@ -11,7 +11,7 @@ from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministrat
 from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
 from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
 from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
-from .boundary.user_viewImportVoterListBoundary import user_viewImportVoterListBoundary
+from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
 from .boundary.user_viewElectionMessageBoundary import user_viewElectionMessageBoundary
 from .boundary.user_viewEmailSettingBoundary import user_viewEmailSettingsBoundary
 from .boundary.loginBoundary import loginBoundary
@@ -203,17 +203,15 @@ def view_electionMessage(projectID):
 @authorisationRequired
 def view_importList(projectID):	
 	# Create a boundary object
-	boundary = user_viewImportVoterListBoundary(projectID)
+	boundary = organizer_importVoterListBoundary(projectID)
 	boundary.setProjID(projectID)
 
-	votersList = boundary.populateTextArea()
 	if request.method == 'GET':		
-		return boundary.displayPage(votersList)
+		return boundary.displayPage()
 	elif request.method == 'POST':
 		file = request.files['filename']
 		response = boundary.onSubmit(file)
-		votersList = boundary.populateTextArea()
-		return boundary.displayPage(votersList)
+		return boundary.displayPage()
 
 @app.route('/<projectID>/view_emailSettings',methods=['GET', 'POST'])
 @loginRequired
@@ -228,14 +226,15 @@ def view_emailSetting(projectID):
 		rmdMsg = request.form['RmdMsg']
 		invMsg = request.form['InvMsg']
 		if request.form["action"] =="Update":
-			response = boundary.onSubmit(invMsg,rmdMsg)
+			status = boundary.onSubmit(invMsg,rmdMsg)
 		if request.form["action"] =="SendEmail":
 			boundary.send_reminder(rmdMsg)
 		
-		# if response == boundary.RESPONSE_SUCCESS:
-		return boundary.displayPage()
+		# if status == 0:
+		# boundary.RESPONSE_SUCCESS()
+		return boundary.displayPage(status)
 		# else:
-		# 	return boundary.displayError(message=response)
+		# 	return boundary.displayError(status)
 		
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():
