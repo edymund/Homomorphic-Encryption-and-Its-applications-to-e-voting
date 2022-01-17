@@ -146,3 +146,14 @@ class Voter:
 
 		return result[0]
 
+	
+	def get_all_voters_info(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+		result = db.execute("""
+		SELECT email,voterNumber,password
+		FROM Voter
+		WHERE projectID = (?)
+		""",(projectID,)).fetchall()
+		return result	
+

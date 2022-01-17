@@ -41,6 +41,9 @@ class ElectionMsgController:
         entity = ElectionMessage(projID= self.projID)
         self.postMsg = entity.getPostMsg()
         return self.postMsg
+
+    
+    
     
 
 
