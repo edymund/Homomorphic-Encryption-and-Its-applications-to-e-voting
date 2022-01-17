@@ -1,6 +1,5 @@
 import os
 import shutil
-# from .boundary.user_viewElectionMessage import user_viewElectionMessageBoundary
 from .boundary.landingPageBoundary import landingPageBoundary
 from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
@@ -187,16 +186,14 @@ def projectEditAnswer(projectID, questionID ,candidateID):
 @authorisationRequired
 def view_electionMessage(projectID):
 	# Create a boundary object
-	boundary = user_viewElectionMessageBoundary()
-	boundary.setProjID(projectID)
-
+	boundary = organizer_viewElectionMessageBoundary(projectID)
 	if request.method == 'GET':
-		return boundary.displayPage(projectID)
+		return boundary.displayPage()
 	elif request.method == 'POST':
 		preMsg = request.form['preMsg']
 		postMsg = request.form['postMsg']
 		response = boundary.onSubmit(preMsg, postMsg)
-		return boundary.displayPage(projectID)
+		return boundary.displayPage()
 
 @app.route('/<projectID>/view_importList',  methods=['GET', 'POST'])
 @loginRequired
