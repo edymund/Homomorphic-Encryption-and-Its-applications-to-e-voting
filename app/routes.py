@@ -338,9 +338,10 @@ def viewVotingPage(projID):
 			answerArray.append(answer)
 		#print(answerArray)
 
-		boundary.onSubmit(answerArray,projID)
-
-		return boundary.displayPage(projID)
+		if boundary.onSubmit(answerArray,projID):
+			return boundary.displaySuccess(projID)
+		else:
+			return boundary.displayError(projID)
 
 
 @app.route('/<projID>/ViewSubmittedVotePage', methods=['GET'])

@@ -1,3 +1,4 @@
+from flask import render_template, redirect, session, flash
 from ast import And
 from flask import render_template
 from app.controllers.voters_ViewVotingPageController import voters_ViewVotingPageController
@@ -66,8 +67,16 @@ class voters_ViewVotingPage:
 			
 		#print("answerArray",ansArr)
 		if controller.insertVoterAns(ansArr,6):
-			return print("Success")
+			print("Success")
+			return True
 		else:
-			return print("Failed")
+			print("Failed")
+			return False
 		
+		#display success
+	def displaySuccess(self,projID):
+		return redirect('/'+ str(projID) + '/ViewSubmittedVotePage')
+
+	def displayError(self, projID):
+		return redirect('/'+ str(projID) + '/ViewSubmittedVotePage')
 
