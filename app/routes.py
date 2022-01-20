@@ -322,12 +322,26 @@ def viewVoterCoverPage(projID):
 	if request.method == 'GET':
 		return boundary.displayPage(projID)
 
-@app.route('/<projID>/ViewVotingPage', methods=['GET'])
+@app.route('/<projID>/ViewVotingPage', methods=['GET','POST'])
 def viewVotingPage(projID):
 	# Create a boundary object
 	boundary = voters_ViewVotingPage()
 	if request.method == 'GET':
 		return boundary.displayPage(projID)
+	if request.method == "POST":
+		boundary = voters_ViewVotingPage()
+		noOfQues = boundary.getNumberofQuestion(projID)
+
+		answerArray = []
+		for i in range(1, noOfQues + 1):
+			answer = request.form['candidate' + '[' + str(i) + ']']
+			answerArray.append(answer)
+		#print(answerArray)
+
+		boundary.onSubmit(answerArray,projID)
+
+		return boundary.displayPage(projID)
+
 
 @app.route('/<projID>/ViewSubmittedVotePage', methods=['GET'])
 def viewSubmittedVotePage(projID):
@@ -342,34 +356,6 @@ def viewEncryptedVotePage(projID):
 	boundary = voters_ViewEncryptedVotePage()
 	if request.method == 'GET':
 		return boundary.displayPage(projID)
-
-# @app.route('/ViewVoterCoverPage', methods=['GET'])
-# def viewVoterCoverPage():
-# 	# Create a boundary object
-# 	boundary = voters_ViewVoterCoverPage()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
-
-# @app.route('/ViewVotingPage', methods=['GET'])
-# def viewVotingPage():
-# 	# Create a boundary object
-# 	boundary = voters_ViewVotingPage()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
-
-# @app.route('/ViewSubmittedVotePage', methods=['GET'])
-# def viewSubmittedVotePage():
-# 	# Create a boundary object
-# 	boundary = voters_ViewSubmittedVotePage()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
-
-# @app.route('/ViewEncryptedVotePage', methods=['GET'])
-# def viewEncryptedVotePage():
-# 	# Create a boundary object
-# 	boundary = voters_ViewEncryptedVotePage()
-# 	if request.method == 'GET':
-# 		return boundary.displayPage()
 
 ###############################################
 @app.route('/resetpassword', methods=['GET','POST'])
