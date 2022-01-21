@@ -81,10 +81,13 @@ class Organizers:
 		Returns False if update failed
 		"""
 
-		#if old password is NOT equal to database return false
+		#if old password is NOT equal to current password return false
 		if encrypted_old_password != self.__password:
 			return False
-		
+		#if new password is equal to current password return same password
+		elif  encrypted_new_password == self.__password:
+			return "Same Password"
+		#else if new password is unique from other password
 		else:
 			# Update the object's recorded password"
 			self.__password = encrypted_new_password

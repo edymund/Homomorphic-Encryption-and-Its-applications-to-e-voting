@@ -7,6 +7,7 @@ class organizer_changePasswordBoundary:
 	def __init__(self):
 		self.RESPONSE_SUCCESS = "Success"
 		self.RESPONSE_INCORRECT_PASSWORD = "Old password is incorrect"
+		self.RESPONSE_SAME_PASSWORD = "Make sure new password is unique from other passwords you use"
 
 	# Other Methods
 	def displayPage(self):
@@ -42,6 +43,8 @@ class organizer_changePasswordBoundary:
 			if result == False:
 				#if old password is different from current password
 				return self.RESPONSE_INCORRECT_PASSWORD
+			elif result == "Same Password":
+				return self.RESPONSE_SAME_PASSWORD
 			else : 
 				return self.RESPONSE_SUCCESS
 		#new password and confirm password dont match
