@@ -1,5 +1,6 @@
 from ..dbConfig import dbConnect, dbDisconnect
 from flask import session
+import hashlib
 
 class Organizers:
 	# Constructor for user
@@ -50,23 +51,23 @@ class Organizers:
 		return self.__organizerID
 
 	#verify login credentials
-	def verifyLoginDetails(self, username, encrypted_password):
+	def verifyLoginDetails(self, username, password):
 		""" 
 		Verify the login details against retrieved data from database
 		Returns True if verified successfully
 		Returns False if verification does not match
 		"""
-		if self.__email == username and self.__password == encrypted_password:
+		if self.__email == username and self.__password == hashlib.sha256(password.encode()).hexdigest():
 			return True
 		return False
 
 	#create user account
-	def addNewUser(self,email,encrypted_password,companyName,firstName,lastName):
+	def addNewUser(self,email,password,companyName,firstName,lastName):
 		# Open connection to database
 		connection = dbConnect()
 		db = connection.cursor()
 		db.execute("""INSERT INTO organizers (email, password, companyName, firstName, lastName)
-		VALUES((?), (?), (?), (?), (?))""",(email,encrypted_password,companyName,firstName,lastName,))
+		VALUES((?), (?), (?), (?), (?))""",(email,hashlib.sha256(password.encode()).hexdigest(),companyName,firstName,lastName,))
 		# insert new user record
 		# Commit the update to the database
 		connection.commit()
@@ -74,7 +75,7 @@ class Organizers:
 		# Close the connection to the database
 		dbDisconnect(connection)
 
-	def updatePassword(self, encrypted_old_password, encrypted_new_password):
+	def updatePassword(self, old_password, new_password):
 		""" 
 		Updates the password of the user. 
 		Returns True if updated successfully
@@ -82,15 +83,13 @@ class Organizers:
 		"""
 
 		#if old password is NOT equal to current password return false
-		if encrypted_old_password != self.__password:
+		if hashlib.sha256(old_password.encode()).hexdigest() != self.__password:
 			return False
 		#if new password is equal to current password return same password
-		elif  encrypted_new_password == self.__password:
+		elif hashlib.sha256(new_password.encode()).hexdigest() == self.__password:
 			return "Same Password"
 		#else if new password is unique from other password
 		else:
-			# Update the object's recorded password"
-			self.__password = encrypted_new_password
 			# Open connection to database
 			connection = dbConnect()
 			db = connection.cursor()
@@ -98,7 +97,7 @@ class Organizers:
 			# Update the password for the user
 			db.execute("""UPDATE organizers
 						SET password = (?)
-						WHERE email = (?)""", (encrypted_new_password, self.__email))
+						WHERE email = (?)""", (hashlib.sha256(new_password.encode()).hexdigest(), self.__email))
 			
 			# Commit the update to the database
 			connection.commit()
@@ -113,7 +112,7 @@ class Organizers:
 			# If no rows has been updated
 			return False	
 
-	def resetPassword(self, encrypted_password):
+	def resetPassword(self, new_password):
 		# Open connection to database
 		connection = dbConnect()
 		db = connection.cursor()
@@ -121,7 +120,7 @@ class Organizers:
 		# Update the password for the user
 		db.execute("""UPDATE organizers
 					SET password = (?)
-					WHERE email = (?)""", (encrypted_password, self.__email))
+					WHERE email = (?)""", (hashlib.sha256(new_password.encode()).hexdigest(), self.__email))
 		
 		# Commit the update to the database
 		connection.commit()

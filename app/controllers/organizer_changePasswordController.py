@@ -10,12 +10,5 @@ class organizer_changePasswordController:
 		# Create a user object
 		user = Organizers(email)
 		# Encrypt passwords
-		encrypted_old_password = self.encrypt_pw(old_password)
-		encrypted_new_password = self.encrypt_pw(new_password)
 		# Update the password of the user
-		return user.updatePassword(encrypted_old_password, encrypted_new_password)
-
-	def encrypt_pw(self,password):
-		encoded_password = password.encode()
-		encrypted_password = hashlib.sha256(encoded_password).hexdigest()
-		return encrypted_password
+		return user.updatePassword(old_password, new_password)
