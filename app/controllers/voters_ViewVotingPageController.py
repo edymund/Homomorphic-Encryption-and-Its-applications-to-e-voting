@@ -29,7 +29,7 @@ class voters_ViewVotingPageController:
 	def getNumberOfQuestions(self,projID):
 		questionEntity = Questions()
 		questions = questionEntity.getQuestions(projID)
-
+		
 		count = 0 
 		for item in questions:
 			count = count + 1
