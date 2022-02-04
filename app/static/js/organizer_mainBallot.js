@@ -6,3 +6,19 @@ $(document).ready(function(){
       });
     });
   });
+
+function showimg(){
+  var modal = document.getElementById("myModal");
+    var img = document.getElementById("myImg");
+    var modalImg = document.getElementById("imgManual");
+    var captionText = document.getElementById("caption");
+    modal.style.display = "block";
+    modalImg.src = img.src;
+    captionText.innerHTML = "User manual";
+}
+
+// When the user clicks on <span> (x), close the modal
+function spanclose() {
+  var modal = document.getElementById("myModal");
+  modal.style.display = "none";
+}
