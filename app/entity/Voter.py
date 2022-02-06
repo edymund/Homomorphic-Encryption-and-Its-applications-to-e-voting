@@ -56,18 +56,18 @@ class Voter:
 		dbDisconnect(connection)
 		
 	# functions
-	def email_exist(self, projectID,try_email):
-		connection = dbConnect()
-		db = connection.cursor()
-		result = db.execute("""
-		SELECT count(1)
-		FROM voter
-		WHERE projectID = (?) and email = (?) 
-		""",(projectID,try_email,)).fetchone()
-		if result[0] > 0:
-			return True
-		elif result[0] <1:
-			return False
+	# def email_exist(self, projectID,try_email):
+	# 	connection = dbConnect()
+	# 	db = connection.cursor()
+	# 	result = db.execute("""
+	# 	SELECT count(1)
+	# 	FROM voter
+	# 	WHERE projectID = (?) and email = (?) 
+	# 	""",(projectID,try_email,)).fetchone()
+	# 	if result[0] > 0:
+	# 		return True
+	# 	elif result[0] <1:
+	# 		return False
 
 	def get_all_voters(self,projectID ):
 		connection = dbConnect()

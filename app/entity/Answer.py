@@ -55,3 +55,22 @@ class Answer:
 				if added:
 					allResults.append(answerDetails)
 				return allResults
+
+	def insertVoterAnswer(self,voterID,candidateID,encryptedAnswer):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		query = db.execute("""SELECT voterID,candidateID,encryptedAnswer 
+									FROM answer
+									WHERE voterID = (?) AND candidateID = (?)""", (voterID,candidateID)).fetchone()
+		if query is not None:
+			dbDisconnect(connection)
+			return False
+		else:
+			db.execute("""INSERT INTO answer(voterID, candidateID, encryptedAnswer)
+								VALUES (?, ?, ?)""", (voterID, candidateID, encryptedAnswer))
+
+			connection.commit()
+			dbDisconnect(connection)
+			return True
