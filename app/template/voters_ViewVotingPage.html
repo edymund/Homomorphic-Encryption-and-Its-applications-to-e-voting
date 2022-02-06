@@ -46,7 +46,7 @@
 				
 				<td class="answerInfo">
 					{% for candidate in questions.option %}
-					<input type="radio" id=candidateRadio{{count}} name=candidate{{count}} value={{candidate.candidateOption}}>
+					<input type="radio" id=candidateRadio{{count}} name=candidate{{count}} value={{candidate.candidateOption}}_{{candidate.questionID}}_{{candidate.candidateID}}>
 					<label for=candidateRadio{{count}}><b>{{candidate.candidateOption}}</b></label><br>
 					{% endfor %}
 					<br>
