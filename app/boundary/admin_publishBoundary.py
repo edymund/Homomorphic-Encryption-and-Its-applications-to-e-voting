@@ -41,6 +41,7 @@ class publishBoundary:
 		if controller.verifyProject(projectID, session['organizerID']):
 			# Check if all user has approved, if yes change status of project
 			controller.updateProjectStatusToPublished(projectID)
+			controller.generate_inv_msg(projectID)
 		return self.displayPage(projectID)
 	
 	def send_mail(self,projectID):

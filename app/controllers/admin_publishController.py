@@ -116,7 +116,7 @@ class admin_publishController():
 
 		if administrator.allSubAdminApprovedProject(projectID):
 			projectDetails.setStatusAsPublished(projectID)
-	
+			
 
 
 	def set_mail(self, sender, receiver, message,email):
