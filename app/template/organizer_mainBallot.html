@@ -17,9 +17,27 @@
     <input id="search_bar" style="font-family: FontAwesome;" placeholder='&#xf002 Search...' />
 
     <h2>
-		All Projects
-		<form action="" method="post" style="display: inline;">
-			<button type="submit" class="icon" style="border: 0px;"><span class="material-icons-outlined">add_circle_outlin</span></button>
+		
+		<form action="" method="post" style="display: inline;">		
+			<div class ="flex-container">
+				<img id="myImg" src={{ url_for('static',filename='images/user-manual.JPG') }}>
+				<span>All Projects</span>
+				<button type="submit" class="icon" style="border: 0px;"><span class="material-icons-outlined">add_circle_outlin</span></button>
+				<div class="flex-btm">
+					<span class ="manual" onclick = "showimg()">View manual</span>
+				</div>
+			</div>
+			<div id="myModal" class="modal">
+				<!-- The Close Button -->
+				<span class="close" onclick = "spanclose()">&times;</span>
+				<!-- Modal Content (The Image) -->
+				<div class= "flex-mid">
+					<img class="modal-content" id="imgManual">
+				</div>
+				<!-- Modal Caption (Image Text) -->
+				<div id="caption"></div>
+			</div>
+
 		</form>
 	</h2>
 

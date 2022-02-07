@@ -316,7 +316,7 @@ def mainBallotPage():
 #				Voting Pages				  #
 ###############################################
 
-@app.route('/<projID>/ViewVoterCoverPage', methods=['GET'])
+@app.route('/<projID>/ ', methods=['GET'])
 def viewVoterCoverPage(projID):
 	# Create a boundary object
 	boundary = voters_ViewVoterCoverPage()
