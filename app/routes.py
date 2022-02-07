@@ -51,6 +51,7 @@ def publishPage(projectID):
 		return boundary.displayPage(projectID)
 	if request.method == 'POST':
 		if request.form['action'] == "requestVerification":
+			boundary.send_mail(projectID)
 			return boundary.requestVerification(projectID)
 		elif request.form['action'] == "verify":
 			return boundary.verifyProject(projectID)

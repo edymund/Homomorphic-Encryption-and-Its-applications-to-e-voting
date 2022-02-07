@@ -4,6 +4,8 @@ from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
 from ..entity.Voter import Voter
 from ..entity.Administrator import Administrator
+import smtplib
+from email.message import EmailMessage
 
 class admin_publishController():
 	def __init__(self):
@@ -114,6 +116,74 @@ class admin_publishController():
 
 		if administrator.allSubAdminApprovedProject(projectID):
 			projectDetails.setStatusAsPublished(projectID)
+	
+
+
+	def set_mail(self, sender, receiver, message,email):
+		email["From"] = sender
+		email["To"] = receiver
+		email["Subject"] = "Invitation for a vote event"
+		email.set_content(message)
+		return email
+
+	def send_mail(self, EMAIL_ADR, EMAIL_PW, email):
+		with smtplib.SMTP("smtp.gmail.com",587) as smtp:
+			smtp.ehlo()
+			smtp.starttls()
+			smtp.ehlo()
+			
+			smtp.login(EMAIL_ADR, EMAIL_PW)
+			smtp.send_message(email)
+			smtp.quit()
+			del email
+
+	def generate_inv_msg(self,projectID):
+		EMAIL_PASSWORD="eccqringtcgtolnf"
+		EMAIL_ADDRESS="fyp21s403@gmail.com"
+		
+		projDetails_entity = ProjectDetails(projectID)
+		administrator_entity = Administrator(projectID)
+		electionMsg_entity = ElectionMessage(projID= projectID)
+		voter_entity = Voter(projectID)	
+
+		proj_title = projDetails_entity.getTitle()
+		proj_start_date = projDetails_entity.getStartDate()
+		proj_start_time = projDetails_entity.getStartTime()
+		proj_end_date = projDetails_entity.getEndDate()
+		proj_end_time = projDetails_entity.getEndTime()
+		
+		admin_info   = 	administrator_entity.get_organizer_info(projectID)
+		admin_name = f"{admin_info[0]} {admin_info[1]}" 
+		company_name = admin_info[2]
+		
+		invt_msg= electionMsg_entity.getInviteMsg()
+		
+		all_voters_info = voter_entity.get_all_voters_info(projectID)
+		
+		for voter_info in all_voters_info: 
+			voters_email= voter_info[0]
+			voters_ID 	= voter_info[1]
+			voters_pw 	= voter_info[2]
+			
+			link = f"http://127.0.0.1:5000/{projectID}/ViewVoterCoverPage/?voterID={voters_ID}&pw={voters_pw}"
+			
+			final_message = f"""
+			========================SYSTEM GENERATED MESSAGE START=====================
+			\nDear Voter,\n 
+			{invt_msg}\n 
+			This email is to inform you that you are invited to participate in the voting event,{proj_title} by {admin_name}, {company_name}.\n 
+			The voting event will start from {proj_start_date},{proj_start_time} to {proj_end_date},{proj_end_time}.\n 
+			Your voter ID is {voters_ID}\n
+			Email link:\n
+			{link}\n\n
+			Regards,\n
+			FYP-21-S4-03.
+			========================SYSTEM GENERATED MESSAGE END=====================
+			"""
+			
+			email_obj = EmailMessage()
+			email = self.set_mail(EMAIL_ADDRESS, voters_email,final_message, email_obj)
+			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 
 
 
