@@ -23,6 +23,13 @@ class ElectionMessage:
 				self.postMsg        = result[3]
 				self.inviteMsg      = result[4]
 				self.reminderMsg    = result[5]
+			else:
+				self.electionMsgsID = None
+				self.projID         = None
+				self.preMsg         = None
+				self.postMsg        = None
+				self.inviteMsg      = None
+				self.reminderMsg    = None
 
 		else:
 			self.electionMsgsID = None
