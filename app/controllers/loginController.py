@@ -1,5 +1,6 @@
 from ..entity.Organizers import Organizers
 from ..entity.Administrator import Administrator
+import hashlib
 
 class loginController:
 	def __init__(self):
@@ -10,10 +11,8 @@ class loginController:
 		Check if the login details provided by is a valid account 
 		Returns True if validated else False
 		"""
-
-		# Create a user object containing details of the NRIC owner
+		# Create a user object
 		user = Organizers(username)
-
 		# Verify if the NRIC and password is correct
 		return user.verifyLoginDetails(username, password)
 	

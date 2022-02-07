@@ -25,18 +25,21 @@ class contactUsBoundary:
 				self.ERROR = "Email format is not valid"
 				return False
 		return True
-	
+
+	def send_email(self,sender_email,name,subject,feedback):
+		our_email = "fyp21s403@gmail.com"
+		server = smtplib.SMTP("smtp.gmail.com",587)
+		server.starttls()
+		# login(email address, password)
+		server.login(our_email, "eccqringtcgtolnf")
+		msg = 'From: ' + our_email + '\r\nTo: ' + our_email + '\r\nSubject: Feedback: ' + subject + '\r\n\r\nFeedback received from: ' + sender_email+ '\r\n\r\nName: ' + name + '\r\n\r\nFeedback: ' + feedback 
+		# sendmail(sender,receiver,message)
+		server.sendmail(our_email,our_email,msg)
+
 	def onSubmit(self,sender_email,name,subject,feedback):
 		if self.__checkIsValidName(name) and \
 			self.__checkEmailFormat(sender_email):
-			our_email = "fyp21s403@gmail.com"
-			server = smtplib.SMTP("smtp.gmail.com",587)
-			server.starttls()
-			# login(email address, password)
-			server.login(our_email, "eccqringtcgtolnf")
-			msg = 'From: ' + our_email + '\r\nTo: ' + our_email + '\r\nSubject: Feedback: ' + subject + '\r\n\r\nFeedback received from: ' + sender_email+ '\r\n\r\nName: ' + name + '\r\n\r\nFeedback: ' + feedback 
-            # sendmail(sender,receiver,message)
-			server.sendmail(our_email,our_email,msg)
+			self.send_email(sender_email,name,subject,feedback)
 			return self.RESPONSE_SUCCESS
 		else:
 			return self.ERROR

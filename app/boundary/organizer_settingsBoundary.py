@@ -43,7 +43,7 @@ class organizer_settingsBoundary:
 			self.__checkIsValidLastName(last_name) and \
 			self.__checkEmailFormat(email):
 			try:
-				username = session['user']
+				username = session['organizer']
 				controller = organizer_settingsController
 				controller.updateUserDetails(self,username,first_name,last_name,email,company_name)
 				return self.RESPONSE_SUCCESS

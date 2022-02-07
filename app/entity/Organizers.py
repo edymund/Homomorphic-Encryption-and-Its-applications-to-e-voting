@@ -1,5 +1,6 @@
 from ..dbConfig import dbConnect, dbDisconnect
 from flask import session
+import hashlib
 
 class Organizers:
 	# Constructor for user
@@ -56,7 +57,7 @@ class Organizers:
 		Returns True if verified successfully
 		Returns False if verification does not match
 		"""
-		if self.__email == username and self.__password == password:
+		if self.__email == username and self.__password == hashlib.sha256(password.encode()).hexdigest():
 			return True
 		return False
 
@@ -66,7 +67,7 @@ class Organizers:
 		connection = dbConnect()
 		db = connection.cursor()
 		db.execute("""INSERT INTO organizers (email, password, companyName, firstName, lastName)
-		VALUES((?), (?), (?), (?), (?))""",(email,password,companyName,firstName,lastName,))
+		VALUES((?), (?), (?), (?), (?))""",(email,hashlib.sha256(password.encode()).hexdigest(),companyName,firstName,lastName,))
 		# insert new user record
 		# Commit the update to the database
 		connection.commit()
@@ -74,20 +75,21 @@ class Organizers:
 		# Close the connection to the database
 		dbDisconnect(connection)
 
-	def updatePassword(self, old_pw, new_pw):
+	def updatePassword(self, old_password, new_password):
 		""" 
 		Updates the password of the user. 
 		Returns True if updated successfully
 		Returns False if update failed
 		"""
 
-		#if old password is NOT equal to database return false
-		if old_pw != self.__password:
+		#if old password is NOT equal to current password return false
+		if hashlib.sha256(old_password.encode()).hexdigest() != self.__password:
 			return False
-		
+		#if new password is equal to current password return same password
+		elif hashlib.sha256(new_password.encode()).hexdigest() == self.__password:
+			return "Same Password"
+		#else if new password is unique from other password
 		else:
-			# Update the object's recorded password"
-			self.__password = new_pw
 			# Open connection to database
 			connection = dbConnect()
 			db = connection.cursor()
@@ -95,7 +97,7 @@ class Organizers:
 			# Update the password for the user
 			db.execute("""UPDATE organizers
 						SET password = (?)
-						WHERE email = (?)""", (new_pw, self.__email))
+						WHERE email = (?)""", (hashlib.sha256(new_password.encode()).hexdigest(), self.__email))
 			
 			# Commit the update to the database
 			connection.commit()
@@ -118,7 +120,7 @@ class Organizers:
 		# Update the password for the user
 		db.execute("""UPDATE organizers
 					SET password = (?)
-					WHERE email = (?)""", (new_password, self.__email))
+					WHERE email = (?)""", (hashlib.sha256(new_password.encode()).hexdigest(), self.__email))
 		
 		# Commit the update to the database
 		connection.commit()

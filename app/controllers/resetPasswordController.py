@@ -1,4 +1,5 @@
 from ..entity.Organizers import Organizers
+import hashlib
 
 class resetPasswordController:
 	def __init__(self):
@@ -16,6 +17,6 @@ class resetPasswordController:
 
 		# Create a user object containing details of the NRIC owner
 		user = Organizers(email)
-
+		# encode int to string
 		# Update the password of the user
 		return user.resetPassword(new_password)
