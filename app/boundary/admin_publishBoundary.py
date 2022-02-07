@@ -30,6 +30,7 @@ class publishBoundary:
 	def requestVerification(self, projectID):
 		controller = admin_publishController()
 		if controller.requestVerification(projectID):
+			self.send_mail(projectID)
 			return redirect('/mainballot')
 		else:
 			return self.displayError(projectID)
@@ -44,5 +45,9 @@ class publishBoundary:
 	
 	def send_mail(self,projectID):
 		controller = admin_publishController()
-		controller.generate_inv_msg(projectID)
+		verifier_arr = controller.get_all_verifier(projectID)
+		if len(verifier_arr) >0:
+			controller.notify_verifier(verifier_arr)
+		else:
+			controller.generate_inv_msg(projectID)
 

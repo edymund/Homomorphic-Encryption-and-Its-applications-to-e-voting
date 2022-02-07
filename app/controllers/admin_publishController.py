@@ -185,5 +185,19 @@ class admin_publishController():
 			email = self.set_mail(EMAIL_ADDRESS, voters_email,final_message, email_obj)
 			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 
+	def get_all_verifier(self, projectID): 
+		administrator_entity = Administrator(projectID)
+		return  administrator_entity.getSubAdministratorsForProject(projectID)
+
+	def notify_verifier(self, verifier_arr):
+		EMAIL_PASSWORD="eccqringtcgtolnf"
+		EMAIL_ADDRESS="fyp21s403@gmail.com"
+		for verifier in verifier_arr:
+			message = f"Dear verifier, do remember to verify the details of the project"
+			email_obj = EmailMessage()
+			email = self.set_mail(EMAIL_ADDRESS, verifier["email"],message, email_obj)
+			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
+		
+
 
 
