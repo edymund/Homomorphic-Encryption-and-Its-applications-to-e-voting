@@ -2,6 +2,7 @@
 
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_publish.css') }}" />
+	<script type=text/javascript src="{{ url_for('static',filename='js/admin_publish.js') }}"></script>
 {% endblock %} 
 
 {% block body %}
@@ -50,6 +51,9 @@
 		{% elif userType == "sub-admin" %}
 			{% if projectDetails.status == 'PENDING APPROVAL' %}
 				<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Verify the project details and approve the project</button>
+				<button type="button" onclick="reject()" >Reject project</button>
+				<textarea id="feedback" rows="6" cols="50"  onchange = "enable_submit()" name ="feedback" hidden></textarea>
+				<button type="submit"  id="rejectBtn"  name="action" value="reject" hidden disabled>Submit feedback</button>
 			{% endif %}
 		{% endif %}
 		<br/> <br/> 

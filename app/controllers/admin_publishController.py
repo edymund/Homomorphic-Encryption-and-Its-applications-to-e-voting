@@ -119,10 +119,10 @@ class admin_publishController():
 			
 
 
-	def set_mail(self, sender, receiver, message,email):
+	def set_mail(self, sender, receiver, message,subject,email):
 		email["From"] = sender
 		email["To"] = receiver
-		email["Subject"] = "Invitation for a vote event"
+		email["Subject"] = subject
 		email.set_content(message)
 		return email
 
@@ -182,7 +182,7 @@ class admin_publishController():
 			"""
 			
 			email_obj = EmailMessage()
-			email = self.set_mail(EMAIL_ADDRESS, voters_email,final_message, email_obj)
+			email = self.set_mail(EMAIL_ADDRESS, voters_email,final_message,"Invitation to participate in voting event", email_obj)
 			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 
 	def get_all_verifier(self, projectID): 
@@ -195,9 +195,17 @@ class admin_publishController():
 		for verifier in verifier_arr:
 			message = f"Dear verifier, do remember to verify the details of the project"
 			email_obj = EmailMessage()
-			email = self.set_mail(EMAIL_ADDRESS, verifier["email"],message, email_obj)
+			email = self.set_mail(EMAIL_ADDRESS, verifier["email"],message,"Invitation to verify voting event", email_obj)
 			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
-		
+	
+	def notify_admin(self, projectID,message):
+		EMAIL_PASSWORD="eccqringtcgtolnf"
+		EMAIL_ADDRESS="fyp21s403@gmail.com"
+		administrator_entity = Administrator(projectID)
+		admin = administrator_entity.getAdministratorsForProject(projectID)
+		email_obj = EmailMessage()
+		email = self.set_mail(EMAIL_ADDRESS, admin[2],message,"Notify reason to reject publish", email_obj)
+		self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 
 
 

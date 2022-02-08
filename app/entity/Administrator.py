@@ -265,3 +265,23 @@ class Administrator:
 			""",(projectID,)).fetchone()
 		
 		return result
+
+	def getAdministratorsForProject(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if projectID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT administrators.administratorsID, administrators.organizerID, organizers.email
+								FROM administrators
+								INNER JOIN organizers ON administrators.organizerID = organizers.organizerID
+								WHERE administrators.projID = (?) AND administrators.adminStatus = 'admin' 
+								""", (projectID,)).fetchone()
+		
+		dbDisconnect(connection)
+
+
+		if result is None:
+			return []
+		else:
+			return result

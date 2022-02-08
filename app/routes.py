@@ -55,9 +55,13 @@ def publishPage(projectID):
 			return boundary.requestVerification(projectID)
 		elif request.form['action'] == "verify":
 			return boundary.verifyProject(projectID)
-
-
-
+		elif request.form['action'] == "reject":
+			message =  request.form['feedback']
+			if message.strip() != "":
+				return boundary.rejectProject(projectID,message)
+			else:
+				return boundary.displayError(projectID,"Please fill in feedback form")
+				
 @app.route('/<projectID>/overview', methods = ['GET', 'POST'])
 @loginRequired
 @authorisationRequired
