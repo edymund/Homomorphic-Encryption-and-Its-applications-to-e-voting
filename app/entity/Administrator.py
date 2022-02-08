@@ -251,3 +251,17 @@ class Administrator:
 		else:
 			print("False")
 			return False
+	
+	def get_organizer_info(self,projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+		result = db.execute(""" 
+			select firstName, lastName, companyName
+			from organizers 
+			JOIN administrators
+			on organizers.organizerID = administrators.organizerID
+			where administrators.projID =(?) 
+			and administrators.adminStatus = 'admin'
+			""",(projectID,)).fetchone()
+		
+		return result

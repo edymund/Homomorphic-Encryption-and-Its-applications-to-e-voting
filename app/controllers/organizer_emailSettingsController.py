@@ -1,9 +1,10 @@
 from ..entity.ElectionMessage import ElectionMessage
 from ..entity.Voter import Voter
+from ..entity.Projectdetails import ProjectDetails
 import smtplib
 from email.message import EmailMessage
 
-class EmailSettingsController:
+class organizer_emailSettingsController:
     def __init__(self, projID = None):
         self.projID = projID
         self.invMsg = ""
@@ -58,9 +59,13 @@ class EmailSettingsController:
         rmd_msg = Election_entity.getReminderMsg()
         all_voters = voter_entity.get_all_voters(self.projID)
 
+        # compulsory message
+        compul_msg = self.generate_message()
+
+        final_msg = rmd_msg+ "\n" + compul_msg
         for voter_email in all_voters: 
             email = EmailMessage()
-            new_email = self.set_mail(EMAIL_ADDRESS, voter_email[0],rmd_msg, email)
+            new_email = self.set_mail(EMAIL_ADDRESS, voter_email[0],final_msg, email)
             self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, new_email)
     
     def set_mail(self, sender, receiver, message,email):
@@ -77,8 +82,25 @@ class EmailSettingsController:
             smtp.ehlo()
             
             smtp.login(EMAIL_ADR, EMAIL_PW)
-            # print(f"Message: {email.get_content()}")
-            # get_picture(msg)
             smtp.send_message(email)
             smtp.quit()
             del email
+    
+    def check_proj_status(self):
+        proj_entity = ProjectDetails(self.projID)
+        if proj_entity.getStatus == "ONGOING":
+            return True
+        else:
+            return False
+
+    def generate_message(self):
+        proj_entity = ProjectDetails(self.projID)
+        proj_title = proj_entity.getTitle()
+        start_date = proj_entity.getStartDate()
+        start_time = proj_entity.getStartTime()
+        end_time = proj_entity.getEndTime()
+        end_date =   proj_entity.getEndDate()
+        msg = f"\n This email is to remind you to participate in the voting event, {proj_title}."+\
+            '\n'+f" Please be reminded to vote from  \n{start_time}, {start_date} to {end_time},{end_date}." 
+
+        return msg

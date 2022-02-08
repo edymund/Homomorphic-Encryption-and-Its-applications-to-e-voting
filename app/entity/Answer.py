@@ -30,15 +30,17 @@ class Answer:
 				question = None
 				voter = None
 				answerDetails = {}
+				added = False
 				for items in result:
-					
+					added=False
 
 					if voter == items[0] and question == items[4]:
+						added = True
 						answerDetails['encryptedAnswer'].append(items[2])
 					else:
 						if question != None and voter != None:
 							allResults.append(answerDetails)
-						
+						added = True
 						answerDetails = {}
 						answerDetails['voterNumber'] = items[0]
 						answerDetails['candidateID'] = items[1]
@@ -50,5 +52,25 @@ class Answer:
 					question = items[4]
 					voter = items[0]
 
-				allResults.append(answerDetails)
+				if added:
+					allResults.append(answerDetails)
 				return allResults
+
+	def insertVoterAnswer(self,voterID,candidateID,encryptedAnswer):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		query = db.execute("""SELECT voterID,candidateID,encryptedAnswer 
+									FROM answer
+									WHERE voterID = (?) AND candidateID = (?)""", (voterID,candidateID)).fetchone()
+		if query is not None:
+			dbDisconnect(connection)
+			return False
+		else:
+			db.execute("""INSERT INTO answer(voterID, candidateID, encryptedAnswer)
+								VALUES (?, ?, ?)""", (voterID, candidateID, encryptedAnswer))
+
+			connection.commit()
+			dbDisconnect(connection)
+			return True
