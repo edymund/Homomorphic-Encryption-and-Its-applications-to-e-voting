@@ -228,6 +228,23 @@ class Administrator:
 			return True
 		return False
 
+	def default_approval(self, projectID, organizers_id):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE administrators SET approval = (?) 
+								WHERE organizerID = (?) AND projID = (?)""", 
+								(False, organizers_id, projectID))
+		connection.commit()
+		# Disconnect from database
+		dbDisconnect(connection)
+
+		if result.rowcount == 1:
+			# print("Updated Successfully in Database")
+			return True
+		return False	
+
 	def allSubAdminApprovedProject(self, projectID):
 		# Connect to database
 		connection = dbConnect()
@@ -265,3 +282,23 @@ class Administrator:
 			""",(projectID,)).fetchone()
 		
 		return result
+
+	def getAdministratorsForProject(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if projectID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT administrators.administratorsID, administrators.organizerID, organizers.email
+								FROM administrators
+								INNER JOIN organizers ON administrators.organizerID = organizers.organizerID
+								WHERE administrators.projID = (?) AND administrators.adminStatus = 'admin' 
+								""", (projectID,)).fetchone()
+		
+		dbDisconnect(connection)
+
+
+		if result is None:
+			return []
+		else:
+			return result

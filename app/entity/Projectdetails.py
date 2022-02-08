@@ -207,4 +207,21 @@ class ProjectDetails:
 			return True
 		else:
 			return False
+	
+	
+	def setStatusAsDraft(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET status = 'DRAFT'
+								WHERE projDetailsID = (?)""", 
+								(projectID, ))
+		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if db.rowcount == 1:
+			return True
+		else:
+			return False
 		
