@@ -54,10 +54,16 @@ class publishBoundary:
 	
 	def rejectProject(self, projectID, message):
 		controller = admin_publishController()
-		controller.notify_admin(projectID, message)
-		flash("Notified project administrator",'error')
-		return self.displayPage(projectID)
+		if message.strip() != "":
+			controller.notify_admin(projectID, message)
+			controller.return_default(projectID)
+			flash("Notified project administrator")
+			return self.displayPage(projectID)
+		else:
+			return self.displayError(projectID,"Please fill in feedback form")
 
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage,'error')
 		return self.displayPage(projectID)
+	
+	

@@ -228,6 +228,23 @@ class Administrator:
 			return True
 		return False
 
+	def default_approval(self, projectID, organizers_id):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE administrators SET approval = (?) 
+								WHERE organizerID = (?) AND projID = (?)""", 
+								(False, organizers_id, projectID))
+		connection.commit()
+		# Disconnect from database
+		dbDisconnect(connection)
+
+		if result.rowcount == 1:
+			# print("Updated Successfully in Database")
+			return True
+		return False	
+
 	def allSubAdminApprovedProject(self, projectID):
 		# Connect to database
 		connection = dbConnect()

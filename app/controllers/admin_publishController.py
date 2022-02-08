@@ -97,7 +97,7 @@ class admin_publishController():
 		# Change status to pending verification
 		if projectDetails.setStatusToPendingVerification(projectID):
 			# Automatically publish if no sub-admin
-			self.updateProjectStatusToPublished(projectID)
+			# self.updateProjectStatusToPublished(projectID)
 			return True
 		return False
 
@@ -206,6 +206,13 @@ class admin_publishController():
 		email_obj = EmailMessage()
 		email = self.set_mail(EMAIL_ADDRESS, admin[2],message,"Notify reason to reject publish", email_obj)
 		self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
-
+	
+	def return_default(self, projectID):
+		projDetails_entity = ProjectDetails(projectID)
+		administrator_entity = Administrator(projectID)
+		projDetails_entity.setStatusAsDraft(projectID)
+		all_verifiers = administrator_entity.getSubAdministratorsForProject(projectID)
+		for verifier in all_verifiers:
+			administrator_entity.default_approval(projectID,verifier['organizerID'])
 
 

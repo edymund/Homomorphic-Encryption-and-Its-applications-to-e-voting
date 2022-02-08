@@ -50,10 +50,14 @@
 			{% endif %}
 		{% elif userType == "sub-admin" %}
 			{% if projectDetails.status == 'PENDING APPROVAL' %}
-				<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Verify the project details and approve the project</button>
-				<button type="button" onclick="reject()" >Reject project</button>
+			<div class = "flexbox-container" >
+				<div class = "flexbox-item">
+					<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Verify the project details and approve the project</button>
+					<button type="button" onclick="reject()" >Reject project</button>
+				</div>
 				<textarea id="feedback" rows="6" cols="50"  onchange = "enable_submit()" name ="feedback" hidden></textarea>
 				<button type="submit"  id="rejectBtn"  name="action" value="reject" hidden disabled>Submit feedback</button>
+			</div>
 			{% endif %}
 		{% endif %}
 		<br/> <br/> 
