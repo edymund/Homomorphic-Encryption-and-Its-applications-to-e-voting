@@ -1,6 +1,6 @@
 from ..dbConfig import dbConnect, dbDisconnect
 
-class Administrator:
+class ProjectRoles:
 	# Constructor for user
 	def __init__(self, organizerID = None):
 		# Connect to database
@@ -10,39 +10,39 @@ class Administrator:
 		hasResult = False
 		if organizerID is not None:
 			# Select User from database and populate instance variables
-			result = db.execute("""SELECT administratorsID, organizerID, projID, adminStatus, approval
-								FROM administrators
+			result = db.execute("""SELECT projectroleID, organizerID, projID, role, approval
+								FROM projectroles
 								WHERE organizerID = (?)""", (organizerID,)).fetchone()
 
 			# If a result is returned, populate object with data
 			if result is not None:
 				hasResult = True
 				# Initialise instance variables for this object
-				self.__administratorsID = result[0]
+				self.__projectroleID = result[0]
 				self.__organizerID = result[1]
 				self.__projID = result[2]
-				self.__adminStatus = result[3]
+				self.__role = result[3]
 				self.__approval = result[4]
 		
 		if not hasResult:
-				self.__administratorsID = None
+				self.__projectroleID = None
 				self.__organizerID = None
 				self.__projID = None
-				self.__adminStatus = None
+				self.__role = None
 				self.__approval = None
 
 		dbDisconnect(connection)
 
-	# Verify if the user is an admin and authorized to view the page
-	def getProjectsAsAdmin(self, organizerID):
+	# Verify if the user is an Owner and authorized to view the page
+	def getProjectsAsOwner(self, organizerID):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		if organizerID is not None:
 			# Select User from database and populate instance variables
 			result = db.execute("""SELECT projID
-								FROM administrators
-								WHERE organizerID = (?) AND adminStatus = 'admin' """, (organizerID,)).fetchall()
+								FROM projectroles
+								WHERE organizerID = (?) AND role = 'owner' """, (organizerID,)).fetchall()
 		
 		dbDisconnect(connection)
 
@@ -54,15 +54,15 @@ class Administrator:
 				projectID.append(item[0])
 			return projectID
 
-	def checkUserHasAdminRights(self, organizerID, projectID):
+	def checkUserHasOwnerRights(self, organizerID, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		if organizerID is not None:
 			# Select User from database and populate instance variables
 			result = db.execute("""SELECT projID
-								FROM administrators
-								WHERE organizerID = (?) AND projID = (?) AND adminStatus = 'admin' """, (organizerID, projectID)).fetchall()
+								FROM projectroles
+								WHERE organizerID = (?) AND projID = (?) AND role = 'owner' """, (organizerID, projectID)).fetchall()
 		
 		dbDisconnect(connection)
 
@@ -71,15 +71,15 @@ class Administrator:
 		else:
 			return True
 
-	def getProjectsAsSubadmin(self, organizerID):
+	def getProjectsAsVerifier(self, organizerID):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		if organizerID is not None:
 			# Select User from database and populate instance variables
 			result = db.execute("""SELECT projID
-								FROM administrators
-								WHERE organizerID = (?) AND adminStatus = 'sub-admin' """, (organizerID,)).fetchall()
+								FROM projectroles
+								WHERE organizerID = (?) AND role = 'verifier' """, (organizerID,)).fetchall()
 		
 		dbDisconnect(connection)
 
@@ -95,31 +95,31 @@ class Administrator:
 	def getProjectDetails(self,organizerID):
 		connection = dbConnect()
 		db = connection.cursor()
-		result = db.execute("""select * from administrators a 
+		result = db.execute("""select * from projectroles a 
             inner join projdetails b on a.projID = b.projDetailsID 
             where a.organizerID = (?)""", (organizerID,)).fetchall()
 		dbDisconnect(connection)
 		return result
 		# Result array in getProjectDetails
-		# adminID = result[0]
+		# ownerID = result[0]
 		# organizerID = result[1]
 		# projID = result[2]
-		# adminStatus = result[3]
+		# role = result[3]
 		# approval = result[4]
 		# projDetailsID = result[5]
 		# projTitle = result[6]
 		# projStatus = result[7]		
 
-	def getSubAdministratorsForProject(self, projectID):
+	def getVerifiersForProject(self, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		if projectID is not None:
 			# Select User from database and populate instance variables
-			result = db.execute("""SELECT administrators.administratorsID, administrators.organizerID, organizers.email
-								FROM administrators
-								INNER JOIN organizers ON administrators.organizerID = organizers.organizerID
-								WHERE administrators.projID = (?) AND administrators.adminStatus = 'sub-admin' 
+			result = db.execute("""SELECT projectroles.projectroleID, projectroles.organizerID, organizers.email
+								FROM projectroles
+								INNER JOIN organizers ON projectroles.organizerID = organizers.organizerID
+								WHERE projectroles.projID = (?) AND projectroles.role = 'verifier' 
 								""", (projectID,)).fetchall()
 		
 		dbDisconnect(connection)
@@ -130,14 +130,14 @@ class Administrator:
 		else:
 			results = []
 			for item in result:
-				subadmin = {}
-				subadmin['recordID'] = item[0]
-				subadmin['organizerID'] = item[1]
-				subadmin['email'] = item[2]
-				results.append(subadmin)
+				verifier = {}
+				verifier['recordID'] = item[0]
+				verifier['organizerID'] = item[1]
+				verifier['email'] = item[2]
+				results.append(verifier)
 			return results
 
-	def addSubAdministrator(self, projectID, email):
+	def addVerifier(self, projectID, email):
 		connection = dbConnect()
 		db = connection.cursor()
 
@@ -153,22 +153,22 @@ class Administrator:
 
 			organizerID = result[0]
 
-			# Verify that the email provided is not a existing sub-admin
+			# Verify that the email provided is not a existing verifier
 			result1 = db.execute("""SELECT organizerID
-								FROM administrators
+								FROM projectroles
 								WHERE 
 									organizerID = (?) AND 
 									projID = (?) AND
-									adminStatus = 'sub-admin'""", (organizerID, projectID)).fetchone()
+									role = 'verifier'""", (organizerID, projectID)).fetchone()
 			
 			if result1 is not None:
 				dbDisconnect(connection)
 				return False
 
-			# Adds the user into the list of administrators
-			result = db.execute("""INSERT INTO administrators 
-								   (organizerID, projID, adminStatus, approval) 
-								   VALUES (?,?,?,?)""", (organizerID, projectID, "sub-admin", None))
+			# Adds the user into the list of projectroles
+			result = db.execute("""INSERT INTO projectroles 
+								   (organizerID, projID, role, approval) 
+								   VALUES (?,?,?,?)""", (organizerID, projectID, "verifier", None))
 			connection.commit()
 			dbDisconnect(connection)
 			return True
@@ -177,16 +177,16 @@ class Administrator:
 			dbDisconnect(connection)
 			return False
 
-	def deleteSubAdministrator(self, projectID, administratorID):
+	def deleteVerifier(self, projectID, projectroleID):
 		connection = dbConnect()
 		db = connection.cursor()
 
-		if projectID is not None and administratorID is not None:
-			result = db.execute("""DELETE FROM administrators
+		if projectID is not None and projectroleID is not None:
+			result = db.execute("""DELETE FROM projectroles
 								   WHERE 
-									administratorsID = (?) AND 
+									projectroleID = (?) AND 
 									projID = (?)
-								   """, (administratorID, projectID))
+								   """, (projectroleID, projectID))
 		connection.commit()
 		dbDisconnect(connection)
 
@@ -197,14 +197,14 @@ class Administrator:
 			print("Deleted {} records".format(result.rowcount))
 			return False
 
-	def addAdministrator(self, projectID, organizers_id):
+	def addOwner(self, projectID, organizers_id):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		if projectID is not None and organizers_id is not None:
-			result = db.execute("""INSERT INTO administrators 
-											(organizerID, projID, adminStatus, approval) 
-											VALUES (?,?,?,?)""", (organizers_id, projectID, "admin", None))
+			result = db.execute("""INSERT INTO projectroles 
+											(organizerID, projID, role, approval) 
+											VALUES (?,?,?,?)""", (organizers_id, projectID, "owner", None))
 		connection.commit()
 		dbDisconnect(connection)
 
@@ -215,7 +215,7 @@ class Administrator:
 		connection = dbConnect()
 		db = connection.cursor()
 
-		result = db.execute("""UPDATE administrators SET approval = (?) 
+		result = db.execute("""UPDATE projectroles SET approval = (?) 
 								WHERE organizerID = (?) AND projID = (?)""", 
 								(True, organizers_id, projectID))
 		
@@ -233,7 +233,7 @@ class Administrator:
 		connection = dbConnect()
 		db = connection.cursor()
 
-		result = db.execute("""UPDATE administrators SET approval = (?) 
+		result = db.execute("""UPDATE projectroles SET approval = (?) 
 								WHERE organizerID = (?) AND projID = (?)""", 
 								(False, organizers_id, projectID))
 		connection.commit()
@@ -245,15 +245,15 @@ class Administrator:
 			return True
 		return False	
 
-	def allSubAdminApprovedProject(self, projectID):
+	def allVerifierApprovedProject(self, projectID):
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()
 
 		result = db.execute("""SELECT COUNT(*)
-								FROM administrators 
+								FROM projectroles 
 								WHERE projID = (?) AND
-									  adminStatus = 'sub-admin' AND
+									  role = 'verifier' AND
 									  approval IS NULL
 								""", 
 								(projectID, )).fetchone()
@@ -275,24 +275,24 @@ class Administrator:
 		result = db.execute(""" 
 			select firstName, lastName, companyName
 			from organizers 
-			JOIN administrators
-			on organizers.organizerID = administrators.organizerID
-			where administrators.projID =(?) 
-			and administrators.adminStatus = 'admin'
+			JOIN projectroles
+			on organizers.organizerID = projectroles.organizerID
+			where projectroles.projID =(?) 
+			and projectroles.role = 'owner'
 			""",(projectID,)).fetchone()
 		
 		return result
 
-	def getAdministratorsForProject(self, projectID):
+	def getOwnersForProject(self, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
 
 		if projectID is not None:
 			# Select User from database and populate instance variables
-			result = db.execute("""SELECT administrators.administratorsID, administrators.organizerID, organizers.email
-								FROM administrators
-								INNER JOIN organizers ON administrators.organizerID = organizers.organizerID
-								WHERE administrators.projID = (?) AND administrators.adminStatus = 'admin' 
+			result = db.execute("""SELECT projectroles.projectroleID, projectroles.organizerID, organizers.email
+								FROM projectroles
+								INNER JOIN organizers ON projectroles.organizerID = organizers.organizerID
+								WHERE projectroles.projID = (?) AND projectroles.role = 'owner' 
 								""", (projectID,)).fetchone()
 		
 		dbDisconnect(connection)

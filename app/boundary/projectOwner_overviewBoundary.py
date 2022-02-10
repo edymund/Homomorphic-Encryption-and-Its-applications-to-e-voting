@@ -1,5 +1,5 @@
 from flask import render_template, redirect, flash, session
-from app.controllers.admin_overviewController import admin_overviewController
+from app.controllers.projectOwner_overviewController import projectOwner_overviewController
 
 class admin_overviewBoundary:
 	def __init__(self):
@@ -7,7 +7,7 @@ class admin_overviewBoundary:
 		pass
 
 	def displayPage(self, projectID):
-		controller = admin_overviewController()
+		controller = projectOwner_overviewController()
 		projectDetails = controller.getProjectDetails(projectID)
 		print(projectDetails)
 		return render_template('admin_overview.html', projectID=projectID, 
@@ -16,7 +16,7 @@ class admin_overviewBoundary:
 
 	def onSubmit(self, projectID, title, startDateTime, endDateTime, publicKey):
 		organizerID = session['organizerID'];   
-		controller = admin_overviewController()
+		controller = projectOwner_overviewController()
 		if controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime, publicKey):
 			return self.displaySuccess(projectID)
 		else:
@@ -32,7 +32,7 @@ class admin_overviewBoundary:
 		return self.displayPage(projectID)
 
 	def deleteProject(self, projectID):
-		controller = admin_overviewController()
+		controller = projectOwner_overviewController()
 		if controller.deleteProject(projectID):
 			return redirect("/mainballot")
 		else:

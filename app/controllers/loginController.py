@@ -1,5 +1,5 @@
 from ..entity.Organizers import Organizers
-from ..entity.Administrator import Administrator
+from ..entity.ProjectOwner import ProjectRoles
 import hashlib
 
 class loginController:
@@ -28,12 +28,12 @@ class loginController:
 		# Get the type of account that is tied to the NRIC 
 		return user.getOrganizerID()
 
-	def getProjectID_Admin(self, organizerID):
-		administrator = Administrator(organizerID)
+	def getProjectID_Owner(self, organizerID):
+		owner = ProjectRoles(organizerID)
 
-		return administrator.getProjectsAsAdmin(organizerID)
+		return owner.getProjectsAsOwner(organizerID)
 
-	def getProjectID_SubAdmin(self, organizerID):
-		administrator = Administrator(organizerID)
+	def getProjectID_Verifier(self, organizerID):
+		owner = ProjectRoles(organizerID)
 
-		return administrator.getProjectsAsSubadmin(organizerID)
+		return owner.getProjectsAsVerifier(organizerID)

@@ -3,11 +3,11 @@ from ..entity.ElectionMessage import ElectionMessage
 from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
 from ..entity.Voter import Voter
-from ..entity.Administrator import Administrator
+from ..entity.ProjectOwner import ProjectRoles
 import smtplib
 from email.message import EmailMessage
 
-class admin_publishController():
+class projectOwner_publishController():
 	def __init__(self):
 		self.errors = []
 	
@@ -107,14 +107,14 @@ class admin_publishController():
 		
 
 	def verifyProject(self, projectID, organizerID):
-		administrator = Administrator()
+		administrator = ProjectRoles()
 		return administrator.setVerified(projectID, organizerID)
 	
 	def updateProjectStatusToPublished(self, projectID):
 		projectDetails = ProjectDetails()
-		administrator = Administrator()
+		administrator = ProjectRoles()
 
-		if administrator.allSubAdminApprovedProject(projectID):
+		if administrator.allVerifierApprovedProject(projectID):
 			projectDetails.setStatusAsPublished(projectID)
 			
 
@@ -142,7 +142,7 @@ class admin_publishController():
 		EMAIL_ADDRESS="fyp21s403@gmail.com"
 		
 		projDetails_entity = ProjectDetails(projectID)
-		administrator_entity = Administrator(projectID)
+		projectOwner_entity = ProjectRoles(projectID)
 		electionMsg_entity = ElectionMessage(projID= projectID)
 		voter_entity = Voter(projectID)	
 
@@ -152,7 +152,7 @@ class admin_publishController():
 		proj_end_date = projDetails_entity.getEndDate()
 		proj_end_time = projDetails_entity.getEndTime()
 		
-		admin_info   = 	administrator_entity.get_organizer_info(projectID)
+		admin_info   = 	projectOwner_entity.get_organizer_info(projectID)
 		admin_name = f"{admin_info[0]} {admin_info[1]}" 
 		company_name = admin_info[2]
 		
@@ -186,8 +186,8 @@ class admin_publishController():
 			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 
 	def get_all_verifier(self, projectID): 
-		administrator_entity = Administrator(projectID)
-		return  administrator_entity.getSubAdministratorsForProject(projectID)
+		projectOwner_entity = ProjectRoles(projectID)
+		return  projectOwner_entity.getVerifiersForProject(projectID)
 
 	def notify_verifier(self, verifier_arr):
 		EMAIL_PASSWORD="eccqringtcgtolnf"
@@ -198,21 +198,21 @@ class admin_publishController():
 			email = self.set_mail(EMAIL_ADDRESS, verifier["email"],message,"Invitation to verify voting event", email_obj)
 			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 	
-	def notify_admin(self, projectID,message):
+	def notify_projectOwner(self, projectID,message):
 		EMAIL_PASSWORD="eccqringtcgtolnf"
 		EMAIL_ADDRESS="fyp21s403@gmail.com"
-		administrator_entity = Administrator(projectID)
-		admin = administrator_entity.getAdministratorsForProject(projectID)
+		projectOwner_entity = ProjectRoles(projectID)
+		admin = projectOwner_entity.getOwnersForProject(projectID)
 		email_obj = EmailMessage()
 		email = self.set_mail(EMAIL_ADDRESS, admin[2],message,"Notify reason to reject publish", email_obj)
 		self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 	
 	def return_default(self, projectID):
 		projDetails_entity = ProjectDetails(projectID)
-		administrator_entity = Administrator(projectID)
+		projectOwner_entity = ProjectRoles(projectID)
 		projDetails_entity.setStatusAsDraft(projectID)
-		all_verifiers = administrator_entity.getSubAdministratorsForProject(projectID)
+		all_verifiers = projectOwner_entity.getVerifiersForProject(projectID)
 		for verifier in all_verifiers:
-			administrator_entity.default_approval(projectID,verifier['organizerID'])
+			projectOwner_entity.default_approval(projectID,verifier['organizerID'])
 
 

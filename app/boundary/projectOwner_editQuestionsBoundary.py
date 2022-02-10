@@ -1,19 +1,20 @@
 from flask import render_template, flash, redirect, url_for, session
-from app.controllers.admin_editQuestionsController import admin_editQuestionsController
+from app.controllers.projectOwner_editQuestionsController import projectOwner_editQuestionsController
 from app.entity.Candidates import Candidates
 from app.entity.Questions import Questions
-class admin_editQuestionsBoundary:
+
+class projectOwner_editQuestionsBoundary:
 	def __init__(self):
 		self.ERROR_NO_PERMISSION = "Not authorised to access this resource"
 
 	def checkPermission(self, projectID, questionID):
-		controller = admin_editQuestionsController()
+		controller = projectOwner_editQuestionsController()
 		if questionID == "new_question":
 			return True
 		return controller.checkPermission(projectID, questionID)
 
 	def displayPage(self, projectID, questionID):
-		controller = admin_editQuestionsController()
+		controller = projectOwner_editQuestionsController()
 
 		# Check if user has permission to save to this link
 		if not self.checkPermission(projectID, questionID):
@@ -31,7 +32,7 @@ class admin_editQuestionsBoundary:
 														   userType=session['userType'])
 
 	def addQuestion(self, projectID, question):
-		controller = admin_editQuestionsController()
+		controller = projectOwner_editQuestionsController()
 		questionID = controller.addQuestion(projectID, question)
 		return self.displaySuccess(projectID)
 
@@ -41,7 +42,7 @@ class admin_editQuestionsBoundary:
 			return self.displayError(projectID, self.ERROR_NO_PERMISSION)
 
 		# Create controller
-		controller = admin_editQuestionsController()
+		controller = projectOwner_editQuestionsController()
 		if controller.saveQuestion(projectID, questionID, question):
 			return self.displaySuccess(projectID)
 		return render_template(projectID, "Failed to update question")

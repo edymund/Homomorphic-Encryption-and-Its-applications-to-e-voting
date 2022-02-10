@@ -1,4 +1,4 @@
-from ..entity.Administrator import Administrator
+from ..entity.ProjectOwner import ProjectRoles
 from ..entity.Projectdetails import ProjectDetails
 from ..entity.ElectionMessage import ElectionMessage
 
@@ -7,16 +7,16 @@ class organizer_mainBallotController:
 		pass
 
 	def getProject(self, organizers_id):
-		proj = Administrator(organizers_id)
+		proj = ProjectRoles(organizers_id)
 		return proj.getProjectDetails(organizers_id)
 	
 	def addNewProject(self, organizers_id):
 		projectDetails = ProjectDetails()
-		administrator = Administrator()
+		administrator = ProjectRoles()
 		electionMessage = ElectionMessage()
 
 		projectID = projectDetails.insertNewProject()
-		administrator = administrator.addAdministrator(projectID, organizers_id)
+		administrator = administrator.addOwner(projectID, organizers_id)
 		electionMessage.createNewRecord(projectID)
 
 		return 

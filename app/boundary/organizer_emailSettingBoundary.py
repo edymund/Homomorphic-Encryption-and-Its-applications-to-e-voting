@@ -66,19 +66,3 @@ class organizer_emailSettingBoundary:
 			msg = "You are invited!"
 			self.postMsg = msg
 			controller.update_inv_msg(msg)
-	
-
-
-
-		
-
-	# def generate_default_inv_msg(self, entity):
-	# 	pass
-
-
-
-	# stray function
-	def generate_compulsory_email(self):
-		controller = organizer_emailSettingsController(projID = self.projectID)
-		projDetails_entity = controller.get_projDetails()
-		organizer_entity = controller.get_organizer()

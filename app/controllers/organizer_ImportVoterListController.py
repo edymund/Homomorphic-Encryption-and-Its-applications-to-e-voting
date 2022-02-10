@@ -8,7 +8,6 @@ class organizer_importVoterListController:
         self.projID = projID
         
     def update_voter(self, projID,vList):
-        print("Edmund")
         voter = Voter(projID)
         all_id = voter.get_all_voters_id(projID)
         if len(all_id) >0:

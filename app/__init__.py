@@ -43,8 +43,8 @@ def authorisationRequired(function):
 		try:
 			controller = loginController()
 			# If user is authenticated, proceed as per normal
-			session['adminProjectID'] = controller.getProjectID_Admin(session['organizerID'])
-			session['subAdminProjectID'] = controller.getProjectID_SubAdmin(session['organizerID'])
+			session['adminProjectID'] = controller.getProjectID_Owner(session['organizerID'])
+			session['subAdminProjectID'] = controller.getProjectID_Verifier(session['organizerID'])
 
 
 			accessedResource = kwargs.get("projectID")
