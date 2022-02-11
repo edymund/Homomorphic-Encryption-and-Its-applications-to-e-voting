@@ -27,8 +27,8 @@ class loginBoundary:
 		# Provide a session and return a success status
 		session['organizer'] = username
 		session['organizerID'] = controller.getOrganizerID(username)
-		session['adminProjectID'] = controller.getProjectID_Admin(session['organizerID'])
-		session['subAdminProjectID'] = controller.getProjectID_SubAdmin(session['organizerID'])
+		session['adminProjectID'] = controller.getProjectID_Owner(session['organizerID'])
+		session['subAdminProjectID'] = controller.getProjectID_Verifier(session['organizerID'])
 
 		return self.RESPONSE_SUCCESS
 	
