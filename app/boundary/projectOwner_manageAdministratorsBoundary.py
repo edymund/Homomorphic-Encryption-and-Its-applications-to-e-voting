@@ -21,19 +21,20 @@ class projectOwner_manageAdministratorsBoundary:
 		
 		# Prevents users from adding themself as sub-administrator
 		if email == session['user']:
-			return self.displayError(projectID, "Unable to add as sub-administrator")
+			return self.displayError(projectID, "Unable to add verifier")
 		
 		# Add sub admin into database
 		if controller.addVerify(projectID, session['user'], email):
 			return self.displayPage(projectID)
 		
-		return self.displayError(projectID, "Failed to add sub-admin")
+		return self.displayError(projectID, "Failed to add verifier")
 		
 
-	def deleteOwner(self, projectID, administratorID):
+	def deleteVerifier(self, projectID, administratorID):
 		controller = projectOwner_manageAdministratorsController()
 		
-		if controller.removeVerifier(projectID, session['user'], administratorID):
+		if controller.removeVerifier(projectID, session['organizer'], administratorID):
+			print("entered1")
 			return self.displayPage(projectID)
-		
-		return self.displayError(projectID, "Failed to remove sub-admin")
+		print("entered2")
+		return self.displayError(projectID, "Failed to remove verifier")

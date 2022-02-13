@@ -89,14 +89,14 @@ def projectManageAdministrator(projectID):
 
 	if request.method == 'POST':
 		dataPosted = request.form['action']
-		if dataPosted == 'addSubAdmin':
-			print("Entering Add Sub-Admin")
+		if dataPosted == 'addVerifier':
+			print("Entering Add Verifier")
 			return boundary.addVerify(projectID, request.form['addEmail'])
 		
-		elif dataPosted == 'deleteSubAdmin':
-			print("Entering Delete Sub-Admin")
+		elif dataPosted == 'deleteVerifier':
+			print("Entering Delete Verifier")
 			print(request.form['deleteID'])
-			return boundary.deleteOwner(projectID, request.form['deleteID'])
+			return boundary.deleteVerifier(projectID, request.form['deleteID'])
 		
 		else:
 			return boundary.displayError("Error with Data Entered")

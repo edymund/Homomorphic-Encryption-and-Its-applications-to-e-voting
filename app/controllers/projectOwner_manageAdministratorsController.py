@@ -1,3 +1,4 @@
+from pickle import FALSE, TRUE
 from ..entity.ProjectOwner import ProjectRoles
 
 class projectOwner_manageAdministratorsController:
@@ -25,8 +26,10 @@ class projectOwner_manageAdministratorsController:
 	
 	def removeVerifier(self, projectID, userID, administratorID):
 		projectOwnerEntity = ProjectRoles()
-
+		print("entered remove verifier")
 		if projectOwnerEntity.checkUserHasOwnerRights(projectID, userID):
+			print("TRUE")
 			if projectOwnerEntity.deleteVerifier(projectID, administratorID):
 				return True
+		print("FALSE-----------------------")
 		return False
