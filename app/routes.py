@@ -5,11 +5,11 @@ from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
 from .boundary.voters_ViewSubmittedVotePage import voters_ViewSubmittedVotePage
 from .boundary.voters_ViewEncryptedVotePage import voters_ViewEncryptedVotePage
-from .boundary.admin_overviewBoundary import admin_overviewBoundary
-from .boundary.admin_manageAdministratorsBoundary import admin_manageAdministratorsBoundary
-from .boundary.admin_viewQuestionsBoundary import admin_viewQuestionsBoundary
-from .boundary.admin_editQuestionsBoundary import admin_editQuestionsBoundary
-from .boundary.admin_editAnswersBoundary import admin_editAnswersBoundary
+from .boundary.projectOwner_overviewBoundary import admin_overviewBoundary
+from .boundary.projectOwner_manageAdministratorsBoundary import projectOwner_manageAdministratorsBoundary
+from .boundary.projectOwner_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
+from .boundary.projectOwner_editQuestionsBoundary import projectOwner_editQuestionsBoundary
+from .boundary.projectOwner_editAnswersBoundary import projectOwner_editAnswersBoundary
 from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
 from .boundary.organizer_viewElectionMessageBoundary import organizer_viewElectionMessageBoundary
 from .boundary.organizer_emailSettingBoundary import organizer_emailSettingBoundary
@@ -22,7 +22,7 @@ from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
-from .boundary.admin_publishBoundary import publishBoundary
+from .boundary.projectOwner_publishBoundary import publishBoundary
 
 from .boundary.generateKeysBoundary import generateKeysBoundary
 
@@ -51,13 +51,14 @@ def publishPage(projectID):
 		return boundary.displayPage(projectID)
 	if request.method == 'POST':
 		if request.form['action'] == "requestVerification":
-			boundary.send_mail(projectID)
 			return boundary.requestVerification(projectID)
 		elif request.form['action'] == "verify":
 			return boundary.verifyProject(projectID)
-
-
-
+		elif request.form['action'] == "reject":
+			feedback_msg =  request.form['feedback']
+			return boundary.rejectProject(projectID, feedback_msg)
+		
+				
 @app.route('/<projectID>/overview', methods = ['GET', 'POST'])
 @loginRequired
 @authorisationRequired
@@ -82,20 +83,20 @@ def projectOverviewPage(projectID):
 @authorisationRequired
 def projectManageAdministrator(projectID):
 	# Create boundary object
-	boundary = admin_manageAdministratorsBoundary()
+	boundary = projectOwner_manageAdministratorsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
 	if request.method == 'POST':
 		dataPosted = request.form['action']
-		if dataPosted == 'addSubAdmin':
-			print("Entering Add Sub-Admin")
-			return boundary.addSubAdministrator(projectID, request.form['addEmail'])
+		if dataPosted == 'addVerifier':
+			print("Entering Add Verifier")
+			return boundary.addVerify(projectID, request.form['addEmail'])
 		
-		elif dataPosted == 'deleteSubAdmin':
-			print("Entering Delete Sub-Admin")
+		elif dataPosted == 'deleteVerifier':
+			print("Entering Delete Verifier")
 			print(request.form['deleteID'])
-			return boundary.deleteAdministrator(projectID, request.form['deleteID'])
+			return boundary.deleteVerifier(projectID, request.form['deleteID'])
 		
 		else:
 			return boundary.displayError("Error with Data Entered")
@@ -105,7 +106,7 @@ def projectManageAdministrator(projectID):
 @authorisationRequired
 def projectViewQuestions(projectID):
 	# Create boundary object
-	boundary = admin_viewQuestionsBoundary()
+	boundary = projectOwner_viewQuestionsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
@@ -114,7 +115,7 @@ def projectViewQuestions(projectID):
 @authorisationRequired
 def projectEditQuestions(projectID, questionID):
 	# Create boundary object
-	boundary = admin_editQuestionsBoundary()
+	boundary = projectOwner_editQuestionsBoundary()
 	
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID)
@@ -135,7 +136,7 @@ def projectEditQuestions(projectID, questionID):
 @authorisationRequired
 def projectEditAnswer(projectID, questionID ,candidateID):
 	# Crate boundary object
-	boundary = admin_editAnswersBoundary()
+	boundary = projectOwner_editAnswersBoundary()
 
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID, candidateID)
@@ -421,17 +422,5 @@ def logout():
 def generateKeysPage():
 	# Creates a boundary object
 	boundary = generateKeysBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-	if request.method == 'POST':
-		return boundary.displayPage()
-	# # Create PublicUser_ExposureStatusBoundary Object
-	# publicUser_exposureStatusBoundary = PublicUser_ExposureStatusUI()
 
-	# # Exposure status is none if user is not a public user
-	# exposureStatus = publicUser_exposureStatusBoundary.getExposureStatus()
-
-	# # Displays the webpage
-	# return render_template('overview.html', userType = session['userType'],
-	# 										healthStatus = exposureStatus)
-
+	return boundary.displayPage()

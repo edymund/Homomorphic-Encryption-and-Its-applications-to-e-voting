@@ -27,7 +27,7 @@ mycursor = mydb.cursor()
 
 #Drop all tables
 mycursor.execute("DROP TABLE IF EXISTS voter;")
-mycursor.execute("DROP TABLE IF EXISTS  administrators;")
+mycursor.execute("DROP TABLE IF EXISTS  projectroles;")
 mycursor.execute("DROP TABLE IF EXISTS  answer;")
 mycursor.execute("DROP TABLE IF EXISTS  electionmsgs;")
 mycursor.execute("DROP TABLE IF EXISTS  candidates;")
@@ -49,13 +49,13 @@ create = ["""
             )
 			""",  
 			"""
-			CREATE TABLE administrators (
-            administratorsID INTEGER PRIMARY KEY AUTOINCREMENT,
+			CREATE TABLE projectroles (
+            projectroleID INTEGER PRIMARY KEY AUTOINCREMENT,
             organizerID int(11) NOT NULL,
             projID int(11) NOT NULL,
-            adminStatus varchar(255) NOT NULL,
+            role varchar(255) NOT NULL,
             approval BOOLEAN,
-            UNIQUE (administratorsID),
+            UNIQUE (projectroleID),
             FOREIGN KEY (organizerID) REFERENCES organizers (organizerID) ON DELETE CASCADE,
             FOREIGN KEY (projID) REFERENCES projdetails (projDetailsID) ON DELETE CASCADE
             ) 
@@ -69,7 +69,7 @@ create = ["""
             startTime time NULL,
             endDate date NULL,
             endTime time NULL,
-            publicKey varchar(255) NULL,
+            publicKey TEXT NULL,
             UNIQUE (projDetailsID)
             ) 
 			""",
@@ -170,17 +170,17 @@ projDetailsInsertvalues = [
 ## executing the query with values
 mycursor.executemany(projDetailsInsertquery, projDetailsInsertvalues)
 
-#Insert data for administrators table
-administratorsInsertquery = "INSERT INTO administrators (organizerID, projID, adminStatus, approval)  VALUES (?,?,?,?)"
+#Insert data for projectroles table
+projectroleInsertquery = "INSERT INTO projectroles (organizerID, projID, role, approval)  VALUES (?,?,?,?)"
 ## storing values in a variable
-administratorsInsertvalues = [
-   (1, 1, "admin",None),
-   (2, 1, "sub-admin",None),
-   (2, 2, "admin",None)
+projectrolesInsertvalues = [
+   (1, 1, "owner",None),
+   (2, 1, "verifier",None),
+   (2, 2, "owner",None)
 ]
 
 ## executing the query with values
-mycursor.executemany(administratorsInsertquery, administratorsInsertvalues)
+mycursor.executemany(projectroleInsertquery, projectrolesInsertvalues)
 
 #Insert data for voters table
 voterInsertquery = "INSERT INTO voter (voterNumber, email, projectID, password)  VALUES (?,?,?,?)"

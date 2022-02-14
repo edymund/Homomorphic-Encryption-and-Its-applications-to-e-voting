@@ -1,3 +1,4 @@
+from datetime import date
 from ..dbConfig import dbConnect, dbDisconnect
 class ProjectDetails:
 	def __init__(self, projectID=None):
@@ -207,4 +208,58 @@ class ProjectDetails:
 			return True
 		else:
 			return False
+	
+	
+	def setStatusAsDraft(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET status = 'DRAFT'
+								WHERE projDetailsID = (?)""", 
+								(projectID, ))
 		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if db.rowcount == 1:
+			return True
+		else:
+			return False
+		
+	def updateProjectsStatus_Ongoing(self, time):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		currentDate = time.strftime('%Y-%m-%d')
+		currentTime = time.strftime('%H:%M')
+		result = db.execute("""UPDATE projDetails SET status = 'ONGOING'
+							   WHERE status = 'PUBLISHED' 
+							   AND (
+								   (startDate = (?) AND startTime <= (?)) OR
+								   (startDate < (?))
+								)
+							   """, 
+								(currentDate, currentTime, currentDate))
+		
+		connection.commit()
+		dbDisconnect(connection)
+		return
+
+	def updateProjectsStatus_Completed(self, time):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		currentDate = time.strftime('%Y-%m-%d')
+		currentTime = time.strftime('%H:%M')
+		result = db.execute("""UPDATE projDetails SET status = 'COMPLETED'
+							   WHERE status = 'ONGOING' 
+							   AND (
+								   (endDate = (?) AND endTime <= (?)) OR
+								   (endDate < (?))
+								)
+							   """, 
+								(currentDate, currentTime, currentDate))
+		
+		connection.commit()
+		dbDisconnect(connection)
+		return

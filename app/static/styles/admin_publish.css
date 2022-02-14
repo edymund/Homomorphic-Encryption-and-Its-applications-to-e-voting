@@ -73,3 +73,29 @@ p{
 li {
 	color: red;
 }
+
+/*============================= flex start ============================= */
+.flexbox-container{
+    display: flex;
+    min-width: 400px;
+    min-height: 100px;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-content: left;
+    flex-direction: column;
+    /* padding-left: 5px; */
+    border: 3px solid #333;
+        
+    }
+
+.flexbox-item{
+margin: 10px;
+padding: 5px;
+min-height: 50px;
+/* background-color: #fecfb1; */
+flex-direction: row;
+min-width: 500px;
+border: 3px solid #333;
+}
+
+/*============================= flex end =============================*/

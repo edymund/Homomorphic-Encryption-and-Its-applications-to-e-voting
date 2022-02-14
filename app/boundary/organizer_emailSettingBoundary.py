@@ -24,9 +24,9 @@ class organizer_emailSettingBoundary:
 		self.process_inv_msg(invMsg)
 		self.process_rmd_msg(rmdMsg)
 		return render_template('organizer_emailSetting.html',invMsg =json.dumps(invMsg), 
-														rmdMsg =json.dumps(rmdMsg), 
-														projectID = self.projectID,
-														userType = session['userType'])
+															rmdMsg =json.dumps(rmdMsg), 
+															projectID = self.projectID,
+															userType = session['userType'])
 	
 	def onSubmit(self,invMsg,rmdMsg):
 		self.process_inv_msg(invMsg)
@@ -66,19 +66,3 @@ class organizer_emailSettingBoundary:
 			msg = "You are invited!"
 			self.postMsg = msg
 			controller.update_inv_msg(msg)
-	
-
-
-
-		
-
-	# def generate_default_inv_msg(self, entity):
-	# 	pass
-
-
-
-	# stray function
-	def generate_compulsory_email(self):
-		controller = organizer_emailSettingsController(projID = self.projectID)
-		projDetails_entity = controller.get_projDetails()
-		organizer_entity = controller.get_organizer()

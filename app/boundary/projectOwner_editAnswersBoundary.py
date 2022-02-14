@@ -1,19 +1,19 @@
-from ..controllers.admin_editAnswersController import admin_editAnswersController
+from ..controllers.projectOwner_editAnswersController import projectOwner_editAnswersController
 from flask import render_template, flash, redirect, session
 
-class admin_editAnswersBoundary:
+class projectOwner_editAnswersBoundary:
 	def __init__(self):
 		self.ERROR_UNAUTHROIZED = "Not authorized to access the requested resource"
 
 	def hasPermission(self, projectID, questionID, candidateID):
-		controller = admin_editAnswersController()
+		controller = projectOwner_editAnswersController()
 		return controller.checkPermission(projectID, questionID, candidateID)
 
 	def displayPage(self, projectID, questionID, candidateID):
 		if not self.hasPermission(projectID, questionID, candidateID):
 			return self.displayError(projectID, self.ERROR_UNAUTHROIZED)
 
-		controller = admin_editAnswersController()
+		controller = projectOwner_editAnswersController()
 		projectName = controller.getProjectName(projectID)
 		candidateDetails = controller.getCandidateDetails(candidateID)
 
@@ -26,7 +26,7 @@ class admin_editAnswersBoundary:
 		if not self.hasPermission(projectID, questionID, candidateID):
 			return self.displayError(projectID, self.ERROR_UNAUTHROIZED)
 		
-		controller = admin_editAnswersController()
+		controller = projectOwner_editAnswersController()
 		# existingFilename = controller.getCandidateDetails(candidateID)["imageFilename"]
 		controller.updateCandidate(candidateID, candidateName, candidateDescription, filename)
 		
@@ -43,16 +43,16 @@ class admin_editAnswersBoundary:
 		if not self.hasPermission(projectID, questionID, candidateID):
 			return self.displayError(projectID, self.ERROR_UNAUTHROIZED)
 
-		controller = admin_editAnswersController()
+		controller = projectOwner_editAnswersController()
 		if controller.deleteCandidate(projectID, questionID, candidateID):
 			return self.displaySuccess(projectID, questionID)
 		else:
 			return self.displayError(projectID, "Failed to delete candidate")
 
 	def getNewCandidateID(self):
-		controller = admin_editAnswersController()
+		controller = projectOwner_editAnswersController()
 		return controller.getNewCandidateID()
 	
 	def addNewCandidate(self, projectID, questionID, candidateID, candidateName, candidateDescription, filename):
-		controller = admin_editAnswersController()
+		controller = projectOwner_editAnswersController()
 		return controller.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
