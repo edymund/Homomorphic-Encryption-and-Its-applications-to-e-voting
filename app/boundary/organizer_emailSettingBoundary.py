@@ -24,9 +24,9 @@ class organizer_emailSettingBoundary:
 		self.process_inv_msg(invMsg)
 		self.process_rmd_msg(rmdMsg)
 		return render_template('organizer_emailSetting.html',invMsg =json.dumps(invMsg), 
-														rmdMsg =json.dumps(rmdMsg), 
-														projectID = self.projectID,
-														userType = session['userType'])
+															rmdMsg =json.dumps(rmdMsg), 
+															projectID = self.projectID,
+															userType = session['userType'])
 	
 	def onSubmit(self,invMsg,rmdMsg):
 		self.process_inv_msg(invMsg)

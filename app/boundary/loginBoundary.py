@@ -25,10 +25,10 @@ class loginBoundary:
 		
 		# Otherwise, account is valid and active
 		# Provide a session and return a success status
-		session['organizer'] = username
+		session['user'] = username
 		session['organizerID'] = controller.getOrganizerID(username)
-		session['adminProjectID'] = controller.getProjectID_Owner(session['organizerID'])
-		session['subAdminProjectID'] = controller.getProjectID_Verifier(session['organizerID'])
+		session['ownerProjectID'] = controller.getProjectID_Owner(session['organizerID'])
+		session['verifierProjectID'] = controller.getProjectID_Verifier(session['organizerID'])
 
 		return self.RESPONSE_SUCCESS
 	

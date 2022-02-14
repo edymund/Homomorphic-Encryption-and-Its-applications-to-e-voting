@@ -89,14 +89,14 @@ def projectManageAdministrator(projectID):
 
 	if request.method == 'POST':
 		dataPosted = request.form['action']
-		if dataPosted == 'addSubAdmin':
-			print("Entering Add Sub-Admin")
+		if dataPosted == 'addVerifier':
+			print("Entering Add Verifier")
 			return boundary.addVerify(projectID, request.form['addEmail'])
 		
-		elif dataPosted == 'deleteSubAdmin':
-			print("Entering Delete Sub-Admin")
+		elif dataPosted == 'deleteVerifier':
+			print("Entering Delete Verifier")
 			print(request.form['deleteID'])
-			return boundary.deleteOwner(projectID, request.form['deleteID'])
+			return boundary.deleteVerifier(projectID, request.form['deleteID'])
 		
 		else:
 			return boundary.displayError("Error with Data Entered")
@@ -422,17 +422,5 @@ def logout():
 def generateKeysPage():
 	# Creates a boundary object
 	boundary = generateKeysBoundary()
-	if request.method == 'GET':
-		return boundary.displayPage()
-	if request.method == 'POST':
-		return boundary.displayPage()
-	# # Create PublicUser_ExposureStatusBoundary Object
-	# publicUser_exposureStatusBoundary = PublicUser_ExposureStatusUI()
 
-	# # Exposure status is none if user is not a public user
-	# exposureStatus = publicUser_exposureStatusBoundary.getExposureStatus()
-
-	# # Displays the webpage
-	# return render_template('overview.html', userType = session['userType'],
-	# 										healthStatus = exposureStatus)
-
+	return boundary.displayPage()

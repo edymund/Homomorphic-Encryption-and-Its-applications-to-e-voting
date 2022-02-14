@@ -1,11 +1,15 @@
 from flask import render_template, redirect, session, flash
-
+from ..controllers.generateKeysController import GenerateKeysController
 
 class generateKeysBoundary:
 	# Constructor
 	def __init__(self):
-		self.RESPONSE_SUCCESS = "Success"
+		pass
 
 	# Other Methods
 	def displayPage(self):
-		return render_template('generateKeys.html')
+		controller = GenerateKeysController()
+		publicKey = controller.getPublicKey()
+		secretKey = controller.getSecretKey()
+		return render_template('generateKeys.html', publicKey=publicKey,
+													secretKey=secretKey)

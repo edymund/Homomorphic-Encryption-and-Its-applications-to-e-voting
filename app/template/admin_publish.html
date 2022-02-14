@@ -44,11 +44,11 @@
 		{% endif %}
 		<p>Project will be published automatically when all sub-admins have approved the project details</p>
 		
-		{% if userType == "admin" %}
+		{% if userType == "owner" %}
 			{% if projectDetails.status == 'DRAFT' %}
 				<button type="submit" name="action" value="requestVerification" {% if errorMessages|length > 0 %} disabled {% endif %}>Request Verification</button>
 			{% endif %}
-		{% elif userType == "sub-admin" %}
+		{% elif userType == "verifier" %}
 			{% if projectDetails.status == 'PENDING APPROVAL' %}
 			<div class = "flexbox-container" >
 				<div class = "flexbox-item">

@@ -29,7 +29,13 @@ class publishBoundary:
 
 	def requestVerification(self, projectID):
 		controller = projectOwner_publishController()
+		
+		# Owner Requests for verification & update status to pending verification if possible
 		if controller.requestVerification(projectID):
+
+			# Update project status to published if possible 
+			controller.updateProjectStatusToPublished(projectID)
+
 			self.send_mail(projectID)
 			return redirect('/mainballot')
 		else:
