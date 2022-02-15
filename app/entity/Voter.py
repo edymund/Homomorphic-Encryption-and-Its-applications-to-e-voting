@@ -1,4 +1,6 @@
 from ..dbConfig import dbConnect, dbDisconnect
+import hashlib
+
 class Voter:
 	def __init__(self, voterID = None):
 		# Check email?
@@ -38,7 +40,7 @@ class Voter:
 		return self.__email
 
 	#insert 
-	def insert_to_table(self, hash,email,projectID,password):
+	def insert_to_table(self, hash,email,projectID,password=0):
 		# Open connection to database
 		connection = dbConnect()
 		db = connection.cursor()
@@ -54,7 +56,7 @@ class Voter:
 
 		# Close the connection to the database
 		dbDisconnect(connection)
-		
+
 	# functions
 	# def email_exist(self, projectID,try_email):
 	# 	connection = dbConnect()
@@ -151,9 +153,28 @@ class Voter:
 		connection = dbConnect()
 		db = connection.cursor()
 		result = db.execute("""
-		SELECT email,voterNumber,password
+		SELECT email,voterNumber
 		FROM Voter
 		WHERE projectID = (?)
 		""",(projectID,)).fetchall()
 		return result	
+
+	def update_pw(self,voter_number,voters_email, projectID,voters_pw):
+		connection = dbConnect()
+		db = connection.cursor()
+		voter_hash_pw = hashlib.sha256(str(voters_pw).encode()).hexdigest()
+		db.execute("""UPDATE Voter
+						SET password = (?)
+						WHERE 
+						voterNumber = (?) and
+						email = (?) and
+						projectID = (?)
+						""", (voter_hash_pw,voter_number,voters_email,projectID))
+			
+			# Commit the update to the database
+		connection.commit()
+			
+			# Close the connection to the database
+		dbDisconnect(connection)
+		
 
