@@ -17,10 +17,9 @@ class organizer_importVoterListController:
             voter.delete_allVoters(projID)
         
         for email in vList:
-            password = self.get_random()
             hash = random.getrandbits(24)
             hash = str(hex(hash))[2:]
-            voter.insert_to_table(hash,email, self.projID,password)
+            voter.insert_to_table(hash,email, self.projID)
 
     def get_random(self):
        return random.randint(0, 100000000)
