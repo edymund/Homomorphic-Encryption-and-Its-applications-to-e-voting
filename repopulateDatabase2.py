@@ -201,7 +201,7 @@ mycursor.executemany(voterInsertquery, voterInsertvalues)
 electionmsgsInsertquery = "INSERT INTO electionmsgs (projID , preMsg, postMsg, inviteMsg, reminderMsg) VALUES (?,?,?,?,?)"
 ## storing values in a variable
 electionmsgsInsertvalues = [
-   (1,"pre/msg",None,"invitation","remember to vote")
+   (1,"Do join us to vote for our company's Annual election message",None,"You are invited to vote for our company's annual election message","Remember to vote for our company's annual election message")
 ]
 
 ## executing the query with values
