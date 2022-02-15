@@ -37,7 +37,7 @@ class organizer_changePasswordBoundary:
 			controller = organizer_changePasswordController()
 			
 			# Calls the controller to update the user's password
-			email = session['organizer']
+			email = session['user']
 
 			result = controller.updatePassword(email ,old_password, new_password)
 			if result == False:

@@ -1,0 +1,27 @@
+/* adding inline block to bold elements so that textbox are align */
+b {
+    display: inline-block;
+    width: 250px;
+}
+  
+/* button */
+button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 10px;
+    color: black;
+    background-color: #ddd;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #555;
+    color: white;
+}
+
+form{
+    margin-top:4%;
+}

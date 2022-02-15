@@ -1,0 +1,20 @@
+{% extends "user_baseTemplate.html" %} 
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_downloadResults.css') }}" />
+{% endblock %} 
+
+{% block body %}
+	<h2>Download Results</h2>
+    <form method="POST" action="/download">
+        <label for="voters_voted"><b>Number of Voters voted: </b></label> 
+        <span>1000000</span> <br> <br>
+        
+        <label for="voters_did_not_vote"><b>Number of Voters did not vote: </b></label> 
+        <span>10000000</span> <br> <br>
+        
+        <button type="submit">Download</button> <br> <br>
+        
+    </form>
+{% endblock %}

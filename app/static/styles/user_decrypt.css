@@ -43,10 +43,6 @@ button {
     background-color: #ddd;
     text-align: center;
     cursor: pointer;
-    margin-top: 10px;
-    width: 100%;
-    max-height: 50px;
-    max-width: 150px;
 }
 
 button:hover {
@@ -65,7 +61,6 @@ table, tr, td {
     
   }
 .flex-container {
-display: flex;
 flex-direction: column;
 flex-wrap: wrap;
 justify-content: center;

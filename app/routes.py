@@ -23,6 +23,7 @@ from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
 from .boundary.projectOwner_publishBoundary import publishBoundary
+from .boundary.admin_downloadResultsBoundary import admin_downloadResultsBoundary
 
 from .boundary.generateKeysBoundary import generateKeysBoundary
 
@@ -40,6 +41,14 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
+@app.route('/<projectID>//download', methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def downloadPage(projectID):
+	# Create a boundary object
+	boundary = admin_downloadResultsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage(projectID)
 
 @app.route('/<projectID>/publish', methods=['GET', 'POST'])
 @loginRequired
