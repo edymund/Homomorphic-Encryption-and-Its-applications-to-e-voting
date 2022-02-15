@@ -20,7 +20,7 @@
 
 		<!-- Display Upload Image button -->
 		<label>Candidate's Image (JPEG only*): </label>
-		{% if userType == "admin" %}
+		{% if userType == "owner" %}
 			<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()"/>
 		{% endif %}
 		<br/>
@@ -34,7 +34,7 @@
 		<br />
 
 		<!-- Save & Delete Candidates Button -->
-		{% if userType == "admin" %}
+		{% if userType == "owner" %}
 			<input type="submit" name="action" value="Save" /> </br>
 			<input type="submit" name="action" value="Delete" />
 		{% endif %}

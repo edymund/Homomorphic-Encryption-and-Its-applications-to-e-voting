@@ -21,7 +21,8 @@
 				<div class = "flexbox-item flexbox-item-2">
 					<textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg" {% if userType == "sub-admin" %} readonly {% endif %}></textarea>
 				</div>
-				{% if userType == "admin" %} 
+				<div>
+				{% if userType == "owner" %} 
 					<button type="submit" name ="action" value= "Update">Save</button>
 					<button type="submit" name ="action" value="SendEmail">Send reminder link</button>
 				{% endif %}
