@@ -209,7 +209,6 @@ class ProjectDetails:
 		else:
 			return False
 	
-	
 	def setStatusAsDraft(self, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
@@ -263,3 +262,21 @@ class ProjectDetails:
 		connection.commit()
 		dbDisconnect(connection)
 		return
+	
+	def checkProjectStatus_Ongoing(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""SELECT *
+								FROM projdetails
+								WHERE projDetailsID = (?) AND
+									  status = 'ONGOING'""", 
+								(projectID,)).fetchone()
+		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if result is not None:
+			return True
+
+		return False

@@ -31,10 +31,12 @@ class projectOwner_manageAdministratorsBoundary:
 		
 
 	def deleteVerifier(self, projectID, administratorID):
+		# print("Entered Delete Verifier")
 		controller = projectOwner_manageAdministratorsController()
-		
-		if controller.removeVerifier(projectID, session['organizer'], administratorID):
-			print("entered1")
+		# print("Complete Constructor")
+		# print("Stored Session Value is:", session['organizerID'])
+		if controller.removeVerifier(projectID, session['organizerID'], administratorID):
+			# print("entered1")
 			return self.displayPage(projectID)
-		print("entered2")
+		# print("entered2")
 		return self.displayError(projectID, "Failed to remove verifier")

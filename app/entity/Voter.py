@@ -1,4 +1,6 @@
 from ..dbConfig import dbConnect, dbDisconnect
+from hashlib import sha256
+
 class Voter:
 	def __init__(self, voterID = None):
 		# Check email?
@@ -77,10 +79,12 @@ class Voter:
 		FROM Voter
 		WHERE projectID = (?)
 		""",(projectID,)).fetchall()
-		return result
+
 		# Close the connection to the database
-		# dbDisconnect(connection)
-	
+		dbDisconnect(connection)
+
+		return result
+		
 	def get_all_voters_id(self, projID ):
 		connection = dbConnect()
 		db = connection.cursor()
@@ -105,7 +109,6 @@ class Voter:
 
 		# Close the connection to the database
 		dbDisconnect(connection)
-
 
 	def delete_child(self,voterID,projID):
 		connection = dbConnect()
@@ -146,7 +149,6 @@ class Voter:
 
 		return result[0]
 
-	
 	def get_all_voters_info(self, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
@@ -155,5 +157,44 @@ class Voter:
 		FROM Voter
 		WHERE projectID = (?)
 		""",(projectID,)).fetchall()
+		dbDisconnect(connection)
 		return result	
+
+	def checkVoterCredentials(self, username, password, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+		# password = sha256(password.encode()).hexdigest()
+
+		result = db.execute("""
+								SELECT *
+								FROM Voter
+								WHERE projectID = (?) AND
+									  voterNumber = (?) AND
+									  password = (?)
+								""",(projectID, username, password)).fetchone()
+
+		dbDisconnect(connection)
+		
+		if result is not None:
+			return True
+		return result	
+
+	def getVoterID(self, voterNumber, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+		# password = sha256(password.encode()).hexdigest()
+
+		result = db.execute("""
+								SELECT voterID
+								FROM Voter
+								WHERE projectID = (?) AND
+									  voterNumber = (?)
+								""",(projectID, voterNumber)).fetchone()
+
+		dbDisconnect(connection)
+		
+		if result is not None:
+			return result[0]
+		return None
+
 

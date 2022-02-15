@@ -74,3 +74,19 @@ class Answer:
 			connection.commit()
 			dbDisconnect(connection)
 			return True
+
+	def hasVoted(self, voterID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		# Select User from database and populate instance variables
+		result = db.execute("""SELECT *
+								FROM answer
+								WHERE voterID = (?)""", (voterID,)).fetchone()
+		print("has voted", result)
+
+		dbDisconnect(connection)
+		
+		if result is not None:
+			return True
+		return False
