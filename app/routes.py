@@ -239,7 +239,7 @@ def view_emailSetting(projectID):
 		
 		# if status == 0:
 		# boundary.RESPONSE_SUCCESS()
-		return boundary.displayPage(status)
+		return boundary.displayPage()
 		# else:
 		# 	return boundary.displayError(status)
 		

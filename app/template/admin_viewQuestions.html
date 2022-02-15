@@ -11,7 +11,7 @@
 		<form action="edit_questions/new_question" method="GET">
 			<label for="projectNameField">Project Name:</label>
 			<input type="text" id="projectNameField" value="{{ projectName }}" readonly/>
-			{% if userType == "admin" %}
+			{% if userType == "owner" %}
 				<button type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
 			{% endif %}
 			<!-- <input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}"> -->
