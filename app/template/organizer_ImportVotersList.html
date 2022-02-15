@@ -18,7 +18,7 @@
 					<span>Upload file:</span>
 					<input type="text" id ="voter-list-tb" readonly>
 					<input type="file" id="myFile" name= "filename" onchange = "showname();" accept =".csv" hidden>
-					{% if userType == "admin" %}
+					{% if userType == "owner" %}
 						<input type="button" name="filename-btn" value ="File" onclick="openfile();" >
 					{% endif %}
 					{% if userType == "owner" %}
