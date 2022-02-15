@@ -23,7 +23,7 @@
 			   	{% if userType == "sub-admin" %} readonly {% endif %}/> <br />
 		<div>
 			Answers (Click to edit options):
-			{% if userType == "admin" %}
+			{% if userType == "owner" %}
 				<a href="../edit_answers/{{ questionID }}/new_candidate"><img class="newQuestionImage" src={{ url_for('static',filename='images/plus.png') }}/></a>
 			{% endif %}
 		</div>
@@ -38,7 +38,7 @@
 				{% endfor %}
 			</ol>
 		</div> 
-		{% if userType == "admin" %} 
+		{% if userType == "owner" %} 
 			<input type="submit" name="action" value="Save" /> </br>
 			<input type="submit" name="action" value="Delete" />
 		{% endif %}

@@ -28,6 +28,7 @@ from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.projectOwner_publishBoundary import publishBoundary
 from .boundary.logoutBoundary import logoutBoundary
+from .boundary.admin_downloadResultsBoundary import admin_downloadResultsBoundary
 
 # Voter Imports
 from .boundary.voters_loginBoundary import voters_loginBoundary
@@ -39,6 +40,7 @@ from .boundary.voters_ViewEncryptedVotePage import voters_ViewEncryptedVotePage
 
 
 
+
 @app.route('/', methods=['GET'])
 def landingPage():
 	# Creates a boundary object
@@ -46,6 +48,14 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
+@app.route('/<projectID>//download', methods=['GET', 'POST'])
+@loginRequired
+@authorisationRequired
+def downloadPage(projectID):
+	# Create a boundary object
+	boundary = admin_downloadResultsBoundary()
+	if request.method == 'GET':
+		return boundary.displayPage(projectID)
 
 @app.route('/<projectID>/publish', methods=['GET', 'POST'])
 @loginRequired
@@ -236,7 +246,7 @@ def view_emailSetting(projectID):
 		
 		# if status == 0:
 		# boundary.RESPONSE_SUCCESS()
-		return boundary.displayPage(status)
+		return boundary.displayPage()
 		# else:
 		# 	return boundary.displayError(status)
 		

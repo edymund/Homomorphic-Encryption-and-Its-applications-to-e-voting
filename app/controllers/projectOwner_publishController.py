@@ -6,6 +6,7 @@ from ..entity.Voter import Voter
 from ..entity.ProjectOwner import ProjectRoles
 import smtplib
 from email.message import EmailMessage
+import random 
 
 class projectOwner_publishController():
 	def __init__(self):
@@ -162,10 +163,11 @@ class projectOwner_publishController():
 		
 		for voter_info in all_voters_info: 
 			voters_email= voter_info[0]
-			voters_ID 	= voter_info[1]
-			voters_pw 	= voter_info[2]
+			voters_No 	= voter_info[1]
+			voters_pw 	= random.randint(0, 100000000)
+			voter_entity.update_pw(voters_No, voters_email, projectID,voters_pw)
 			
-			link = f"http://127.0.0.1:5000/{projectID}/ViewVoterCoverPage/?voterID={voters_ID}&pw={voters_pw}"
+			link = f"http://127.0.0.1:5000/{projectID}/ViewVoterCoverPage/?voterID={voters_No}&pw={voters_pw}"
 			
 			final_message = f"""
 			========================SYSTEM GENERATED MESSAGE START=====================
@@ -173,7 +175,7 @@ class projectOwner_publishController():
 			{invt_msg}\n 
 			This email is to inform you that you are invited to participate in the voting event,{proj_title} by {admin_name}, {company_name}.\n 
 			The voting event will start from {proj_start_date},{proj_start_time} to {proj_end_date},{proj_end_time}.\n 
-			Your voter ID is {voters_ID}\n
+			Your voter ID is {voters_No}\n
 			Email link:\n
 			{link}\n\n
 			Regards,\n
