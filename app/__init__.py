@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from functools import wraps
 import sqlite3
+import traceback
 
 # Environment Imports
 import pytz
@@ -22,6 +23,11 @@ static_dir = os.path.abspath('./app/static')
 # Configure app to run from this file
 application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 application.config['UPLOAD_FOLDER'] = "./static/images/projectImages/{}"
+application.config['EMAIL'] = {}
+application.config['EMAIL']['SERVER'] = "smtp.gmail.com"
+application.config['EMAIL']['PORT'] = 587
+application.config['EMAIL']['USER'] = "fyp21s403@gmail.com"
+application.config['EMAIL']['PASSWORD'] = "eccqringtcgtolnf"
 
 # Sessions secret key
 application.secret_key="mykey123456"
@@ -53,6 +59,7 @@ def authorisationRequired(function):
 		print("-------Checking Authorisation")
 		try:
 			controller = loginController()
+			print(session)
 			# If user is authenticated, proceed as per normal
 			session['ownerProjectID'] = controller.getProjectID_Owner(session['organizerID'])
 			session['verifierProjectID'] = controller.getProjectID_Verifier(session['organizerID'])
@@ -74,6 +81,7 @@ def authorisationRequired(function):
 				return redirect('/mainballot')
 
 		except KeyError as e:
+			print(traceback.format_exc())
 			print(e)
 		print("User not authorized, Redirecting")
 		flash("Not authorized to access this resource")

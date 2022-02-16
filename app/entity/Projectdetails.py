@@ -280,3 +280,15 @@ class ProjectDetails:
 			return True
 
 		return False
+
+	def updatePublicKey(self, projectID, publicKey):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET publicKey = (?)
+							   WHERE projDetailsID = (?)
+							   """, 
+								(publicKey, projectID))
+		connection.commit()
+		dbDisconnect(connection)
+		return

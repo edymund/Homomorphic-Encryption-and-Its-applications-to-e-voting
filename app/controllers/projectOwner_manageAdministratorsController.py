@@ -1,5 +1,5 @@
 from pickle import FALSE, TRUE
-from ..entity.ProjectOwner import ProjectRoles
+from ..entity.ProjectRoles import ProjectRoles
 
 class projectOwner_manageAdministratorsController:
 	def __init__(self):
