@@ -28,7 +28,7 @@ from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.projectOwner_publishBoundary import publishBoundary
 from .boundary.logoutBoundary import logoutBoundary
-from .boundary.admin_downloadResultsBoundary import admin_downloadResultsBoundary
+from .boundary.organizer_downloadResultsBoundary import organizer_downloadResultsBoundary
 
 # Voter Imports
 from .boundary.voters_loginBoundary import voters_loginBoundary
@@ -53,7 +53,7 @@ def landingPage():
 @authorisationRequired
 def downloadPage(projectID):
 	# Create a boundary object
-	boundary = admin_downloadResultsBoundary()
+	boundary = organizer_downloadResultsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
