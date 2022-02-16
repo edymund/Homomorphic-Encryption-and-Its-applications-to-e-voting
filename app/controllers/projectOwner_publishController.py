@@ -3,14 +3,18 @@ from ..entity.ElectionMessage import ElectionMessage
 from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
 from ..entity.Voter import Voter
-from ..entity.ProjectOwner import ProjectRoles
-import smtplib
-from email.message import EmailMessage
+from ..entity.ProjectRoles import ProjectRoles
+from ..lib.service_email import SendEmailService
+from ..lib.FHE import FHE
+
+from flask import url_for, current_app
 import random 
-import json
 
 class projectOwner_publishController():
 	def __init__(self):
+		self.email = SendEmailService()
+		self.email.setLoginDetails(current_app.config['EMAIL']['USER'], current_app.config['EMAIL']['PASSWORD'])
+		self.email.setServer(current_app.config['EMAIL']['SERVER'], current_app.config['EMAIL']['PORT'])
 		self.errors = []
 	
 	def getProjectDetails(self, projectID):
@@ -51,8 +55,7 @@ class projectOwner_publishController():
 	def getErrorMessages(self, projectID):
 		self.performChecks(projectID)
 		return self.errors
-
-		
+	
 	def performChecks(self, projectID):
 		projectDetails = self.getProjectDetails(projectID)
 		questionSets = self.getQuestionsAndAnswers(projectID)
@@ -85,6 +88,14 @@ class projectOwner_publishController():
 		else:
 			return False
 
+	def getProjectIsPendingVerification(self, projectID):
+		projectDetails = ProjectDetails()
+		return projectDetails.isPendingVerification(projectID)
+	
+	def verifyProject(self, projectID, organizerID):
+		administrator = ProjectRoles()
+		return administrator.setVerified(projectID, organizerID)
+	
 	def requestVerification(self, projectID):
 		projectDetails = ProjectDetails()
 		
@@ -98,54 +109,41 @@ class projectOwner_publishController():
 		
 		# Change status to pending verification
 		if projectDetails.setStatusToPendingVerification(projectID):
-			# Automatically publish if no sub-admin
-			# self.updateProjectStatusToPublished(projectID)
+
+			# Sends notification to verifiers
+			self.notify_verifier(self.get_all_verifier(projectID), projectID)
+
+			# Attempts to publish
+			self.updateProjectStatusToPublished(projectID)
 			return True
 		return False
-
-	def getProjectIsPendingVerification(self, projectID):
-		projectDetails = ProjectDetails()
-		return projectDetails.isPendingVerification(projectID)
 		
-
-	def verifyProject(self, projectID, organizerID):
-		administrator = ProjectRoles()
-		return administrator.setVerified(projectID, organizerID)
-	
 	def updateProjectStatusToPublished(self, projectID):
 		projectDetails = ProjectDetails()
 		administrator = ProjectRoles()
+		fhe = FHE()
+		fhe.keyGen()
 
+		# Check if all verifiers has approved
 		if administrator.allVerifierApprovedProject(projectID):
+			
+			# Sends Email to Voters
+			self.generate_inv_msg(projectID, url_for("voterLoginPage",_external=True))
+
+			# Set public key for project
+			projectDetails.updatePublicKey(projectID, fhe.getPublicKeyAsString())
+
+			# Sends Decryption Key to Owner and Verifiers
+			self.sendDecryptionKey(projectID, fhe.getPrivateKey())
+
+			# Set Status as published
 			projectDetails.setStatusAsPublished(projectID)
-			
 
+	def get_all_verifier(self, projectID): 
+		projectOwner_entity = ProjectRoles(projectID)
+		return projectOwner_entity.getVerifiersForProject(projectID)
 
-	def set_mail(self, sender, receiver, message,subject,email):
-		email["From"] = sender
-		email["To"] = receiver
-		email["Subject"] = subject
-		email.set_content(message)
-		return email
-
-	def send_mail(self, EMAIL_ADR, EMAIL_PW, email):
-		with smtplib.SMTP("smtp.gmail.com",587) as smtp:
-			smtp.ehlo()
-			smtp.starttls()
-			smtp.ehlo()
-			
-			smtp.login(EMAIL_ADR, EMAIL_PW)
-			smtp.send_message(email)
-			smtp.quit()
-			del email
-
-	def generate_inv_msg(self,projectID):
-		with open("app\others\Credential.json") as f:
-			email = json.load(f)
-			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
-			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
-			f.close()
-		
+	def generate_inv_msg(self,projectID, url):
 		projDetails_entity = ProjectDetails(projectID)
 		projectOwner_entity = ProjectRoles(projectID)
 		electionMsg_entity = ElectionMessage(projID= projectID)
@@ -165,60 +163,102 @@ class projectOwner_publishController():
 		
 		all_voters_info = voter_entity.get_all_voters_info(projectID)
 		
+		subject = "Invitation to participate in voting event"
+
 		for voter_info in all_voters_info: 
 			voters_email= voter_info[0]
 			voters_No 	= voter_info[1]
 			voters_pw 	= random.randint(0, 100000000)
 			voter_entity.update_pw(voters_No, voters_email, projectID,voters_pw)
-			
-			link = f"http://127.0.0.1:5000/{projectID}/ViewVoterCoverPage/?voterID={voters_No}&pw={voters_pw}"
+			print("url:", url)
+			link = f"{url}?name={voters_No}&password={voters_pw}&projectID={projectID}"
 			
 			final_message = f"""
-			========================SYSTEM GENERATED MESSAGE START=====================
-			\nDear Voter,\n 
-			{invt_msg}\n 
-			This email is to inform you that you are invited to participate in the voting event,{proj_title} by {admin_name}, {company_name}.\n 
-			The voting event will start from {proj_start_date},{proj_start_time} to {proj_end_date},{proj_end_time}.\n 
-			Your voter ID is {voters_No}\n
-			Email link:\n
-			{link}\n\n
-			Regards,\n
-			FYP-21-S4-03.
-			========================SYSTEM GENERATED MESSAGE END=====================
-			"""
+Dear Voter,
+
+{invt_msg}
+
+This email is to inform you that you are invited to participate in the voting event -"{proj_title}" by {admin_name}, {company_name}.
+The voting event will start from {proj_start_date},{proj_start_time} to {proj_end_date},{proj_end_time}.
+
+Your voter ID is {voters_No}
+Login link: {link}
+
+Regards,
+FYP-21-S4-03.
+
+This is a system generated email, do not reply to this email.
+"""
 			
-			email_obj = EmailMessage()
-			email = self.set_mail(EMAIL_ADDRESS, voters_email,final_message,"Invitation to participate in voting event", email_obj)
-			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 
-	def get_all_verifier(self, projectID): 
-		projectOwner_entity = ProjectRoles(projectID)
-		return  projectOwner_entity.getVerifiersForProject(projectID)
+			self.email.setMessage(subject, final_message)
+			self.email.setRecepientEmail(voters_email)
+			self.email.sendEmail()
 
-	def notify_verifier(self, verifier_arr):
-		with open("app\others\Credential.json") as f:
-			email = json.load(f)
-			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
-			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
-			f.close()
+	def notify_verifier(self, verifier_arr, projectID):
+		projectName = ProjectDetails(projectID).getTitle()
+		# Set Email Message and Subject
+		message = f"""
+Dear verifier,
+
+You have been added to the list of verifiers for the project "{projectName}".
+Please log-in to verify the details of this project
+
+Regards,
+FYP-21-S4-03.
+
+This is a system generated email, do not reply to this email.
+"""
+		subject = "Invitation to verify voting event"
+		self.email.setMessage(subject, message)
+		
 		for verifier in verifier_arr:
-			message = f"Dear verifier, do remember to verify the details of the project"
-			email_obj = EmailMessage()
-			email = self.set_mail(EMAIL_ADDRESS, verifier["email"],message,"Invitation to verify voting event", email_obj)
-			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
-	
-	def notify_projectOwner(self, projectID,message):
-		with open("app\others\Credential.json") as f:
-			email = json.load(f)
-			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
-			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
-			f.close()
+			self.email.setRecepientEmail(verifier["email"])
+			self.email.sendEmail()
+
+	def notify_projectOwner(self, projectID, message):
 		projectOwner_entity = ProjectRoles(projectID)
-		admin = projectOwner_entity.getOwnersForProject(projectID)
-		email_obj = EmailMessage()
-		email = self.set_mail(EMAIL_ADDRESS, admin[2],message,"Notify reason to reject publish", email_obj)
-		self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
+		owner = projectOwner_entity.getOwnersForProject(projectID)
+
+		subject = "Event has been rejected by a verifier "
+		self.email.setMessage(subject, message)
+		self.email.setRecepientEmail(owner[2])
+		self.email.sendEmail()
 	
+	def sendDecryptionKey(self, projectID, privateKey):
+		project = ProjectDetails(projectID)
+		projectRoles = ProjectRoles()
+
+		# Get Project Details
+		projectName = project.getTitle()
+		projectOwner = projectRoles.getOwnersForProject(projectID)[2]
+		projectVerifiers = self.get_all_verifier(projectID)
+		recepients = [projectOwner]
+		for verifier in projectVerifiers:
+			recepients.append(verifier['email'])
+		print("Recepients = ", recepients)
+		subject = f"Decryption key for Voting Event - {projectName}"
+		message = \
+f"""
+Dear Organizers
+
+Please retain a copy of this e-mail to decrypt the voting results.
+
+Project Name: {projectName}
+Decrpytion Key: {privateKey}
+
+We do not retain any information of the secret key.
+If the decryption key is lost, we are unable to decrypt the results on your behalf.
+
+Regards,
+FYP-21-S4-03.
+
+This is a system generated email, do not reply to this email.
+"""
+		self.email.setMessage(subject, message)
+		self.email.setRecepientEmail(recepients)
+		self.email.sendEmail()
+
 	def return_default(self, projectID):
 		projDetails_entity = ProjectDetails(projectID)
 		projectOwner_entity = ProjectRoles(projectID)

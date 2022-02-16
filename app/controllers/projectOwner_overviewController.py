@@ -1,5 +1,5 @@
 from ..entity.Projectdetails import ProjectDetails
-from ..entity.ProjectOwner import ProjectRoles
+from ..entity.ProjectRoles import ProjectRoles
 import datetime
 
 class projectOwner_overviewController:
