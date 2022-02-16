@@ -3,6 +3,7 @@ from ..entity.Voter import Voter
 from ..entity.Projectdetails import ProjectDetails
 import smtplib
 from email.message import EmailMessage
+import json
 
 class organizer_emailSettingsController:
     def __init__(self, projID = None):
@@ -50,8 +51,11 @@ class organizer_emailSettingsController:
         return self.rmdMsg
         
     def send_reminder(self):
-        EMAIL_PASSWORD="eccqringtcgtolnf"
-        EMAIL_ADDRESS="fyp21s403@gmail.com"
+        with open("app\others\Credential.json") as f:
+            email = json.load(f)
+            EMAIL_ADDRESS= email["Credentials"]["Email Address"]
+            EMAIL_PASSWORD = email["Credentials"]["Email Password"]
+            f.close()
         voter_entity = Voter(self.projID)
         Election_entity = ElectionMessage(self.projID)
         
@@ -101,6 +105,6 @@ class organizer_emailSettingsController:
         end_time = proj_entity.getEndTime()
         end_date =   proj_entity.getEndDate()
         msg = f"\n This email is to remind you to participate in the voting event, {proj_title}."+\
-            '\n'+f" Please be reminded to vote from  \n{start_time}, {start_date} to {end_time},{end_date}." 
+            '\n'+f" Please be reminded to vote from  \nSTART: {start_date}, {start_time} \nEND:   {end_date}, {end_time}.\n\nRegards,\nFYP-21-s4-03" 
 
         return msg

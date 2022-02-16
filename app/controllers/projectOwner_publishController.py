@@ -7,6 +7,7 @@ from ..entity.ProjectOwner import ProjectRoles
 import smtplib
 from email.message import EmailMessage
 import random 
+import json
 
 class projectOwner_publishController():
 	def __init__(self):
@@ -139,8 +140,11 @@ class projectOwner_publishController():
 			del email
 
 	def generate_inv_msg(self,projectID):
-		EMAIL_PASSWORD="eccqringtcgtolnf"
-		EMAIL_ADDRESS="fyp21s403@gmail.com"
+		with open("app\others\Credential.json") as f:
+			email = json.load(f)
+			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
+			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
+			f.close()
 		
 		projDetails_entity = ProjectDetails(projectID)
 		projectOwner_entity = ProjectRoles(projectID)
@@ -192,8 +196,11 @@ class projectOwner_publishController():
 		return  projectOwner_entity.getVerifiersForProject(projectID)
 
 	def notify_verifier(self, verifier_arr):
-		EMAIL_PASSWORD="eccqringtcgtolnf"
-		EMAIL_ADDRESS="fyp21s403@gmail.com"
+		with open("app\others\Credential.json") as f:
+			email = json.load(f)
+			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
+			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
+			f.close()
 		for verifier in verifier_arr:
 			message = f"Dear verifier, do remember to verify the details of the project"
 			email_obj = EmailMessage()
@@ -201,8 +208,11 @@ class projectOwner_publishController():
 			self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, email)
 	
 	def notify_projectOwner(self, projectID,message):
-		EMAIL_PASSWORD="eccqringtcgtolnf"
-		EMAIL_ADDRESS="fyp21s403@gmail.com"
+		with open("app\others\Credential.json") as f:
+			email = json.load(f)
+			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
+			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
+			f.close()
 		projectOwner_entity = ProjectRoles(projectID)
 		admin = projectOwner_entity.getOwnersForProject(projectID)
 		email_obj = EmailMessage()

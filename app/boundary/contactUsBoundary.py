@@ -1,7 +1,7 @@
 from flask import render_template, redirect, session, flash
 import re
 import smtplib
-
+import json
 
 class contactUsBoundary:
 	# Constructor
@@ -27,14 +27,18 @@ class contactUsBoundary:
 		return True
 
 	def send_email(self,sender_email,name,subject,feedback):
-		our_email = "fyp21s403@gmail.com"
+		with open("app\others\Credential.json") as f:
+			email = json.load(f)
+			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
+			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
+			f.close()
 		server = smtplib.SMTP("smtp.gmail.com",587)
 		server.starttls()
 		# login(email address, password)
-		server.login(our_email, "eccqringtcgtolnf")
-		msg = 'From: ' + our_email + '\r\nTo: ' + our_email + '\r\nSubject: Feedback: ' + subject + '\r\n\r\nFeedback received from: ' + sender_email+ '\r\n\r\nName: ' + name + '\r\n\r\nFeedback: ' + feedback 
+		server.login(EMAIL_ADDRESS,EMAIL_PASSWORD)
+		msg = 'From: ' + EMAIL_ADDRESS + '\r\nTo: ' + EMAIL_ADDRESS + '\r\nSubject: Feedback: ' + subject + '\r\n\r\nFeedback received from: ' + sender_email+ '\r\n\r\nName: ' + name + '\r\n\r\nFeedback: ' + feedback 
 		# sendmail(sender,receiver,message)
-		server.sendmail(our_email,our_email,msg)
+		server.sendmail(EMAIL_ADDRESS,EMAIL_ADDRESS,msg)
 
 	def onSubmit(self,sender_email,name,subject,feedback):
 		if self.__checkIsValidName(name) and \
