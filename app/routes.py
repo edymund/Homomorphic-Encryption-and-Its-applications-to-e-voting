@@ -32,10 +32,9 @@ from .boundary.organizer_downloadResultsBoundary import organizer_downloadResult
 
 # Voter Imports
 from .boundary.voters_loginBoundary import voters_loginBoundary
-from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
-from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
-from .boundary.voters_ViewSubmittedVotePage import voters_ViewSubmittedVotePage
-from .boundary.voters_ViewEncryptedVotePage import voters_ViewEncryptedVotePage
+from .boundary.voters_ViewVoterCoverPageBoundary import voters_ViewVoterCoverPage
+from .boundary.voters_ViewVotingPageBoundary import voters_ViewVotingPage
+from .boundary.voters_ViewSubmittedVotePageBoundary import voters_ViewSubmittedVotePage
 
 
 
@@ -386,15 +385,15 @@ def viewSubmittedVotePage(projectID):
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
-
-@app.route('/<projectID>/ViewEncryptedVotePage', methods=['GET'])
-@voterLoginRequired
-@voterAuthorisationRequired
-def viewEncryptedVotePage(projectID):
-	# Create a boundary object
-	boundary = voters_ViewEncryptedVotePage()
-	if request.method == 'GET':
-		return boundary.displayPage(projectID)
+# Removed
+# @app.route('/<projectID>/ViewEncryptedVotePage', methods=['GET'])
+# @voterLoginRequired
+# @voterAuthorisationRequired
+# def viewEncryptedVotePage(projectID):
+# 	# Create a boundary object
+# 	boundary = voters_ViewEncryptedVotePage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage(projectID)
 
 ###############################################
 @app.route('/resetpassword', methods=['GET','POST'])

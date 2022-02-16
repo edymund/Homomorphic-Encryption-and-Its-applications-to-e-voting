@@ -163,7 +163,7 @@ class Voter:
 	def checkVoterCredentials(self, username, password, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
-		# password = sha256(password.encode()).hexdigest()
+		hash_password = sha256(password.encode()).hexdigest()
 
 		result = db.execute("""
 								SELECT *
@@ -171,7 +171,7 @@ class Voter:
 								WHERE projectID = (?) AND
 									  voterNumber = (?) AND
 									  password = (?)
-								""",(projectID, username, password)).fetchone()
+								""",(projectID, username, hash_password)).fetchone()
 
 		dbDisconnect(connection)
 		
@@ -182,7 +182,6 @@ class Voter:
 	def getVoterID(self, voterNumber, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
-		password = sha256(password.encode()).hexdigest()
 
 		result = db.execute("""
 								SELECT voterID

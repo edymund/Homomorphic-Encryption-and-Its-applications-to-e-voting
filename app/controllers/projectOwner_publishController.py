@@ -138,7 +138,7 @@ class projectOwner_publishController():
 			smtp.quit()
 			del email
 
-	def generate_inv_msg(self,projectID):
+	def generate_inv_msg(self,projectID, url):
 		EMAIL_PASSWORD="eccqringtcgtolnf"
 		EMAIL_ADDRESS="fyp21s403@gmail.com"
 		
@@ -166,11 +166,10 @@ class projectOwner_publishController():
 			voters_No 	= voter_info[1]
 			voters_pw 	= random.randint(0, 100000000)
 			voter_entity.update_pw(voters_No, voters_email, projectID,voters_pw)
-			
-			link = f"http://127.0.0.1:5000/{projectID}/ViewVoterCoverPage/?voterID={voters_No}&pw={voters_pw}"
+			print("url:", url)
+			link = f"{url}?name={voters_No}&password={voters_pw}&projectID={projectID}"
 			
 			final_message = f"""
-			========================SYSTEM GENERATED MESSAGE START=====================
 			\nDear Voter,\n 
 			{invt_msg}\n 
 			This email is to inform you that you are invited to participate in the voting event,{proj_title} by {admin_name}, {company_name}.\n 
@@ -178,9 +177,11 @@ class projectOwner_publishController():
 			Your voter ID is {voters_No}\n
 			Email link:\n
 			{link}\n\n
+
 			Regards,\n
-			FYP-21-S4-03.
-			========================SYSTEM GENERATED MESSAGE END=====================
+			FYP-21-S4-03.\n\n
+			
+			This is a system generated email, do not reply to this email.
 			"""
 			
 			email_obj = EmailMessage()
