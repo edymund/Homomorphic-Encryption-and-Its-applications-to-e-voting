@@ -23,7 +23,7 @@ from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
 from .boundary.projectOwner_publishBoundary import publishBoundary
-from .boundary.admin_downloadResultsBoundary import admin_downloadResultsBoundary
+from .boundary.organizer_downloadResultsBoundary import organizer_downloadResultsBoundary
 
 from .boundary.generateKeysBoundary import generateKeysBoundary
 
@@ -46,7 +46,7 @@ def landingPage():
 @authorisationRequired
 def downloadPage(projectID):
 	# Create a boundary object
-	boundary = admin_downloadResultsBoundary()
+	boundary = organizer_downloadResultsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
