@@ -1,4 +1,4 @@
-from ..others.FHE import FHE
+from ..lib.FHE import FHE
 
 class GenerateKeysController():
 	# Constructor

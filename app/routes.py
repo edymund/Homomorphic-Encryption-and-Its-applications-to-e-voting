@@ -1,10 +1,19 @@
 import os
 import shutil
+from app import application as app, boundary, loginRequired, authorisationRequired, voterLoginRequired, voterAuthorisationRequired
+from flask import request
+from werkzeug.utils import secure_filename
+
+# User Imports
 from .boundary.landingPageBoundary import landingPageBoundary
-from .boundary.voters_ViewVoterCoverPage import voters_ViewVoterCoverPage
-from .boundary.voters_ViewVotingPage import voters_ViewVotingPage
-from .boundary.voters_ViewSubmittedVotePage import voters_ViewSubmittedVotePage
-from .boundary.voters_ViewEncryptedVotePage import voters_ViewEncryptedVotePage
+from .boundary.loginBoundary import loginBoundary
+from .boundary.registrationBoundary import registrationBoundary
+from .boundary.contactUsBoundary import contactUsBoundary
+from .boundary.aboutUsBoundary import aboutUsBoundary
+from .boundary.generateKeysBoundary import generateKeysBoundary
+from .boundary.user_decryptBoundary import user_decryptBoundary
+
+# Organizer Imports
 from .boundary.projectOwner_overviewBoundary import admin_overviewBoundary
 from .boundary.projectOwner_manageAdministratorsBoundary import projectOwner_manageAdministratorsBoundary
 from .boundary.projectOwner_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
@@ -13,26 +22,23 @@ from .boundary.projectOwner_editAnswersBoundary import projectOwner_editAnswersB
 from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
 from .boundary.organizer_viewElectionMessageBoundary import organizer_viewElectionMessageBoundary
 from .boundary.organizer_emailSettingBoundary import organizer_emailSettingBoundary
-from .boundary.loginBoundary import loginBoundary
-from .boundary.registrationBoundary import registrationBoundary
 from .boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
 from .boundary.organizer_mainBallotBoundary import organizer_mainBallotBoundary
-from .boundary.logoutBoundary import logoutBoundary
 from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
-from .boundary.contactUsBoundary import contactUsBoundary
-from .boundary.aboutUsBoundary import aboutUsBoundary
 from .boundary.projectOwner_publishBoundary import publishBoundary
+from .boundary.logoutBoundary import logoutBoundary
 from .boundary.organizer_downloadResultsBoundary import organizer_downloadResultsBoundary
 
-from .boundary.generateKeysBoundary import generateKeysBoundary
+# Voter Imports
+from .boundary.voters_loginBoundary import voters_loginBoundary
+from .boundary.voters_ViewVoterCoverPageBoundary import voters_ViewVoterCoverPage
+from .boundary.voters_ViewVotingPageBoundary import voters_ViewVotingPage
+from .boundary.voters_ViewSubmittedVotePageBoundary import voters_ViewSubmittedVotePage
 
-from .boundary.user_decryptBoundary import user_decryptBoundary
 
 
-from app import application as app, boundary, loginRequired, authorisationRequired
-from flask import request
-from werkzeug.utils import secure_filename
+
 
 @app.route('/', methods=['GET'])
 def landingPage():
@@ -104,7 +110,7 @@ def projectManageAdministrator(projectID):
 		
 		elif dataPosted == 'deleteVerifier':
 			print("Entering Delete Verifier")
-			print(request.form['deleteID'])
+			print("Delete ID:", request.form['deleteID'])
 			return boundary.deleteVerifier(projectID, request.form['deleteID'])
 		
 		else:
@@ -326,22 +332,37 @@ def mainBallotPage():
 #				Voting Pages				  #
 ###############################################
 
-@app.route('/<projID>/ ', methods=['GET'])
-def viewVoterCoverPage(projID):
+@app.route('/voter_login', methods=['GET'])
+def voterLoginPage():
+	boundary = voters_loginBoundary()
+	if request.method == 'GET':
+		username = request.args['name']
+		password = request.args['password']
+		projectID = request.args['projectID']
+		return boundary.onSubmit(username, password, projectID)
+
+
+@app.route('/<projectID>/VotingMessage', methods=['GET'])
+@voterLoginRequired
+@voterAuthorisationRequired
+def viewVoterCoverPage(projectID):
 	# Create a boundary object
 	boundary = voters_ViewVoterCoverPage()
 	if request.method == 'GET':
-		return boundary.displayPage(projID)
+		return boundary.displayPage(projectID)
 
-@app.route('/<projID>/ViewVotingPage', methods=['GET','POST'])
-def viewVotingPage(projID):
+
+@app.route('/<projectID>/ViewVotingPage', methods=['GET','POST'])
+@voterLoginRequired
+@voterAuthorisationRequired
+def viewVotingPage(projectID):
 	# Create a boundary object
 	boundary = voters_ViewVotingPage()
 	if request.method == 'GET':
-		return boundary.displayPage(projID)
+		return boundary.displayPage(projectID)
 	if request.method == "POST":
 		boundary = voters_ViewVotingPage()
-		noOfQues = boundary.getNumberofQuestion(projID)
+		noOfQues = boundary.getNumberofQuestion(projectID)
 
 		answerArray = []
 		for i in range(1, noOfQues + 1):
@@ -349,25 +370,30 @@ def viewVotingPage(projID):
 			answerArray.append(answer)
 		#print(answerArray)
 
-		if boundary.onSubmit(answerArray,projID):
-			return boundary.displaySuccess(projID)
+		if boundary.onSubmit(answerArray,projectID):
+			return boundary.displaySuccess(projectID)
 		else:
-			return boundary.displayError(projID)
+			return boundary.displayError(projectID)
 
 
-@app.route('/<projID>/ViewSubmittedVotePage', methods=['GET'])
-def viewSubmittedVotePage(projID):
+@app.route('/<projectID>/ViewSubmittedVotePage', methods=['GET'])
+@voterLoginRequired
+@voterAuthorisationRequired
+def viewSubmittedVotePage(projectID):
 	# Create a boundary object
 	boundary = voters_ViewSubmittedVotePage()
 	if request.method == 'GET':
-		return boundary.displayPage(projID)
+		return boundary.displayPage(projectID)
 
-@app.route('/<projID>/ViewEncryptedVotePage', methods=['GET'])
-def viewEncryptedVotePage(projID):
-	# Create a boundary object
-	boundary = voters_ViewEncryptedVotePage()
-	if request.method == 'GET':
-		return boundary.displayPage(projID)
+# Removed
+# @app.route('/<projectID>/ViewEncryptedVotePage', methods=['GET'])
+# @voterLoginRequired
+# @voterAuthorisationRequired
+# def viewEncryptedVotePage(projectID):
+# 	# Create a boundary object
+# 	boundary = voters_ViewEncryptedVotePage()
+# 	if request.method == 'GET':
+# 		return boundary.displayPage(projectID)
 
 ###############################################
 @app.route('/resetpassword', methods=['GET','POST'])
