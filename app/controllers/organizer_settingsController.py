@@ -1,5 +1,4 @@
 from ..entity.Organizers import Organizers
-import sys
 
 class organizer_settingsController:
 	def __init__(self):

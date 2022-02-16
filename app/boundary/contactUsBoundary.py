@@ -1,12 +1,16 @@
 from flask import render_template, redirect, session, flash
 import re
-import smtplib
-import json
+from ..lib.service_email import SendEmailService
+from flask import url_for, current_app
 
 class contactUsBoundary:
 	# Constructor
 	def __init__(self):
 		self.RESPONSE_SUCCESS = "Success"
+		self.email = SendEmailService()
+		self.email.setLoginDetails(current_app.config['EMAIL']['USER'], current_app.config['EMAIL']['PASSWORD'])
+		self.email.setServer(current_app.config['EMAIL']['SERVER'], current_app.config['EMAIL']['PORT'])
+		self.errors = []
 
 	# Other Methods
 	def displayPage(self):
@@ -27,18 +31,12 @@ class contactUsBoundary:
 		return True
 
 	def send_email(self,sender_email,name,subject,feedback):
-		with open("app\others\Credential.json") as f:
-			email = json.load(f)
-			EMAIL_ADDRESS= email["Credentials"]["Email Address"]
-			EMAIL_PASSWORD = email["Credentials"]["Email Password"]
-			f.close()
-		server = smtplib.SMTP("smtp.gmail.com",587)
-		server.starttls()
-		# login(email address, password)
-		server.login(EMAIL_ADDRESS,EMAIL_PASSWORD)
-		msg = 'From: ' + EMAIL_ADDRESS + '\r\nTo: ' + EMAIL_ADDRESS + '\r\nSubject: Feedback: ' + subject + '\r\n\r\nFeedback received from: ' + sender_email+ '\r\n\r\nName: ' + name + '\r\n\r\nFeedback: ' + feedback 
-		# sendmail(sender,receiver,message)
-		server.sendmail(EMAIL_ADDRESS,EMAIL_ADDRESS,msg)
+		subject = "Event has been rejected by a verifier "
+		message = f"{sender_email}+ '\r\n\r\nName: ' + {name} + '\r\n\r\nFeedback: ' + {feedback}" 
+		self.email.setMessage(subject, feedback)
+		self.email.setRecepientEmail(current_app.config['EMAIL']['USER'])
+		self.email.sendEmail()
+
 
 	def onSubmit(self,sender_email,name,subject,feedback):
 		if self.__checkIsValidName(name) and \
