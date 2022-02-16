@@ -44,7 +44,7 @@ class SendEmailService:
 			smtp.ehlo()			# Identify yourself using TLS
 
 			# Logs into the server
-			smtp.login(self.senderEmail) 
+			smtp.login(self.senderEmail, self.senderPassword) 
 			
 			# Sends Email to all recepients
 			for recepient in self.recepientEmails:

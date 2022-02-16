@@ -60,6 +60,7 @@ def downloadPage(projectID):
 @loginRequired
 @authorisationRequired
 def publishPage(projectID):
+	print("Entered Route")
 	# Creates a boundary object
 	boundary = publishBoundary()
 	if request.method == 'GET':

@@ -14,7 +14,7 @@ class publishBoundary:
 		preElectionMessage = controller.getPreElectionMessage(projectID)
 		invitationMessage = controller.getInvitationMessage(projectID)
 		errorMessages = controller.getErrorMessages(projectID)
-		print(errorMessages)
+		print("Error Messages(Boundary)", errorMessages)
 
 		return render_template('admin_publish.html', projectID=projectID,
 													 projectDetails=projectDetails,
@@ -32,12 +32,9 @@ class publishBoundary:
 		controller = projectOwner_publishController()
 		
 		# Owner Requests for verification & update status to pending verification if possible
+		# 
 		if controller.requestVerification(projectID):
-
-			# Update project status to published if possible 
-			controller.updateProjectStatusToPublished(projectID)
-
-			self.send_mail(projectID)
+			# self.send_mail(projectID)
 			return redirect('/mainballot')
 		else:
 			return self.displayError(projectID)
@@ -50,16 +47,8 @@ class publishBoundary:
 		if controller.verifyProject(projectID, session['organizerID']):
 			# Check if all user has approved, if yes change status of project
 			controller.updateProjectStatusToPublished(projectID)
-			controller.generate_inv_msg(projectID, self.votingPageURL)
+
 		return self.displayPage(projectID)
-	
-	def send_mail(self,projectID):
-		controller = projectOwner_publishController()
-		verifier_arr = controller.get_all_verifier(projectID)
-		if len(verifier_arr) >0:
-			controller.notify_verifier(verifier_arr)
-		else:
-			controller.generate_inv_msg(projectID, self.votingPageURL)
 	
 	def rejectProject(self, projectID, message):
 		controller = projectOwner_publishController()
