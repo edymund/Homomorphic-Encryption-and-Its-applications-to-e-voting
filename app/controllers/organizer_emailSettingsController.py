@@ -1,28 +1,17 @@
 from ..entity.ElectionMessage import ElectionMessage
 from ..entity.Voter import Voter
 from ..entity.Projectdetails import ProjectDetails
-import smtplib
 from email.message import EmailMessage
+from ..lib.service_email import SendEmailService
+from flask import current_app
 
 class organizer_emailSettingsController:
     def __init__(self, projID = None):
         self.projID = projID
-        self.invMsg = ""
-        self.rmdMsg = ""
-
-    # accessor
-    def getProjID(self):
-        return self.projID
-
-    def getInvMsg(self):
-        return self.invMsg
-
-    def getRmdMsg(self):
-        return self.rmdMsg
-
-    # mutator 
-    def setProjID(self,projID):
-        self.projID = projID
+        self.email = SendEmailService()
+        self.email.setLoginDetails(current_app.config['EMAIL']['USER'], current_app.config['EMAIL']['PASSWORD'])
+        self.email.setServer(current_app.config['EMAIL']['SERVER'], current_app.config['EMAIL']['PORT'])
+        self.errors = []
 
     def check_msg(self,msg):
         if msg == "" or msg == None:
@@ -50,41 +39,32 @@ class organizer_emailSettingsController:
         return self.rmdMsg
         
     def send_reminder(self):
-        EMAIL_PASSWORD="eccqringtcgtolnf"
-        EMAIL_ADDRESS="fyp21s403@gmail.com"
         voter_entity = Voter(self.projID)
         Election_entity = ElectionMessage(self.projID)
+        proj_entity = ProjectDetails(self.projID)
+        proj_title = proj_entity.getTitle()
+        start_date = proj_entity.getStartDate()
+        start_time = proj_entity.getStartTime()
+        end_time = proj_entity.getEndTime()
+        end_date =   proj_entity.getEndDate()
+        compul_msg = f"\n This email is to remind you to participate in the voting event, {proj_title}."+\
+            '\n'+f" Please be reminded to vote from  \nSTART: {start_date}, {start_time} \nEND:   {end_date}, {end_time}.\n\nRegards,\nFYP-21-s4-03" 
         
         #get Reminder message
         rmd_msg = Election_entity.getReminderMsg()
         all_voters = voter_entity.get_all_voters(self.projID)
 
-        # compulsory message
-        compul_msg = self.generate_message()
-
         final_msg = rmd_msg+ "\n" + compul_msg
-        for voter_email in all_voters: 
-            email = EmailMessage()
-            new_email = self.set_mail(EMAIL_ADDRESS, voter_email[0],final_msg, email)
-            self.send_mail(EMAIL_ADDRESS, EMAIL_PASSWORD, new_email)
-    
-    def set_mail(self, sender, receiver, message,email):
-        email["From"] = sender
-        email["To"] = receiver
-        email["Subject"] = "Reminder message to vote"
-        email.set_content(message)
-        return email
 
-    def send_mail(self, EMAIL_ADR, EMAIL_PW, email):
-        with smtplib.SMTP("smtp.gmail.com",587) as smtp:
-            smtp.ehlo()
-            smtp.starttls()
-            smtp.ehlo()
-            
-            smtp.login(EMAIL_ADR, EMAIL_PW)
-            smtp.send_message(email)
-            smtp.quit()
-            del email
+        all_email = []
+        for voter_email in all_voters: 
+            all_email.append(voter_email[0])
+
+        subject = "Reminder to vote"
+        self.email.setMessage(subject, final_msg)
+        self.email.setRecepientEmail(all_email)
+        self.email.sendEmail()
+    
     
     def check_proj_status(self):
         proj_entity = ProjectDetails(self.projID)
@@ -92,15 +72,3 @@ class organizer_emailSettingsController:
             return True
         else:
             return False
-
-    def generate_message(self):
-        proj_entity = ProjectDetails(self.projID)
-        proj_title = proj_entity.getTitle()
-        start_date = proj_entity.getStartDate()
-        start_time = proj_entity.getStartTime()
-        end_time = proj_entity.getEndTime()
-        end_date =   proj_entity.getEndDate()
-        msg = f"\n This email is to remind you to participate in the voting event, {proj_title}."+\
-            '\n'+f" Please be reminded to vote from  \n{start_time}, {start_date} to {end_time},{end_date}." 
-
-        return msg
