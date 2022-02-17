@@ -92,3 +92,36 @@ class Answer:
 		if result is not None:
 			return True
 		return False
+
+	# Get the unique number of people who voted in a project
+	def getNumberOfUniqueVoter(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		# Select User from database and populate instance variables
+		result = db.execute("""SELECT COUNT(DISTINCT voterID)
+							   FROM answer
+							   WHERE voterID in (
+							   		SELECT voterID
+							   		FROM voter
+							   		WHERE projectID = (?)
+							   );""", (projectID,)).fetchone()
+
+		dbDisconnect(connection)
+		
+		return int(result[0])
+	
+
+	# Get all votes of a specific candidate
+	def getVotes(self, candidateID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		# Select User from database and populate instance variables
+		result = db.execute("""SELECT encryptedAnswer
+							   FROM answer
+							   WHERE candidateID = (?);""", (candidateID,)).fetchall()
+
+		dbDisconnect(connection)
+		
+		return result

@@ -44,7 +44,7 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/<projectID>/downloadResults', methods=['GET', 'POST'])
+@app.route('/<projectID>/downloadResults', methods=['GET'])
 @loginRequired
 @authorisationRequired
 def downloadPage(projectID):
@@ -52,6 +52,15 @@ def downloadPage(projectID):
 	boundary = organizer_downloadResultsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
+
+@app.route('/<projectID>/downloadResults/EncryptedResult', methods=['GET'])
+@loginRequired
+@authorisationRequired
+def downloadEncryptedFile(projectID):
+	# Create a boundary object
+	boundary = organizer_downloadResultsBoundary()
+	if request.method == 'GET':
+		return boundary.downloadFile(projectID)
 
 @app.route('/<projectID>/publish', methods=['GET', 'POST'])
 @loginRequired
