@@ -29,6 +29,7 @@ class voters_ViewVotingPage:
 
 		controller = voters_ViewVotingPageController()
 		question = controller.getQuestionNCandidate(projID)
+
 		#print(question)
 		answer = ""
 		questionID = ""
@@ -39,7 +40,7 @@ class voters_ViewVotingPage:
 		count = 0
 		for items in answers:
 			tempArr =[]
-			input = items.split(delimiter)
+			input = items.split(delimiter)	# Answer_questionID_candidateID
 			answer = input[0]
 			questionID = input[1]
 			candidateID = input[2]
@@ -49,15 +50,14 @@ class voters_ViewVotingPage:
 			for questions in question:
 					for candidate in questions["option"]:
 						dictArr ={}
-						# print("qid",int(candidate["questionID"]))
-						# print("cid", int(candidate["candidateID"]))
-						# print("if1",int(candidate["questionID"]) == int(questionID) and int(candidate["candidateID"]) == int(candidateID))
-						# print("if2",int(candidate["questionID"]) == int(questionID) and int(candidate["candidateID"]) != int(candidateID))
+						
+						# Set selected candidate with a vote value of 1
 						if int(candidate["questionID"]) == int(questionID) and int(candidate["candidateID"]) == int(candidateID):
 							dictArr["candidateID"] = candidateID
 							dictArr["choice"] = 1
 							tempArr.append(dictArr)
 
+						# Set unselected candidate with a vote value of 0
 						elif int(candidate["questionID"]) == int(questionID) and int(candidate["candidateID"]) != int(candidateID):
 							dictArr["candidateID"] = candidate["candidateID"]
 							dictArr["choice"] = 0
@@ -66,12 +66,9 @@ class voters_ViewVotingPage:
 						else:
 							ansArr.append(tempArr)
 							break
-
-						
-		# print("answerArray",ansArr)
 		
 		if self.checkEmptyArray(ansArr):
-			if controller.insertVoterAns(ansArr,6):
+			if controller.insertVoterAns(ansArr,session['voterID'], projID):
 				print("Success")
 				return True
 			else:

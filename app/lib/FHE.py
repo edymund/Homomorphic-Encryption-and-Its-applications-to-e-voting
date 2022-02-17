@@ -118,6 +118,7 @@ class FHE:
 		"""
 		Use a random subset of the public key and a random R value
 		"""
+		publicKey = json.loads(publicKey)
 		# print("\n\n===========Performing Encryption===========")
 		noOfIntegerInPublicKey = len(publicKey)
 		# print("len public key", len(publicKey))
