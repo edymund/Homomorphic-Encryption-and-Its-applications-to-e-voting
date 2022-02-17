@@ -366,10 +366,16 @@ def viewVotingPage(projectID):
 		noOfQues = boundary.getNumberofQuestion(projectID)
 
 		answerArray = []
+		print("Answer Array Route1", answerArray)
 		for i in range(1, noOfQues + 1):
-			answer = request.form['candidate' + '[' + str(i) + ']']
+			answer = None
+			if 'candidate' + '[' + str(i) + ']' in request.form:
+				answer = request.form['candidate' + '[' + str(i) + ']']
+			else:
+				if i != noOfQues + 1:
+					answer = f"none_{i}_-1"
 			answerArray.append(answer)
-		#print(answerArray)
+		print("Answer Array Route", answerArray)
 
 		if boundary.onSubmit(answerArray,projectID):
 			return boundary.displaySuccess(projectID)
@@ -379,7 +385,6 @@ def viewVotingPage(projectID):
 
 @app.route('/<projectID>/ViewSubmittedVotePage', methods=['GET'])
 @voterLoginRequired
-@voterAuthorisationRequired
 def viewSubmittedVotePage(projectID):
 	# Create a boundary object
 	boundary = voters_ViewSubmittedVotePage()
