@@ -24,7 +24,7 @@ class projectOwner_editQuestionsBoundary:
 		questionDetails = controller.getQuestion(questionID)
 		candidateDetails = controller.getCandidates(questionID)
 
-		return render_template('admin_editQuestions.html', projectID=projectID, 
+		return render_template('organizer_editQuestions.html', projectID=projectID, 
 														   projectName=projectName,
 														   questionID=questionID,
 														   question=questionDetails,

@@ -10,14 +10,22 @@
 		<a href="/{{ projectID }}/view_electionMessage">Manage Election Messages</a>
 		<a href="/{{ projectID }}/view_importList">Manage Voters</a>
 		<a href="/{{ projectID }}/view_emailSettings">Manage Email Notifications</a>
-		<a href="/{{ projectID }}/publish">
-			{% if userType == "owner" %}
-				Publish Event
-			{% else %}
-				Approve Event
-			{% endif %}
-		</a>
-		<a href="/{{ projectID }}/download">Download Results</a>
+		
+		<!-- Display Publish Button if project is not completed -->
+		{% if projectStatus != "COMPLETED" %}
+			<a href="/{{ projectID }}/publish">
+				{% if userType == "owner" %}
+					Publish Event
+				{% else %}
+					Approve Event
+				{% endif %}
+			</a>
+		{% endif %}
+
+		<!-- Allow admin to view results when project is completed -->
+		{% if projectStatus == "COMPLETED" %}
+			<a href="/{{ projectID }}/downloadResults"><b>Download Results</b></a>
+		{% endif %}
 	{% endif %}
 	
 	<br/>

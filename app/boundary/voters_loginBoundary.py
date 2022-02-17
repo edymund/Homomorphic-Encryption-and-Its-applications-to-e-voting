@@ -16,7 +16,7 @@ class voters_loginBoundary:
 				session['user'] = username
 				session['userType'] = 'voter'
 				session['loginType'] = 'voter'
-				session['projectID'] = projectID
+				session['projectID'] = int(projectID)
 				session['voterID'] = controller.getVoterID(username, projectID)
 				print("Success")
 				return self.loginSuccess(projectID)

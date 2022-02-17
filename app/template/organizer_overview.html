@@ -19,17 +19,17 @@
 		<label for="endDateTime">End Date & Time:</label>
 		<input type="datetime-local" id="endDateTime" name="endDateTime" {% if projectDetails %} value="{% if projectDetails.endDateTime %}{{projectDetails.endDateTime}}{% endif %}" {% endif %} {% if userType == "verifier" %} readonly {% endif %}/> <br />
 		
-		<div class="form-group">
+		<!-- <div class="form-group">
 			<label for="publicKey">Public Key:</label>
 			<input type="text" id="publicKey" name="publicKey" {% if projectDetails %} value="{{projectDetails.publicKey}}" {% endif %} {% if userType == "verifier" %} readonly {% endif %}/><br />
 			<small id="emailHelp" class="form-text text-muted">Click <a href="/generatekeys" target="_blank">here</a> to generate keys</small>
-		</div>
+		</div> -->
 
 		{% if userType == "owner"%}
 			{%if projectDetails.status == "DRAFT" %}
 				<button type="submit" name="action" value="Save" >Save Project</button>
-			{%endif%}
 				<button type="submit" name="action" value="Delete">Delete Project</button>
+			{%endif%}
 		{% endif %}
 	</form>
 {% endblock %}

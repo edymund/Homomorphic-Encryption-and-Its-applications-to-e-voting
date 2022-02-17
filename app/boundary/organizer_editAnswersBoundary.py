@@ -17,7 +17,7 @@ class projectOwner_editAnswersBoundary:
 		projectName = controller.getProjectName(projectID)
 		candidateDetails = controller.getCandidateDetails(candidateID)
 
-		return render_template('admin_editAnswers.html', projectID=projectID, 
+		return render_template('organizer_editAnswers.html', projectID=projectID, 
 														 projectName=projectName, 
 														 candidate=candidateDetails,
 														 userType=session['userType'])

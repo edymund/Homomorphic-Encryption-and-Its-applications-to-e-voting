@@ -7,14 +7,15 @@
 
 {% block body %}
 	<h2>Download Results</h2>
-    <form method="POST" action="/download">
-        <label for="voters_voted"><b>Number of Voters voted: </b></label> 
-        <span>1000000</span> <br> <br>
+
+		<b>Number of Voters voted: </b>
+        <span>{{ totalVotes }}</span> <br> <br>
+
+        <b>Number of Voters voted: </b>
+        <span>{{ uniqueVotes }}</span> <br> <br>
         
-        <label for="voters_did_not_vote"><b>Number of Voters did not vote: </b></label> 
-        <span>10000000</span> <br> <br>
+        <b>Number of Voters did not vote: </b>
+        <span>{{totalVotes - uniqueVotes}}</span> <br> <br>
         
-        <button type="submit">Download</button> <br> <br>
-        
-    </form>
+        <a href="/{{ projectID }}/downloadResults/EncryptedResult"><button>Download</button></a> <br> <br>
 {% endblock %}
