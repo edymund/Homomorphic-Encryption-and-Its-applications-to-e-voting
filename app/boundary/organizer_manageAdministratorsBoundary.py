@@ -10,7 +10,7 @@ class projectOwner_manageAdministratorsBoundary:
 	def displayPage(self, projectID):
 		controller = projectOwner_manageAdministratorsController()
 		verifier = controller.getVerifier(projectID)
-		return render_template('admin_manageAdministrators.html', projectID=projectID, 
+		return render_template('organizer_manageAdministrators.html', projectID=projectID, 
 																  subAdministrators=verifier,
 																  userType=session['userType'])
 	

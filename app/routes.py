@@ -14,28 +14,27 @@ from .boundary.generateKeysBoundary import generateKeysBoundary
 from .boundary.user_decryptBoundary import user_decryptBoundary
 
 # Organizer Imports
-from .boundary.projectOwner_overviewBoundary import admin_overviewBoundary
-from .boundary.projectOwner_manageAdministratorsBoundary import projectOwner_manageAdministratorsBoundary
-from .boundary.projectOwner_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
-from .boundary.projectOwner_editQuestionsBoundary import projectOwner_editQuestionsBoundary
-from .boundary.projectOwner_editAnswersBoundary import projectOwner_editAnswersBoundary
+from .boundary.organizer_overviewBoundary import admin_overviewBoundary
+from .boundary.organizer_manageAdministratorsBoundary import projectOwner_manageAdministratorsBoundary
+from .boundary.organizer_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
+from .boundary.organizer_editQuestionsBoundary import projectOwner_editQuestionsBoundary
+from .boundary.organizer_editAnswersBoundary import projectOwner_editAnswersBoundary
 from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
 from .boundary.organizer_viewElectionMessageBoundary import organizer_viewElectionMessageBoundary
 from .boundary.organizer_emailSettingBoundary import organizer_emailSettingBoundary
 from .boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
 from .boundary.organizer_mainBallotBoundary import organizer_mainBallotBoundary
 from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
-from .boundary.resetPasswordBoundary import resetPasswordBoundary
-from .boundary.projectOwner_publishBoundary import publishBoundary
-from .boundary.logoutBoundary import logoutBoundary
+from .boundary.organizer_publishBoundary import publishBoundary
 from .boundary.organizer_downloadResultsBoundary import organizer_downloadResultsBoundary
+from .boundary.resetPasswordBoundary import resetPasswordBoundary
+from .boundary.logoutBoundary import logoutBoundary
 
 # Voter Imports
 from .boundary.voters_loginBoundary import voters_loginBoundary
 from .boundary.voters_ViewVoterCoverPageBoundary import voters_ViewVoterCoverPage
 from .boundary.voters_ViewVotingPageBoundary import voters_ViewVotingPage
 from .boundary.voters_ViewSubmittedVotePageBoundary import voters_ViewSubmittedVotePage
-
 
 
 @app.route('/', methods=['GET'])
@@ -45,7 +44,7 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/<projectID>//download', methods=['GET', 'POST'])
+@app.route('/<projectID>/downloadResults', methods=['GET'])
 @loginRequired
 @authorisationRequired
 def downloadPage(projectID):
@@ -53,6 +52,15 @@ def downloadPage(projectID):
 	boundary = organizer_downloadResultsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
+
+@app.route('/<projectID>/downloadResults/EncryptedResult', methods=['GET'])
+@loginRequired
+@authorisationRequired
+def downloadEncryptedFile(projectID):
+	# Create a boundary object
+	boundary = organizer_downloadResultsBoundary()
+	if request.method == 'GET':
+		return boundary.downloadFile(projectID)
 
 @app.route('/<projectID>/publish', methods=['GET', 'POST'])
 @loginRequired
@@ -85,17 +93,13 @@ def projectOverviewPage(projectID):
 		return boundary.displayPage(projectID)
 
 	if request.method == 'POST':
-		if boundary.getProjectStatus(projectID) == "DRAFT":
-			if request.form['action'] == "Delete":
-				return boundary.deleteProject(projectID)
-			elif request.form['action'] == "Save":
-				title = request.form['name']
-				startDateTime = request.form['startDateTime']
-				endDateTime = request.form['endDateTime']
-				publicKey = request.form['publicKey']
-				return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
-		else:
-			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")
+		if request.form['action'] == "Delete":
+			return boundary.deleteProject(projectID)
+		elif request.form['action'] == "Save":
+			title = request.form['name']
+			startDateTime = request.form['startDateTime']
+			endDateTime = request.form['endDateTime']
+			return boundary.onSubmit(projectID, title, startDateTime, endDateTime)
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired
@@ -387,10 +391,16 @@ def viewVotingPage(projectID):
 		noOfQues = boundary.getNumberofQuestion(projectID)
 
 		answerArray = []
+		print("Answer Array Route1", answerArray)
 		for i in range(1, noOfQues + 1):
-			answer = request.form['candidate' + '[' + str(i) + ']']
+			answer = None
+			if 'candidate' + '[' + str(i) + ']' in request.form:
+				answer = request.form['candidate' + '[' + str(i) + ']']
+			else:
+				if i != noOfQues + 1:
+					answer = f"none_{i}_-1"
 			answerArray.append(answer)
-		#print(answerArray)
+		print("Answer Array Route", answerArray)
 
 		if boundary.onSubmit(answerArray,projectID):
 			return boundary.displaySuccess(projectID)
@@ -400,7 +410,6 @@ def viewVotingPage(projectID):
 
 @app.route('/<projectID>/ViewSubmittedVotePage', methods=['GET'])
 @voterLoginRequired
-@voterAuthorisationRequired
 def viewSubmittedVotePage(projectID):
 	# Create a boundary object
 	boundary = voters_ViewSubmittedVotePage()

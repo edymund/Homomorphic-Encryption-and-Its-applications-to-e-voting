@@ -12,7 +12,10 @@ class organizer_settingsBoundary:
 
 	# Other Methods
 	def displayPage(self):
-		return render_template('organizer_settings.html')
+		controller = organizer_settingsController()
+		username = session['user']
+		data = controller.getUserDetails(username)
+		return render_template('organizer_settings.html',data=data)
 
 	def __checkIsValidFirstName(self, first_name):
 		# Check first name, last name 
@@ -38,8 +41,15 @@ class organizer_settingsBoundary:
 				return False
 		return True
 
+	def __checkifAllFieldsAreEmpty(self,first_name,last_name,email,company_name):
+		if (first_name == "" and last_name == "" and email == "" and company_name == ""):
+			self.ERROR = "Please fill in at least 1 field"
+			return False
+		return True
+
 	def onSubmit(self,first_name,last_name,email,company_name):
-		if self.__checkIsValidFirstName(first_name) and \
+		if self.__checkifAllFieldsAreEmpty(first_name,last_name,email,company_name) and \
+			self.__checkIsValidFirstName(first_name) and \
 			self.__checkIsValidLastName(last_name) and \
 			self.__checkEmailFormat(email):
 			try:

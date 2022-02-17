@@ -10,7 +10,7 @@ class projectOwner_overviewController:
 		projectDetails = ProjectDetails()
 		return projectDetails.getProjectDetails(projectID)
 
-	def updateProject(self, projectID, organizerID, title, startDateTime, endDateTime, publicKey):
+	def updateProject(self, projectID, organizerID, title, startDateTime, endDateTime):
 		ProjectDetailsEntity = ProjectDetails()
 		if startDateTime == "":
 			startDate = None
@@ -28,7 +28,7 @@ class projectOwner_overviewController:
 			endDate = (endDateTimeSplit.strftime("%Y" + "-" + "%m" + "-" + "%d"))
 			endTime = (endDateTimeSplit.strftime("%H" + ":" + "%M"))
 
-		return ProjectDetailsEntity.updateProject(projectID, title, "DRAFT", startDate, startTime, endDate, endTime, publicKey)
+		return ProjectDetailsEntity.updateProject(projectID, title, "DRAFT", startDate, startTime, endDate, endTime, None)
 		
 	def deleteProject(self, projectID):
 		projectDetails = ProjectDetails()

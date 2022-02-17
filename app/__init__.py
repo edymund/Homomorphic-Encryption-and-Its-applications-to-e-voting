@@ -23,6 +23,7 @@ static_dir = os.path.abspath('./app/static')
 # Configure app to run from this file
 application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 application.config['UPLOAD_FOLDER'] = "./static/images/projectImages/{}"
+application.config['DOWNLOAD_FOLDER'] = "static\downloads"
 application.config['EMAIL'] = {}
 application.config['EMAIL']['SERVER'] = "smtp.gmail.com"
 application.config['EMAIL']['PORT'] = 587
@@ -97,14 +98,19 @@ def voterLoginRequired(function):
 		try:
 			# If user is authenticated, proceed as per normal
 			if session['user'] and session['loginType'] == 'voter':
-				print("User authenticated")
-				print(session['user'])
-				return function(*args, **kwargs)
-			
+				accessedResource = kwargs.get("projectID")
+				if int(accessedResource) == session['projectID']:
+					print("User authenticated")
+					print(session['user'])
+					return function(*args, **kwargs)
+
+				flash("Invalid Resource")
+				return redirect('/')
+
 		except KeyError as e:
-			# if session['isAuthenticated'] is None or not session['isAuthenticated']:
 			print(e)
-		print("User not authenticated, Redirecting")
+			print("User not authenticated, Redirecting")
+			flash("User not authenticated, Redirecting")
 		return redirect('/')
 	return decorated_function
 

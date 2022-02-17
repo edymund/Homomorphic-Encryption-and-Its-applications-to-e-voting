@@ -152,7 +152,7 @@ organizerInsertquery = "INSERT INTO organizers (email, password, companyName, fi
 ## storing values in a variable
 organizerInsertvalues = [
     ("glen@hotmail.com","a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3","abs","glen","lee"),
-    ("john@hotmail.com","a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3","abs","john","NULL")
+    ("clementkoh81@gmail.com","a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3","abs","john","NULL")
 ]
 
 ## executing the query with values
@@ -163,7 +163,7 @@ mycursor.executemany(organizerInsertquery, organizerInsertvalues)
 projDetailsInsertquery = "INSERT INTO projdetails (title, status, startDate, startTime, endDate, endTime, publicKey) VALUES (?,?,?,?,?,?,?)"
 ## storing values in a variable
 projDetailsInsertvalues = [
-   ("foodpoll","DRAFT","2022-01-08","09:00","2022-01-08","12:00","abababba"),
+   ("foodpoll","DRAFT","2022-02-17","00:01","2022-02-17","23:59","abababba"),
    ("president","DRAFT","2022-01-10","10:00","2022-01-11","17:00","vavavava")
 ]
 
@@ -277,7 +277,7 @@ answerInsertvalues = [
 
 ]
 ## executing the query with values
-mycursor.executemany(answerInsertquery, answerInsertvalues)
+# mycursor.executemany(answerInsertquery, answerInsertvalues)
 
 # Commit the update to the database
 mydb.commit()

@@ -197,3 +197,12 @@ class Organizers:
 			return False
 		
 		# Close the connection to the database
+
+	def getUserDetails(self,username):
+		connection = dbConnect()
+		db = connection.cursor()
+		result = db.execute("""SELECT *
+								FROM organizers 
+								WHERE email = (?)""", (username,)).fetchall()
+		dbDisconnect(connection)
+		return result

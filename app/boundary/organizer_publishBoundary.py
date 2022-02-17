@@ -16,7 +16,7 @@ class publishBoundary:
 		errorMessages = controller.getErrorMessages(projectID)
 		print("Error Messages(Boundary)", errorMessages)
 
-		return render_template('admin_publish.html', projectID=projectID,
+		return render_template('organizer_publish.html', projectID=projectID,
 													 projectDetails=projectDetails,
 													 preElectionMessage=preElectionMessage,
 													 invitationMessage=invitationMessage,

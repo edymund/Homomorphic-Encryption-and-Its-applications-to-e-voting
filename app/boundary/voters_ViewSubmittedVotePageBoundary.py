@@ -9,7 +9,6 @@ class voters_ViewSubmittedVotePage:
 	def displayPage(self,projID):
 		controller = voters_ViewSubmittedVotePageController()
 
-
 		message = controller.getElectionMsg(projID)
 		title = controller.getElectionTitle(projID).upper()
 
