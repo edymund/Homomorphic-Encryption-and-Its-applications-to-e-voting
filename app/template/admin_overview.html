@@ -26,10 +26,8 @@
 		</div>
 
 		{% if userType == "owner"%}
-			{%if projectDetails.status == "DRAFT" %}
-				<button type="submit" name="action" value="Save" >Save Project</button>
-			{%endif%}
-				<button type="submit" name="action" value="Delete">Delete Project</button>
+			<button type="submit" name="action" value="Save" >Save Project</button>
+			<button type="submit" name="action" value="Delete">Delete Project</button>
 		{% endif %}
 	</form>
 {% endblock %}

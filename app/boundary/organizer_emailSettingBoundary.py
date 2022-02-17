@@ -1,13 +1,12 @@
 from flask import render_template, redirect, session, flash
 from ..controllers.organizer_emailSettingsController import organizer_emailSettingsController
 import json
+from ..entity.Projectdetails import ProjectDetails
 
 class organizer_emailSettingBoundary:
 	# Constructor
 	def __init__(self, projectID= None):
 		self.projectID = projectID
-		self.rmdMsg = ""
-		self.invMsg = ""
 
 	# accessor
 	def getProjID(self):
@@ -43,8 +42,8 @@ class organizer_emailSettingBoundary:
 				controller.update_rmd_msg(self.rmdMsg)
 			controller.send_reminder()
 		else:
-			flash("Project status is not ongoing, unable to send reminder","error")
-
+			self.displayError(self.projectID,"Project status is not ongoing, unable to send reminder")
+			
 	# check if msg is valid
 	def process_rmd_msg(self, rmdMsg):
 		controller = organizer_emailSettingsController(projID = self.projectID)
@@ -66,3 +65,12 @@ class organizer_emailSettingBoundary:
 			msg = "You are invited!"
 			self.postMsg = msg
 			controller.update_inv_msg(msg)
+
+	
+	def getProjectStatus(self,projectID):
+		controller = ProjectDetails(projectID)
+		return controller.getStatus()
+	
+	def displayError(self, projectID, errorMessage):
+		flash(errorMessage,'error')
+		return self.displayPage(projectID)

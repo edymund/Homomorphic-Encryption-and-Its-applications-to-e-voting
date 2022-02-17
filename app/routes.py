@@ -38,8 +38,6 @@ from .boundary.voters_ViewSubmittedVotePageBoundary import voters_ViewSubmittedV
 
 
 
-
-
 @app.route('/', methods=['GET'])
 def landingPage():
 	# Creates a boundary object
@@ -66,14 +64,16 @@ def publishPage(projectID):
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 	if request.method == 'POST':
-		if request.form['action'] == "requestVerification":
-			return boundary.requestVerification(projectID)
-		elif request.form['action'] == "verify":
-			return boundary.verifyProject(projectID)
-		elif request.form['action'] == "reject":
-			feedback_msg =  request.form['feedback']
-			return boundary.rejectProject(projectID, feedback_msg)
-		
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			if request.form['action'] == "requestVerification":
+				return boundary.requestVerification(projectID)
+			elif request.form['action'] == "verify":
+				return boundary.verifyProject(projectID)
+			elif request.form['action'] == "reject":
+				feedback_msg =  request.form['feedback']
+				return boundary.rejectProject(projectID, feedback_msg)
+		else:
+			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")
 				
 @app.route('/<projectID>/overview', methods = ['GET', 'POST'])
 @loginRequired
@@ -85,14 +85,17 @@ def projectOverviewPage(projectID):
 		return boundary.displayPage(projectID)
 
 	if request.method == 'POST':
-		if request.form['action'] == "Delete":
-			return boundary.deleteProject(projectID)
-		elif request.form['action'] == "Save":
-			title = request.form['name']
-			startDateTime = request.form['startDateTime']
-			endDateTime = request.form['endDateTime']
-			publicKey = request.form['publicKey']
-			return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			if request.form['action'] == "Delete":
+				return boundary.deleteProject(projectID)
+			elif request.form['action'] == "Save":
+				title = request.form['name']
+				startDateTime = request.form['startDateTime']
+				endDateTime = request.form['endDateTime']
+				publicKey = request.form['publicKey']
+				return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
+		else:
+			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired
@@ -105,17 +108,20 @@ def projectManageAdministrator(projectID):
 
 	if request.method == 'POST':
 		dataPosted = request.form['action']
-		if dataPosted == 'addVerifier':
-			print("Entering Add Verifier")
-			return boundary.addVerify(projectID, request.form['addEmail'])
-		
-		elif dataPosted == 'deleteVerifier':
-			print("Entering Delete Verifier")
-			print("Delete ID:", request.form['deleteID'])
-			return boundary.deleteVerifier(projectID, request.form['deleteID'])
-		
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			if dataPosted == 'addVerifier':
+				print("Entering Add Verifier")
+				return boundary.addVerify(projectID, request.form['addEmail'])
+			
+			elif dataPosted == 'deleteVerifier':
+				print("Entering Delete Verifier")
+				print("Delete ID:", request.form['deleteID'])
+				return boundary.deleteVerifier(projectID, request.form['deleteID'])
+			
+			else:
+				return boundary.displayError(projectID,"Error with Data Entered")
 		else:
-			return boundary.displayError("Error with Data Entered")
+			return boundary.displayError(projectID,"Unable to edit verifier, project is not in draft mode")
 		
 @app.route("/<projectID>/view_questions", methods = ['GET'])
 @loginRequired
@@ -137,67 +143,74 @@ def projectEditQuestions(projectID, questionID):
 		return boundary.displayPage(projectID, questionID)
 	
 	if request.method == 'POST':
-		question = request.form['question']
-		if questionID == "new_question" :
-			return boundary.addQuestion(projectID, question)
+		
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			question = request.form['question']
+			if questionID == "new_question" :
+				return boundary.addQuestion(projectID, question)
+			else:
+				action = request.form['action']
+				if action == "Save":
+					return boundary.saveQuestion(projectID, questionID, question)
+				if action == "Delete":
+					return boundary.deleteQuestion(projectID, questionID)
 		else:
-			action = request.form['action']
-			if action == "Save":
-				return boundary.saveQuestion(projectID, questionID, question)
-			if action == "Delete":
-				return boundary.deleteQuestion(projectID, questionID)
+			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")	
 
 @app.route("/<projectID>/edit_answers/<questionID>/<candidateID>", methods=['GET', 'POST'])
 @loginRequired
 @authorisationRequired
 def projectEditAnswer(projectID, questionID ,candidateID):
-	# Crate boundary object
+		# Crate boundary object
 	boundary = projectOwner_editAnswersBoundary()
 
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID, candidateID)
-	
-	if request.method == 'POST':
-		action = request.form['action']
-		if action == "Save":
-			# Get Form Fields
-			candidateName = request.form['candidateName']
-			candidateDescription = request.form['candidateDescription']
-
-			newCandidate = False
-			if candidateID == "new_candidate":
-				newCandidate = True
-
-			# Store image and filename
-			filename = None
-			if not boundary.hasPermission(projectID, questionID, candidateID):
-				return boundary.displayError(projectID, boundary.ERROR_UNAUTHROIZED)
-			
-			file = request.files['candidateImageFile']
-			if file.filename != '':
-				filename = secure_filename(file.filename)
-
-			if newCandidate:
-				candidateID = boundary.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
-			else:
-				boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
-			
-			if filename is not None:
-				# Create Directory if it does not exists
-				print("candidate ID is ", candidateID)
-				if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
-					os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
-
-				# Save file to directory
-				if filename is not None:
-					file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
-			
-			return boundary.displaySuccess(projectID, questionID)
 		
-		if action == "Delete":
-			# Detele candidate
-			shutil.rmtree(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID), ignore_errors=True)
-			return boundary.deleteCandidate(projectID, questionID, candidateID)
+	if request.method == 'POST':
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			action = request.form['action']
+			if action == "Save":
+				# Get Form Fields
+				candidateName = request.form['candidateName']
+				candidateDescription = request.form['candidateDescription']
+
+				newCandidate = False
+				if candidateID == "new_candidate":
+					newCandidate = True
+
+					# Store image and filename
+				filename = None
+				if not boundary.hasPermission(projectID, questionID, candidateID):
+					return boundary.displayError(projectID,questionID, boundary.ERROR_UNAUTHROIZED)
+				
+				file = request.files['candidateImageFile']
+				if file.filename != '':
+					filename = secure_filename(file.filename)
+
+				if newCandidate:
+					candidateID = boundary.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+				else:
+					boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+				
+				if filename is not None:
+					# Create Directory if it does not exists
+					print("candidate ID is ", candidateID)
+					if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
+						os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
+
+					# Save file to directory
+					if filename is not None:
+						file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
+				
+				return boundary.displaySuccess(projectID, questionID)
+				
+			if action == "Delete":
+				# Detele candidate
+				shutil.rmtree(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID), ignore_errors=True)
+				return boundary.deleteCandidate(projectID, questionID, candidateID)
+		else:
+			return boundary.displayError(projectID,questionID,"Unable to edit, project is not in draft mode")	
 
 @app.route('/<projectID>/view_electionMessage', methods = ['GET', 'POST'])
 @loginRequired
@@ -206,12 +219,15 @@ def view_electionMessage(projectID):
 	# Create a boundary object
 	boundary = organizer_viewElectionMessageBoundary(projectID)
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
 	elif request.method == 'POST':
-		preMsg = request.form['preMsg']
-		postMsg = request.form['postMsg']
-		response = boundary.onSubmit(preMsg, postMsg)
-		return boundary.displayPage()
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			preMsg = request.form['preMsg']
+			postMsg = request.form['postMsg']
+			boundary.onSubmit(preMsg, postMsg)
+			return boundary.displayPage(projectID)
+		else:
+			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")	
 
 @app.route('/<projectID>/view_importList',  methods=['GET', 'POST'])
 @loginRequired
@@ -219,14 +235,16 @@ def view_electionMessage(projectID):
 def view_importList(projectID):	
 	# Create a boundary object
 	boundary = organizer_importVoterListBoundary(projectID)
-	boundary.setProjID(projectID)
-
 	if request.method == 'GET':		
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
+	
 	elif request.method == 'POST':
-		file = request.files['filename']
-		response = boundary.onSubmit(file)
-		return boundary.displayPage()
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			file = request.files['filename']
+			response = boundary.onSubmit(file)
+			return boundary.displayPage(projectID)
+		else:
+			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")	
 
 @app.route('/<projectID>/view_emailSettings',methods=['GET', 'POST'])
 @loginRequired
@@ -237,12 +255,15 @@ def view_emailSetting(projectID):
 	if request.method == 'GET':
 		return boundary.displayPage()
 	if request.method == 'POST':
-		rmdMsg = request.form['RmdMsg']
-		invMsg = request.form['InvMsg']
-		if request.form["action"] =="Update":
-			status = boundary.onSubmit(invMsg,rmdMsg)
-		if request.form["action"] =="SendEmail":
-			boundary.send_reminder(rmdMsg)
+		if boundary.getProjectStatus(projectID) == "DRAFT":
+			rmdMsg = request.form['RmdMsg']
+			invMsg = request.form['InvMsg']
+			if request.form["action"] =="Update":
+				status = boundary.onSubmit(invMsg,rmdMsg)
+			if request.form["action"] =="SendEmail":
+				boundary.send_reminder(rmdMsg)
+		else:
+			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")	
 		
 		# if status == 0:
 		# boundary.RESPONSE_SUCCESS()
