@@ -37,9 +37,6 @@ from .boundary.voters_ViewVotingPageBoundary import voters_ViewVotingPage
 from .boundary.voters_ViewSubmittedVotePageBoundary import voters_ViewSubmittedVotePage
 
 
-
-
-
 @app.route('/', methods=['GET'])
 def landingPage():
 	# Creates a boundary object
@@ -91,8 +88,7 @@ def projectOverviewPage(projectID):
 			title = request.form['name']
 			startDateTime = request.form['startDateTime']
 			endDateTime = request.form['endDateTime']
-			publicKey = request.form['publicKey']
-			return boundary.onSubmit(projectID, title, startDateTime, endDateTime, publicKey)
+			return boundary.onSubmit(projectID, title, startDateTime, endDateTime)
 
 @app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
 @loginRequired

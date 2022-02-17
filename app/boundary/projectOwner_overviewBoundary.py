@@ -17,7 +17,7 @@ class admin_overviewBoundary:
 	def onSubmit(self, projectID, title, startDateTime, endDateTime, publicKey):
 		organizerID = session['organizerID'];   
 		controller = projectOwner_overviewController()
-		if controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime, publicKey):
+		if controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime):
 			return self.displaySuccess(projectID)
 		else:
 			return self.displayError(projectID, "Failed to update details")
