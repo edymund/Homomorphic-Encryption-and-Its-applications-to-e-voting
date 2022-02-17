@@ -9,20 +9,29 @@
 {% block body %}
 <div class="content">
 
+	<!-- Data Array 
+	item[0] = organizerID
+	item[1] = email
+	item[2] = password
+	item[3] = companyName
+	item[4] = firstName
+	item[5] = lastName -->
+	
+	{% for item in data %}
 	<h2>Settings</h2>
 	<form method="POST" action="/settings">
 		<label for="fname"><b>First Name: </b></label>
-		<input type="text" placeholder="First name" name="fname" autocomplete="off"> <br>
-
+		<input type="text" placeholder="{{item[4]}}" name="fname" autocomplete="off"> <br>
 		<label for="lname"><b>Last Name: </b></label>
-		<input type="text" placeholder="Last name" name="lname"autocomplete="off"> <br>
+		<input type="text" placeholder="{{item[5]}}" name="lname"autocomplete="off"> <br>
 
 		<label for="email"><b>Email: </b></label>
-		<input type="text" placeholder="Email" name="email"autocomplete="off"> <br>
+		<input type="text" placeholder="{{item[1]}}" name="email"autocomplete="off"> <br>
 
 		<label for="Company"><b>Company: </b></label>
-		<input type="text" placeholder="Company Name" name = "companyName"autocomplete="off"> <br>
+		<input type="text" placeholder="{{item[3]}}" name = "companyName"autocomplete="off"> <br>
 		<button type="submit">Update Particulars</button>
 	</form>
+	{% endfor %}
 </div>
 {% endblock %} 
