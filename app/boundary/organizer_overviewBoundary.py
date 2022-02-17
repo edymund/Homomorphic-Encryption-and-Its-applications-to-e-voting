@@ -10,7 +10,7 @@ class admin_overviewBoundary:
 		controller = projectOwner_overviewController()
 		projectDetails = controller.getProjectDetails(projectID)
 		# print(projectDetails)
-		return render_template('admin_overview.html', projectID=projectID, 
+		return render_template('organizer_overview.html', projectID=projectID, 
 													  projectDetails=projectDetails, 
 													  userType = session['userType'])
 

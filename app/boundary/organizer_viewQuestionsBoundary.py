@@ -11,7 +11,7 @@ class projectOwner_viewQuestionsBoundary:
 		projectName = controller.getProjectName(projectID)
 		questionSet = controller.getQuestionsAndAnswers(projectID)
 
-		return render_template('admin_viewQuestions.html', projectID=projectID, 
+		return render_template('organizer_viewQuestions.html', projectID=projectID, 
 														   projectName=projectName, 
 														   questionSet=questionSet,
 														   userType = session['userType'])

@@ -95,16 +95,22 @@ def voterLoginRequired(function):
 		# If user is not authenticated
 		print("-------Checking Voter Login")
 		try:
+			session.clear()
 			# If user is authenticated, proceed as per normal
 			if session['user'] and session['loginType'] == 'voter':
-				print("User authenticated")
-				print(session['user'])
-				return function(*args, **kwargs)
-			
+				accessedResource = kwargs.get("projectID")
+				if int(accessedResource) == session['projectID']:
+					print("User authenticated")
+					print(session['user'])
+					return function(*args, **kwargs)
+
+				flash("Invalid Resource")
+				return redirect('/')
+
 		except KeyError as e:
-			# if session['isAuthenticated'] is None or not session['isAuthenticated']:
 			print(e)
-		print("User not authenticated, Redirecting")
+			print("User not authenticated, Redirecting")
+			flash("User not authenticated, Redirecting")
 		return redirect('/')
 	return decorated_function
 

@@ -14,21 +14,21 @@ from .boundary.generateKeysBoundary import generateKeysBoundary
 from .boundary.user_decryptBoundary import user_decryptBoundary
 
 # Organizer Imports
-from .boundary.projectOwner_overviewBoundary import admin_overviewBoundary
-from .boundary.projectOwner_manageAdministratorsBoundary import projectOwner_manageAdministratorsBoundary
-from .boundary.projectOwner_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
-from .boundary.projectOwner_editQuestionsBoundary import projectOwner_editQuestionsBoundary
-from .boundary.projectOwner_editAnswersBoundary import projectOwner_editAnswersBoundary
+from .boundary.organizer_overviewBoundary import admin_overviewBoundary
+from .boundary.organizer_manageAdministratorsBoundary import projectOwner_manageAdministratorsBoundary
+from .boundary.organizer_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
+from .boundary.organizer_editQuestionsBoundary import projectOwner_editQuestionsBoundary
+from .boundary.organizer_editAnswersBoundary import projectOwner_editAnswersBoundary
 from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
 from .boundary.organizer_viewElectionMessageBoundary import organizer_viewElectionMessageBoundary
 from .boundary.organizer_emailSettingBoundary import organizer_emailSettingBoundary
 from .boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
 from .boundary.organizer_mainBallotBoundary import organizer_mainBallotBoundary
 from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
-from .boundary.resetPasswordBoundary import resetPasswordBoundary
-from .boundary.projectOwner_publishBoundary import publishBoundary
-from .boundary.logoutBoundary import logoutBoundary
+from .boundary.organizer_publishBoundary import publishBoundary
 from .boundary.organizer_downloadResultsBoundary import organizer_downloadResultsBoundary
+from .boundary.resetPasswordBoundary import resetPasswordBoundary
+from .boundary.logoutBoundary import logoutBoundary
 
 # Voter Imports
 from .boundary.voters_loginBoundary import voters_loginBoundary
@@ -44,7 +44,7 @@ def landingPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/<projectID>//download', methods=['GET', 'POST'])
+@app.route('/<projectID>/downloadResults', methods=['GET', 'POST'])
 @loginRequired
 @authorisationRequired
 def downloadPage(projectID):
