@@ -1,4 +1,4 @@
-from ..boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
+from ...boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
 from flask import Flask, render_template, redirect, session, flash
 import os
 

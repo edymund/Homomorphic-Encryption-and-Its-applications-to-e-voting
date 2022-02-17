@@ -165,9 +165,15 @@ mycursor.executemany(organizerInsertquery, organizerInsertvalues)
 projDetailsInsertquery = "INSERT INTO projdetails (title, status, startDate, startTime, endDate, endTime, publicKey) VALUES (?,?,?,?,?,?,?)"
 ## storing values in a variable
 projDetailsInsertvalues = [
-   ("foodpoll","DRAFT","2022-01-08","09:00","2022-01-08","12:00","abababba"),
-   ("president","DRAFT","2022-01-10","10:00","2022-01-11","17:00","vavavava"),
-   ("test","PUBLISHED","2022-02-10","10:00","2022-03-01","17:00","vavavava")
+   ("Project Test A","DRAFT","2022-01-08","09:00","2022-01-08","12:00","aaaaaaaa"),
+   ("Project Test B","DRAFT","2022-01-10","11:00","2022-01-11","17:00","bbbbbbbb"),
+   ("Project Test C","ONGOING","2022-02-10","12:00","2022-03-01","19:00","cccccccc"),
+   ("Project Test D","PUBLISHED","2022-02-10","15:00","2022-03-01","20:00","dddddddd"),
+   ("Project Test E","ONGOING","2022-02-10","11:00","2022-03-01","17:00","eeeeeeee"),
+   ("Project Test F","PUBLISHED","2022-02-10","11:30","2022-03-01","13:00","ffffffff"),
+   ("Project Test G","ONGOING","2022-02-10","08:00","2022-03-01","10:00","gggggggg"),
+   ("Project Test H","PUBLISHED","2022-02-10","12:00","2022-03-01","13:00","hhhhhhhh"),
+   ("Project Test I","ONGOING","2022-02-10","10:00","2022-03-01","17:00","iiiiiiiii")
 ]
 
 ## executing the query with values
@@ -179,7 +185,15 @@ projectroleInsertquery = "INSERT INTO projectroles (organizerID, projID, role, a
 projectrolesInsertvalues = [
    (1, 1, "owner",None),
    (2, 1, "verifier",None),
-   (2, 2, "owner",None)
+   (2, 2, "owner",None),
+   (3, 1, "verifier",None),
+   (1, 3, "owner",None),
+   (1, 4, "owner",None),
+   (1, 5, "owner",None),
+   (1, 6, "owner",None),
+   (1, 7, "owner",None),
+   (1, 8, "owner",None),
+   (1, 9, "owner",None),
 ]
 
 ## executing the query with values
@@ -220,10 +234,17 @@ mycursor.executemany(electionmsgsInsertquery, electionmsgsInsertvalues)
 questionsInsertquery = "INSERT INTO questions (projID, questions, questionDesc) VALUES (?,?,?)"
 ## storing values in a variable
 questionsInsertvalues = [
-   (1,"Q1","Which flavours would you prefer?"),
-   (1,"Q2","Can you take spice?"),
-   (2,"Q1","Which president would you choose?"),
-   (2,"Q2","Which vice president would you choose?")
+   (1,"Q1","Testcase for P.ID 1 Q1"),
+   (1,"Q2","Testcase for P.ID 1 Q2"),
+   (2,"Q1","Testcase for P.ID 2 Q1"),
+   (2,"Q2","Testcase for P.ID 2 Q2"),
+   (3,"Q1","Testcase for P.ID 3 Q1"),
+   (4,"Q1","Testcase for P.ID 4 Q1"),
+   (5,"Q1","Testcase for P.ID 5 Q1"),
+   (6,"Q1","Testcase for P.ID 6 Q1"),
+   (7,"Q1","Testcase for P.ID 7 Q1"),
+   (8,"Q1","Testcase for P.ID 8 Q1"),
+   (9,"Q1","Testcase for P.ID 9 Q1")
 
 ]
 ## executing the query with values
@@ -233,16 +254,19 @@ mycursor.executemany(questionsInsertquery, questionsInsertvalues)
 candidatesInsertquery = "INSERT INTO candidates (projID, questionID, candidateOption, image, description) VALUES (?,?,?,?,?)"
 ## storing values in a variable
 candidatesInsertvalues = [
-   (1, 1, "apple", "apple.jpg", "an apple a day keeps a doctor away"),
-   (1, 1, "orange", "orange.jpg", "its an orange"),
-   (1, 1, "strawberry", None, None),
-   (1, 2, "yes", "spicy.jpg", "very spicy"),
-   (1, 2, "no", None, "not spicy"),
-   (2, 3, "jane", "jane.jpg", "10 years of exp"),
-   (2, 3, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
-   (2, 4, "jane", "jane.jpg", "10 years of exp"),
-   (2, 4, "mike", "mike.jpg", "won youngest entrepreneur award 2020"),
-   (2, 4, "melissa", "melissa.jpg", "5 years of exp")
+   (1, 1, "ID1_Q1C1", "ID1_Q1C1.jpg", "Project ID 1 Question 1 Candidate 1"),
+   (1, 1, "ID1_Q1C2", "ID1_Q1C2.jpg", "Project ID 1 Question 1 Candidate 2"),
+   (1, 1, "ID1_Q1C3", None, None),
+   (1, 2, "ID1_Q2C4", "ID1_Q2C4.jpg", "Project ID 1 Question 2 Candidate 4"),
+   (1, 2, "ID1_Q2C5", None, "Project ID 1 Question 2 Candidate 5"),
+   (2, 3, "ID2_Q3C6", "ID2_Q3C6.jpg", "Project ID 2 Question 3 Candidate 6"),
+   (2, 3, "ID2_Q3C7", "ID2_Q3C7.jpg", "Project ID 2 Question 3 Candidate 7"),
+   (2, 4, "ID2_Q4C8", "ID2_Q4C8.jpg", "Project ID 2 Question 4 Candidate 8"),
+   (2, 4, "ID2_Q4C9", "ID2_Q4C9.jpg", "Project ID 2 Question 4 Candidate 9"),
+   (3, 5, "ID3_Q5C10", "ID3_Q5C10.jpg", "Project ID 3 Question 5 Candidate 10"),
+   (3, 5, "ID3_Q5C11", "ID3_Q5C11.jpg", "Project ID 3 Question 5 Candidate 11"),
+   (4, 6, "ID4_Q6C12", "ID4_Q6C12.jpg", "Project ID 4 Question 6 Candidate 12"),
+   (4, 6, "ID4_Q6C13", "ID4_Q6C13.jpg", "Project ID 4 Question 6 Candidate 13")
 ]
 
 ## executing the query with values
@@ -274,17 +298,14 @@ answerInsertvalues = [
    (4,7,'0'),
    (4,8,'0'),
    (4,9,'0'),
-   (4,10,'0'),
    (5,6,'0'),
    (5,7,'1'),
-   (5,8,'0'),
+   (5,8,'1'),
    (5,9,'0'),
-   (5,10,'1'),
    (6,6,'0'),
    (6,7,'1'),
-   (6,8,'1'),
-   (6,9,'0'),
-   (6,10,'0'),
+   (6,8,'0'),
+   (6,9,'1'),
    #voterid 7 is itn7, submit blank vote for question 1
    (7,1,'0'),
    (7,2,'0'),

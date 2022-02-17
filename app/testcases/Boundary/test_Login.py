@@ -1,4 +1,4 @@
-from ..boundary.loginBoundary import loginBoundary
+from ...boundary.loginBoundary import loginBoundary
 from flask import Flask, render_template, redirect, session, flash
 import os
 
