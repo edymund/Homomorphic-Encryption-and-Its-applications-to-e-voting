@@ -16,8 +16,8 @@ class organizer_emailSettingBoundary:
 		self.projectID = projectID
 
 	# Other Methods
-	def displayPage(self):
-		controller = organizer_emailSettingsController(projID = self.getProjID())
+	def displayPage(self,projectID):
+		controller = organizer_emailSettingsController(projectID)
 		invMsg = controller.retrieve_inv_msg()
 		rmdMsg = controller.retrieve_rmd_msg()
 		self.process_inv_msg(invMsg)
@@ -33,16 +33,14 @@ class organizer_emailSettingBoundary:
 
 	def send_reminder(self, msg):
 		controller = organizer_emailSettingsController(projID = self.getProjID())
-		if controller.check_proj_status:
-			if controller.check_msg(msg):
-				self.rmdMsg = msg
-				controller.update_rmd_msg(msg)
-			else: 
-				self.rmdMsg = "Remember to vote!"
-				controller.update_rmd_msg(self.rmdMsg)
-			controller.send_reminder()
-		else:
-			self.displayError(self.projectID,"Project status is not ongoing, unable to send reminder")
+		if controller.check_msg(msg):
+			self.rmdMsg = msg
+			controller.update_rmd_msg(msg)
+		else: 
+			self.rmdMsg = "Remember to vote!"
+			controller.update_rmd_msg(self.rmdMsg)
+		controller.send_reminder()
+		flash("Reminder message is sent")
 			
 	# check if msg is valid
 	def process_rmd_msg(self, rmdMsg):

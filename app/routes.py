@@ -257,23 +257,25 @@ def view_emailSetting(projectID):
 	# Create a boundary object
 	boundary = organizer_emailSettingBoundary(projectID)
 	if request.method == 'GET':
-		return boundary.displayPage()
+		return boundary.displayPage(projectID)
 	if request.method == 'POST':
-		if boundary.getProjectStatus(projectID) == "DRAFT":
-			rmdMsg = request.form['RmdMsg']
-			invMsg = request.form['InvMsg']
-			if request.form["action"] =="Update":
-				status = boundary.onSubmit(invMsg,rmdMsg)
-			if request.form["action"] =="SendEmail":
-				boundary.send_reminder(rmdMsg)
-		else:
-			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")	
 		
-		# if status == 0:
-		# boundary.RESPONSE_SUCCESS()
-		return boundary.displayPage()
-		# else:
-		# 	return boundary.displayError(status)
+		rmdMsg = request.form['RmdMsg']
+		invMsg = request.form['InvMsg']
+		
+		if request.form["action"] =="Update":
+			if boundary.getProjectStatus(projectID) == "DRAFT":
+				boundary.onSubmit(invMsg,rmdMsg)
+			else:
+				return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")
+		if request.form["action"] =="SendEmail":
+			if boundary.getProjectStatus(projectID) == "PUBLISHED":
+				boundary.send_reminder(rmdMsg)
+			else:
+				return boundary.displayError(projectID,"Unable to send reminder, project is not in published mode")
+		
+		return boundary.displayPage(projectID)
+
 		
 @app.route('/login', methods=['GET', 'POST'])
 def loginPage():
