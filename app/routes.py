@@ -467,12 +467,16 @@ def aboutUsPage():
 	if request.method == 'GET':
 		return boundary.displayPage()
 
-@app.route('/decrypt', methods=['GET'])
+@app.route('/decrypt', methods=['GET', 'POST'])
 def user_decrypt():
 	# Create a boundary object
 	boundary = user_decryptBoundary()
-	if request.method == 'GET':
+	if request.method == 'GET':		
 		return boundary.displayPage()
+	elif request.method == 'POST':
+		file = request.files['data_file']
+		secretKey = request.form['secretKey']
+		return boundary.onSubmit(file, secretKey)
 
 @app.route('/logout', methods=['GET'])
 @loginRequired

@@ -4,6 +4,8 @@ from ..entity.Voter import Voter
 from ..entity.Answer import Answer
 from ..entity.Projectdetails import ProjectDetails
 from ..lib.FHE import FHE
+from ..lib.AES_CBC import AES_CBC
+import json
 
 class organizer_downloadResultsController:
 	def __init__(self):
@@ -11,7 +13,7 @@ class organizer_downloadResultsController:
 
 	def getProjectStatus(self, projectID):
 		projectDetails = ProjectDetails(projectID)
-		return projectDetails.getStatus();
+		return projectDetails.getStatus()
 
 	# Get Total Number of Voters for the project
 	def getTotalNumberOfVoters(self, projectID):
@@ -28,7 +30,7 @@ class organizer_downloadResultsController:
 		[ProjectName] = ?
 		[questions] = array of (['question'] = ?
 					  			['candidate'] = array of ([name]
-														  [totalEnvryptedVotes]))
+														  [voteCount]))
 		'''
 		
 		projectDetails = ProjectDetails(projectID)
@@ -71,3 +73,10 @@ class organizer_downloadResultsController:
 		votingData['questions'] = dataset
 		
 		return votingData
+	
+	def getEncryptedVotingData(self, projectID, aes_key):
+		votingData = self.getVotingData(projectID)
+		votingDataAsString = json.dumps(votingData)
+
+		aes = AES_CBC(aes_key)
+		return aes.encrypt(votingDataAsString)
