@@ -215,7 +215,7 @@ class Candidates:
 			return True
 		return False
 
-	def addNewCandidate(self, projectID, questionID, candidateID, candidateName, candidateDescription, filename):
+	def addNewCandidate(self, projectID, questionID, candidateName, candidateDescription, filename):
 		# Connect to database
 		connection = dbConnect()
 		db = connection.cursor()

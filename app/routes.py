@@ -183,7 +183,7 @@ def projectEditAnswer(projectID, questionID ,candidateID):
 				filename = secure_filename(file.filename)
 
 			if newCandidate:
-				candidateID = boundary.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+				candidateID = boundary.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
 			else:
 				boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
 			
