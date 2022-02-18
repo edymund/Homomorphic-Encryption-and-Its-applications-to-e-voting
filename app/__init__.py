@@ -29,6 +29,7 @@ application.config['EMAIL']['SERVER'] = "smtp.gmail.com"
 application.config['EMAIL']['PORT'] = 587
 application.config['EMAIL']['USER'] = "fyp21s403@gmail.com"
 application.config['EMAIL']['PASSWORD'] = "eccqringtcgtolnf"
+application.config['AES_KEY'] = "ebe8c37efdde9891476e64beb9e9fe7293b7c3743b7e2d6c5651708e4a6fb81b"
 
 # Sessions secret key
 application.secret_key="mykey123456"

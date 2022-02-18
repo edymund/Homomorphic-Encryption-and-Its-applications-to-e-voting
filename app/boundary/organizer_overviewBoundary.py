@@ -14,7 +14,7 @@ class admin_overviewBoundary:
 													  projectDetails=projectDetails, 
 													  userType = session['userType'])
 
-	def onSubmit(self, projectID, title, startDateTime, endDateTime, publicKey):
+	def onSubmit(self, projectID, title, startDateTime, endDateTime):
 		organizerID = session['organizerID'];   
 		controller = projectOwner_overviewController()
 		if controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime):
