@@ -61,16 +61,67 @@ class Answer:
 		connection = dbConnect()
 		db = connection.cursor()
 
+		# Ensure that voter has not voted before
 		query = db.execute("""SELECT voterID,candidateID,encryptedAnswer 
 									FROM answer
 									WHERE voterID = (?) AND candidateID = (?)""", (voterID,candidateID)).fetchone()
 		if query is not None:
 			dbDisconnect(connection)
 			return False
-		else:
-			db.execute("""INSERT INTO answer(voterID, candidateID, encryptedAnswer)
-								VALUES (?, ?, ?)""", (voterID, candidateID, encryptedAnswer))
 
-			connection.commit()
-			dbDisconnect(connection)
+		# Insert vote into database
+		db.execute("""INSERT INTO answer(voterID, candidateID, encryptedAnswer)
+							VALUES (?, ?, ?)""", (voterID, candidateID, encryptedAnswer))
+
+		connection.commit()
+		dbDisconnect(connection)
+		return True
+
+	def hasVoted(self, voterID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		# Select User from database and populate instance variables
+		result = db.execute("""SELECT *
+								FROM answer
+								WHERE voterID = (?)""", (voterID,)).fetchone()
+		print("has voted", result)
+
+		dbDisconnect(connection)
+		
+		if result is not None:
 			return True
+		return False
+
+	# Get the unique number of people who voted in a project
+	def getNumberOfUniqueVoter(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		# Select User from database and populate instance variables
+		result = db.execute("""SELECT COUNT(DISTINCT voterID)
+							   FROM answer
+							   WHERE voterID in (
+							   		SELECT voterID
+							   		FROM voter
+							   		WHERE projectID = (?)
+							   );""", (projectID,)).fetchone()
+
+		dbDisconnect(connection)
+		
+		return int(result[0])
+	
+
+	# Get all votes of a specific candidate
+	def getVotes(self, candidateID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		# Select User from database and populate instance variables
+		result = db.execute("""SELECT encryptedAnswer
+							   FROM answer
+							   WHERE candidateID = (?);""", (candidateID,)).fetchall()
+
+		dbDisconnect(connection)
+		
+		return result

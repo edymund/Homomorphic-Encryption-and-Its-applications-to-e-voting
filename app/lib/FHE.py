@@ -118,6 +118,7 @@ class FHE:
 		"""
 		Use a random subset of the public key and a random R value
 		"""
+		publicKey = json.loads(publicKey)
 		# print("\n\n===========Performing Encryption===========")
 		noOfIntegerInPublicKey = len(publicKey)
 		# print("len public key", len(publicKey))
@@ -160,6 +161,7 @@ class FHE:
 	
 	@staticmethod
 	def getEncryptedSum(encryptedValues, pk):
+		pk = json.loads(pk)
 		binaryList = []
 		for value in encryptedValues:
 			binaryList = addBit(binaryList, value)
@@ -213,45 +215,3 @@ def addBit(binaryList, bit):
 				binaryList[binaryListPos] = sum
 				binaryListPos -= 1
 		return binaryList
-			
-
-
-
-
-		
-
-# fhe = FHE()
-# fhe.keyGen()
-# # sk, pk = keygen(FHE.secretKeyBitLength, FHE.numberOfIntegersInPublicKey, FHE.publicKeyBitLength, FHE.noiseBitLength)
-# pk = fhe.getPublicKey()
-# sk = fhe.getPrivateKey()
-
-# print(len(json.dumps(pk)))
-
-# cipherList = []				# List of encrypted Value
-# encryptedSum = None			# Encrypted Sum 
-# decryptedSum = None			# Decrypted Sum
-# totalUnencryptedValue = 0	# Check Sum
-# count = 0
-
-# while True:
-# 	count += 1
-# 	randomValue = randint(0, 1)
-# 	totalUnencryptedValue += randomValue
-# 	encryptedNo = fhe.encrypt(pk, randomValue)
-# 	cipherList.append(encryptedNo)
-# 	print(len(cipherList))
-
-# 	encryptedSum = fhe.getEncryptedSum(cipherList, pk)
-# 	# print("printing values", encryptedSum)
-# 	decryptedSum = fhe.getDecryptedResult(encryptedSum, sk)
-# 	# print("sum is", decryptedSum)
-# 	print("Iterations:", count, "Uncrypted:", totalUnencryptedValue, "Encrypted", decryptedSum)
-# 	print(cipherList[-1])
-# 	if totalUnencryptedValue != decryptedSum:
-# 		encryptedSum = fhe.getEncryptedSum(cipherList, pk)
-# 	# print("printing values", encryptedSum)
-# 		decryptedSum = fhe.getDecryptedResult(encryptedSum, sk)
-# 		print("Failed At Iterations:", count, "Uncrypted:", totalUnencryptedValue, "Encrypted", decryptedSum)
-# 		break
-

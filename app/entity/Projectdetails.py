@@ -209,7 +209,6 @@ class ProjectDetails:
 		else:
 			return False
 	
-	
 	def setStatusAsDraft(self, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
@@ -260,6 +259,48 @@ class ProjectDetails:
 							   """, 
 								(currentDate, currentTime, currentDate))
 		
+		connection.commit()
+		dbDisconnect(connection)
+		return
+	
+	def checkProjectStatus_Ongoing(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""SELECT *
+								FROM projdetails
+								WHERE projDetailsID = (?) AND
+									  status = 'ONGOING'""", 
+								(projectID,)).fetchone()
+		
+		connection.commit()
+		dbDisconnect(connection)
+
+		if result is not None:
+			return True
+
+		return False
+
+	def updatePublicKey(self, projectID, publicKey):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET publicKey = (?)
+							   WHERE projDetailsID = (?)
+							   """, 
+								(publicKey, projectID))
+		connection.commit()
+		dbDisconnect(connection)
+		return
+
+	def getVotingData(self, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""UPDATE projDetails SET publicKey = (?)
+							   WHERE projDetailsID = (?)
+							   """, 
+								(publicKey, projectID))
 		connection.commit()
 		dbDisconnect(connection)
 		return

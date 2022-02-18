@@ -1,5 +1,5 @@
 from ..dbConfig import dbConnect, dbDisconnect
-import hashlib
+from hashlib import sha256
 
 class Voter:
 	def __init__(self, voterID = None):
@@ -79,10 +79,12 @@ class Voter:
 		FROM Voter
 		WHERE projectID = (?)
 		""",(projectID,)).fetchall()
-		return result
+
 		# Close the connection to the database
-		# dbDisconnect(connection)
-	
+		dbDisconnect(connection)
+
+		return result
+		
 	def get_all_voters_id(self, projID ):
 		connection = dbConnect()
 		db = connection.cursor()
@@ -107,7 +109,6 @@ class Voter:
 
 		# Close the connection to the database
 		dbDisconnect(connection)
-
 
 	def delete_child(self,voterID,projID):
 		connection = dbConnect()
@@ -148,7 +149,6 @@ class Voter:
 
 		return result[0]
 
-	
 	def get_all_voters_info(self, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
@@ -157,12 +157,49 @@ class Voter:
 		FROM Voter
 		WHERE projectID = (?)
 		""",(projectID,)).fetchall()
+		dbDisconnect(connection)
 		return result	
+
+	def checkVoterCredentials(self, username, password, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+		hash_password = sha256(password.encode()).hexdigest()
+
+		result = db.execute("""
+								SELECT *
+								FROM Voter
+								WHERE projectID = (?) AND
+									  voterNumber = (?) AND
+									  password = (?)
+								""",(projectID, username, hash_password)).fetchone()
+
+		dbDisconnect(connection)
+		
+		if result is not None:
+			return True
+		return result	
+
+	def getVoterID(self, voterNumber, projectID):
+		connection = dbConnect()
+		db = connection.cursor()
+
+		result = db.execute("""
+								SELECT voterID
+								FROM Voter
+								WHERE projectID = (?) AND
+									  voterNumber = (?)
+								""",(projectID, voterNumber)).fetchone()
+
+		dbDisconnect(connection)
+		
+		if result is not None:
+			return result[0]
+		return None
 
 	def update_pw(self,voter_number,voters_email, projectID,voters_pw):
 		connection = dbConnect()
 		db = connection.cursor()
-		voter_hash_pw = hashlib.sha256(str(voters_pw).encode()).hexdigest()
+		voter_hash_pw = sha256(str(voters_pw).encode()).hexdigest()
 		db.execute("""UPDATE Voter
 						SET password = (?)
 						WHERE 

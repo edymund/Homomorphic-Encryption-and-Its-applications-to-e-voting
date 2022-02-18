@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for, session
 from app.controllers.projectOwner_editQuestionsController import projectOwner_editQuestionsController
 from app.entity.Candidates import Candidates
 from app.entity.Questions import Questions
+from ..entity.Projectdetails import ProjectDetails
 
 class projectOwner_editQuestionsBoundary:
 	def __init__(self):
@@ -24,7 +25,7 @@ class projectOwner_editQuestionsBoundary:
 		questionDetails = controller.getQuestion(questionID)
 		candidateDetails = controller.getCandidates(questionID)
 
-		return render_template('admin_editQuestions.html', projectID=projectID, 
+		return render_template('organizer_editQuestions.html', projectID=projectID, 
 														   projectName=projectName,
 														   questionID=questionID,
 														   question=questionDetails,
@@ -61,12 +62,16 @@ class projectOwner_editQuestionsBoundary:
 
 		return self.displaySuccess(projectID)
 	
+	def getProjectStatus(self,projectID):
+		controller = ProjectDetails(projectID)
+		return controller.getStatus()
+		
 	def displayError(self, projectID, error):
-		flash(error)
-		return redirect("../../{}/view_questions".format(projectID))
+		flash(error,'error')
+		return redirect(f"../../{projectID}/view_questions")
 	
 	def displaySuccess(self, projectID):
-		return redirect("../../{}/view_questions".format(projectID))
+		return redirect(f"../../{projectID}/view_questions")
 	
 	
 

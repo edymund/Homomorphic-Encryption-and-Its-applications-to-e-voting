@@ -1,6 +1,5 @@
 from ..entity.Organizers import Organizers
-from ..entity.ProjectOwner import ProjectRoles
-import hashlib
+from ..entity.ProjectRoles import ProjectRoles
 
 class loginController:
 	def __init__(self):

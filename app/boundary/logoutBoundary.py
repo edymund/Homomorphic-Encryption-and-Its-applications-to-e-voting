@@ -15,6 +15,7 @@ class logoutBoundary:
 		session['subAdminProjectID'] = None
 
 		print(session['organizer'])
+		session.clear()
 
 	def redirectToLogin(self):
 

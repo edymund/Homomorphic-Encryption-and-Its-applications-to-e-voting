@@ -1,4 +1,4 @@
-from ..entity.ProjectOwner import ProjectRoles
+from ..entity.ProjectRoles import ProjectRoles
 from ..entity.Projectdetails import ProjectDetails
 from ..entity.ElectionMessage import ElectionMessage
 

@@ -12,7 +12,10 @@
 	{%set count = [1] %}
 	{%for questions in question %}
 	<div class="question">
+		<!-- Display Question Number -->
 		<span><b>{{questions.question.questionNo}}</b></span>
+		
+		<!-- Display Candidate Information -->
 		<table>
 			<tr>
 				{% for candidate in questions.option %}
@@ -36,14 +39,17 @@
 				{% endfor %}
 			</tr>
 		</table>
+
+
 		<table>
+			<!-- Display Question -->
 			<tr>
 				<td class="questionInfo">
 					{{questions.question.question}}
 				</td>
 			</tr>
+			<!-- Display Candidate Choices -->
 			<tr>
-				
 				<td class="answerInfo">
 					{% for candidate in questions.option %}
 					<input type="radio" id=candidateRadio{{count}} name=candidate{{count}} value={{candidate.candidateOption}}_{{candidate.questionID}}_{{candidate.candidateID}}>
@@ -51,7 +57,6 @@
 					{% endfor %}
 					<br>
 				</td>
-				
 			</tr>
 		</table>
 	</div>

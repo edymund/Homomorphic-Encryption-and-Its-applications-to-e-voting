@@ -1,5 +1,4 @@
 from ..entity.Organizers import Organizers
-import hashlib
 
 class resetPasswordController:
 	def __init__(self):

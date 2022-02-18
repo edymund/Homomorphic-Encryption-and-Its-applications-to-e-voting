@@ -1,4 +1,5 @@
-from flask import render_template, redirect, session
+from flask import render_template, flash, redirect, session
+from ..entity.Projectdetails import ProjectDetails
 from ..controllers.organizer_ElectionMsgController import ElectionMsgController
 import json
 
@@ -10,7 +11,7 @@ class organizer_viewElectionMessageBoundary:
 		self.postMsg = ""
 
 	# Other Methods
-	def displayPage(self):
+	def displayPage(self,projectID):
 		controller = ElectionMsgController(self.projectID)
 		preMsg = controller.retrieve_pre_election_msg()
 		postMsg = controller.retrieve_post_election_msg()
@@ -44,3 +45,11 @@ class organizer_viewElectionMessageBoundary:
 			msg = "Hope you enjoyed your vote"
 			self.postMsg = msg
 			controller.update_post_election_msg(msg)
+	
+	def getProjectStatus(self,projectID):
+		controller = ProjectDetails(projectID)
+		return controller.getStatus()
+	
+	def displayError(self, projectID, errorMessage):
+		flash(errorMessage,'error')
+		return self.displayPage(projectID)
