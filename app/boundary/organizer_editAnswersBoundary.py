@@ -16,12 +16,14 @@ class projectOwner_editAnswersBoundary:
 
 		controller = projectOwner_editAnswersController()
 		projectName = controller.getProjectName(projectID)
+		projectStatus = controller.getProjectStatus(projectID)
 		candidateDetails = controller.getCandidateDetails(candidateID)
 
-		return render_template('organizer_editAnswers.html', projectID=projectID, 
-														 projectName=projectName, 
-														 candidate=candidateDetails,
-														 userType=session['userType'])
+		return render_template('organizer_editAnswers.html', projectID=projectID,
+															 projectStatus=projectStatus,
+														 	 projectName=projectName, 
+														 	 candidate=candidateDetails,
+														 	 userType=session['userType'])
 	
 	def updateCandidate(self, projectID, questionID, candidateID, candidateName, candidateDescription, filename):
 		if not self.hasPermission(projectID, questionID, candidateID):

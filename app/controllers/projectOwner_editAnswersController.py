@@ -17,6 +17,10 @@ class projectOwner_editAnswersController():
 		projectDetails = ProjectDetails(projectID)
 		return projectDetails.getTitle()
 	
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
+	
 	def getCandidateDetails(self, candidateID):
 		candidates = Candidates()
 		return candidates.getCandidateDetails(candidateID)

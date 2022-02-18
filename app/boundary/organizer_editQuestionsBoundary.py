@@ -22,15 +22,17 @@ class projectOwner_editQuestionsBoundary:
 			return self.displayError(projectID, self.ERROR_NO_PERMISSION)
 		
 		projectName = controller.getProjectName(projectID)
+		projectStatus = controller.getProjectStatus(projectID)
 		questionDetails = controller.getQuestion(questionID)
 		candidateDetails = controller.getCandidates(questionID)
 
 		return render_template('organizer_editQuestions.html', projectID=projectID, 
-														   projectName=projectName,
-														   questionID=questionID,
-														   question=questionDetails,
-														   candidates=candidateDetails,
-														   userType=session['userType'])
+														       projectName=projectName,
+														       projectStatus=projectStatus,
+														       questionID=questionID,
+														       question=questionDetails,
+														       candidates=candidateDetails,
+														       userType=session['userType'])
 
 	def addQuestion(self, projectID, question):
 		controller = projectOwner_editQuestionsController()

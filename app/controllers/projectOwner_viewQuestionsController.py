@@ -9,6 +9,10 @@ class projectOwner_viewQuestionsController():
 	def getProjectName(self, projectID):
 		projectDetails = ProjectDetails(projectID)
 		return projectDetails.getTitle()
+	
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
 
 	def getQuestionsAndAnswers(self, projectID):
 		questionEntity = Questions()

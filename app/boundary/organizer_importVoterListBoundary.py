@@ -10,13 +10,16 @@ class organizer_importVoterListBoundary:
 
 	# Other Methods
 	def displayPage(self,projectID):
+		controller = organizer_importVoterListController(projID = self.projectID)
+		projectStatus = controller.getProjectStatus(projectID)
 		vList = self.getVoterList()
 		status = self.check_validity(vList)
 		return render_template('organizer_ImportVotersList.html', voterList =vList, 
-															 projectID =projectID,
-															 userType=session['userType'],
-															 status= status
-															 )
+															 	  projectID=projectID,
+															 	  projectStatus=projectStatus,
+															 	  userType=session['userType'],
+															 	  status= status
+															 	  )
 	
 	def onSubmit(self, fileName):
 		controller = organizer_importVoterListController(projID = self.projectID)

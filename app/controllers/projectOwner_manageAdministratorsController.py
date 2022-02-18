@@ -1,9 +1,14 @@
 from pickle import FALSE, TRUE
 from ..entity.ProjectRoles import ProjectRoles
+from ..entity.Projectdetails import ProjectDetails
 
 class projectOwner_manageAdministratorsController:
 	def __init__(self):
 		pass
+
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
 
 	def getVerifier(self, projectID):
 		projectOwnerEntity = ProjectRoles()

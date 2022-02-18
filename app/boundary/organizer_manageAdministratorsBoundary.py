@@ -9,10 +9,14 @@ class projectOwner_manageAdministratorsBoundary:
 
 	def displayPage(self, projectID):
 		controller = projectOwner_manageAdministratorsController()
+		
+		projectStatus = controller.getProjectStatus(projectID)
 		verifier = controller.getVerifier(projectID)
+		
 		return render_template('organizer_manageAdministrators.html', projectID=projectID, 
-																  subAdministrators=verifier,
-																  userType=session['userType'])
+																	  projectStatus=projectStatus,
+																  	  subAdministrators=verifier,
+																  	  userType=session['userType'])
 	
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage,'error')

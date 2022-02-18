@@ -13,14 +13,16 @@ class organizer_viewElectionMessageBoundary:
 	# Other Methods
 	def displayPage(self,projectID):
 		controller = ElectionMsgController(self.projectID)
+		projectStatus = controller.getProjectStatus(projectID)
 		preMsg = controller.retrieve_pre_election_msg()
 		postMsg = controller.retrieve_post_election_msg()
 		self.process_pre_msg(preMsg)
 		self.process_post_msg(postMsg)
 		return render_template('organizer_viewElectionMessage.html', preMsg = json.dumps(self.preMsg), 
-																postMsg=json.dumps(self.postMsg), 
-																projectID=json.dumps(int(self.projectID)),
-																userType=session['userType'])
+																	 postMsg=json.dumps(self.postMsg), 
+																	 projectID=json.dumps(int(self.projectID)),
+																	 projectStatus=projectStatus,
+																	 userType=session['userType'])
 
 	def onSubmit(self, preMsg, postMsg):
 		self.process_pre_msg(preMsg)
