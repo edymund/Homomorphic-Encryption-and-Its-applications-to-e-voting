@@ -9,46 +9,52 @@
 
 <!-- Updates the <body> of the webpage -->
     {% block body %}
-    <form method="POST" action="/decrypt">
+    <form method="POST" action="" enctype="multipart/form-data">
         <div class="content">
             <div class="flex-container">
                 <h2>Decrypt</h2>
-            
+
                 <table >
                     <tr >
-                        <td style="width: 10%;">
+                        <td class="col1">
                             <label>Secret key:</label>
                         </td>
-                        <td style="width:30%">	
-                            <input type="text" id = "secret_key"name ="secret_key">
+                        <td class="col2">	
+                            <input type="text" id = "secret_key"name ="secretKey">
                         </td>
-                        <td  rowspan=4>
-                            <textarea class = "result" readonly spellcheck="True" wrap= hard placeholder ="Result"></textarea><br>
-                            <!--TextAREA SHOW RESULT-->
+						{% if decryptedData %}
+                        <td rowspan=5 id="results">
+							<pre>{{decryptedData}}</pre>
                         </td>
+						{% endif %}
                     </tr>
+					<tr>
+						<td class="warning"></td>
+						<td class="warning">*Incorrect secret key results in inaccurate votes</td>
+					</tr>
                     <tr>
-                        <td style="width: 10%">
+                        <td class="col1">
                             <label>Upload file:</label>
                         </td>
-                        <td style="width: 30%">
-                            <input type="file" name="data_file" id ="decrypt_file" accept =".csv">
+                        <td class="col2">
+                            <input type="file" name="data_file" id ="decrypt_file" accept =".encrypt">
                         </td>
-                    </tr>
-                    <tr >
-                        <td style="width: 10%" colspan="2">
-                            <button type="Button">Decrypt</button>
-                        </td>
-                        <!-- <td></td> -->
                     </tr>
                     <tr>
-                        <td style="width: 10%" colspan="2">
-                            <button type="Button">Generate File</button>
+                        <td colspan="2" id="buttonCell">
+                            <button class="submit" type="submit">Decrypt</button>
                         </td>
                         <!-- <td></td> -->
                     </tr>
-                    
+					<tr>
+                        <td colspan="2" id="buttonCell">
+                            <button class="submit">Generate File</button>
+                        </td>
+                        <!-- <td></td> -->
+                    </tr>
                 </table>
+
+				
             </form>
         </div>
         <!-- </form> -->
