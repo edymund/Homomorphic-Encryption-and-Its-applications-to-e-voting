@@ -15,16 +15,20 @@
 		
 			<span>Custom invite message:</span>
 			<div class = "flexbox-item flexbox-item-1">
-				<textarea spellcheck="True" wrap= hard name = InvMsg id ="InvMsg" {% if userType == "sub-admin" %} readonly {% endif %}></textarea>
+				<textarea spellcheck="True" wrap= hard name = InvMsg id ="InvMsg" {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}></textarea>
 			</div>
 				<span> Custom reminder message:</span>
 				<div class = "flexbox-item flexbox-item-2">
-					<textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg" {% if userType == "sub-admin" %} readonly {% endif %}></textarea>
+					<textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg" {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}></textarea>
 				</div>
 				<div>
-				{% if userType == "owner" %} 
-					<button type="submit" name ="action" value= "Update">Save</button>
+				{% if userType == "owner" %}
+					{% if projectStatus == "DRAFT" %}
+						<button type="submit" name ="action" value="Update">Save</button>
+					{% endif %}
+					{% if projectStatus != "ONGOING" and projectStatus != "COMPLETED"%}
 					<button type="submit" name ="action" value="SendEmail">Send reminder link</button>
+					{% endif %}
 				{% endif %}
 			</div>
 			<div class ="space"></div>
