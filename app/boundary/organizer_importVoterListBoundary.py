@@ -1,31 +1,25 @@
 from flask import render_template, redirect, session, flash
 import pandas as pd
 from ..controllers.organizer_ImportVoterListController import organizer_importVoterListController
+from ..entity.Projectdetails import ProjectDetails
 
 class organizer_importVoterListBoundary:
 	# Constructor
 	def __init__(self,projectID= None):
 		self.projectID = projectID
-	
-	def getProjID(self):
-		return self.projectID
-
-	# mutator
-	def setProjID(self,projID):
-		self.projectID = projID
 
 	# Other Methods
-	def displayPage(self):
+	def displayPage(self,projectID):
 		vList = self.getVoterList()
 		status = self.check_validity(vList)
 		return render_template('organizer_ImportVotersList.html', voterList =vList, 
-															 projectID = self.projectID,
+															 projectID =projectID,
 															 userType=session['userType'],
 															 status= status
 															 )
 	
 	def onSubmit(self, fileName):
-		controller = organizer_importVoterListController(projID = self.getProjID())
+		controller = organizer_importVoterListController(projID = self.projectID)
 		col_names=["Email"]
 		try:
 			datas = pd.read_csv(fileName, names = col_names)
@@ -40,7 +34,7 @@ class organizer_importVoterListBoundary:
 		return status
 
 	def getVoterList(self):
-		controller = organizer_importVoterListController(projID = self.getProjID())
+		controller = organizer_importVoterListController(projID = self.projectID)
 		voters_list = controller.get_all_voters_email()
 		return voters_list
 	
@@ -53,8 +47,15 @@ class organizer_importVoterListBoundary:
 		"""
 		for email in vList:
 			if email.find("@") < 0:
-				flash("Invalid email in CSV, please rectify and re-upload","error")
+				self.displayError(self.projectID,"Invalid email in CSV, please rectify and re-upload")
 				return False
 		return True
 
+	def getProjectStatus(self,projectID):
+		controller = ProjectDetails(projectID)
+		return controller.getStatus()
+	
+	def displayError(self, projectID, errorMessage):
+		flash(errorMessage,'error')
+		return self.displayPage(projectID)
 	

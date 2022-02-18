@@ -1,6 +1,6 @@
 from flask import render_template, redirect, session, flash, url_for
 from ..controllers.projectOwner_publishController import projectOwner_publishController
-
+from ..entity.Projectdetails import ProjectDetails
 
 class publishBoundary:
 	# Constructor
@@ -23,9 +23,6 @@ class publishBoundary:
 													 errorMessages=errorMessages,
 													 userType = session['userType'])
 	
-	def displayError(self, projectID, error):
-		flash(error)
-		return self.displayPage(projectID)
 
 	# For Project Owner to Request Verification from Verifiers
 	def requestVerification(self, projectID):
@@ -63,5 +60,8 @@ class publishBoundary:
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage,'error')
 		return self.displayPage(projectID)
-	
+		
+	def getProjectStatus(self,projectID):
+		controller = ProjectDetails(projectID)
+		return controller.getStatus()
 	
