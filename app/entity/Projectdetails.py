@@ -292,15 +292,3 @@ class ProjectDetails:
 		connection.commit()
 		dbDisconnect(connection)
 		return
-
-	def getVotingData(self, projectID):
-		connection = dbConnect()
-		db = connection.cursor()
-
-		result = db.execute("""UPDATE projDetails SET publicKey = (?)
-							   WHERE projDetailsID = (?)
-							   """, 
-								(publicKey, projectID))
-		connection.commit()
-		dbDisconnect(connection)
-		return
