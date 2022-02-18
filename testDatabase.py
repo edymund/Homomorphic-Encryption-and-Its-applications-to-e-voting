@@ -173,7 +173,8 @@ projDetailsInsertvalues = [
    ("Project Test F","PUBLISHED","2022-02-10","11:30","2022-03-01","13:00","ffffffff"),
    ("Project Test G","ONGOING","2022-02-10","08:00","2022-03-01","10:00","gggggggg"),
    ("Project Test H","PUBLISHED","2022-02-10","12:00","2022-03-01","13:00","hhhhhhhh"),
-   ("Project Test I","ONGOING","2022-02-10","10:00","2022-03-01","17:00","iiiiiiiii")
+   ("Project Test I","ONGOING","2022-02-10","10:00","2022-03-01","17:00","iiiiiiiii"),
+   ("Project Test J","DRAFT","2022-02-10","10:00","2022-03-01","17:00","jjjjjjjjj")
 ]
 
 ## executing the query with values
@@ -194,6 +195,7 @@ projectrolesInsertvalues = [
    (1, 7, "owner",None),
    (1, 8, "owner",None),
    (1, 9, "owner",None),
+   (1, 10, "owner",None)
 ]
 
 ## executing the query with values
@@ -224,7 +226,8 @@ mycursor.executemany(voterInsertquery, voterInsertvalues)
 electionmsgsInsertquery = "INSERT INTO electionmsgs (projID , preMsg, postMsg, inviteMsg, reminderMsg) VALUES (?,?,?,?,?)"
 ## storing values in a variable
 electionmsgsInsertvalues = [
-   (1,"pre/msg",None,"invitation","remember to vote")
+   (1,"Do join us in this vote",None,"You are invited to vote","Remember to vote"),
+   (2,"pre/msg",None,"invitation","remember to vote")
 ]
 
 ## executing the query with values
@@ -244,7 +247,8 @@ questionsInsertvalues = [
    (6,"Q1","Testcase for P.ID 6 Q1"),
    (7,"Q1","Testcase for P.ID 7 Q1"),
    (8,"Q1","Testcase for P.ID 8 Q1"),
-   (9,"Q1","Testcase for P.ID 9 Q1")
+   (9,"Q1","Testcase for P.ID 9 Q1"),
+   (10,"Q1","Testcase for P.ID 10 Q1")
 
 ]
 ## executing the query with values
