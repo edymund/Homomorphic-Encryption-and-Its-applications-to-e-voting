@@ -10,27 +10,32 @@
 	<p>
 		Verifiers will be prompted to verify the details of the voting event before the voting event can go live.
 	</p>
-	
-	<form action ="/{{projectID}}/manage_administrators" method="post">
-		<label for="addSubAdminField">Add Verifier:</label>
-		<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name="addEmail" {% if userType == "verifier" %} readonly {% endif %}/>
-		{% if userType == "owner" %}
-			<button name="action" type="submit" value="addVerifier">Add</button>
-		{% endif %}
-	</form>
+
+	{% if projectStatus == "DRAFT" %}  
+		<form action ="/{{projectID}}/manage_administrators" method="post">
+			
+			<label for="addSubAdminField">Add Verifier:</label>
+			<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name="addEmail" {% if userType == "verifier" %} readonly {% endif %}/>
+			{% if userType == "owner" %}
+				<button name="action" type="submit" value="addVerifier">Add</button>
+			{% endif %}
+		</form>
+	{% endif %}
 	
 	<table>
 		<tr>
 			<th>No.</th>
 			<th>Verifiers</th>
-			<th>Delete</th>
+			{% if userType == "owner" and projectStatus == "DRAFT" %}
+				<th>Delete</th>
+			{% endif %}
 		</tr>
 		{% set count = 1 %}
 		{% for record in subAdministrators %}
 			<tr>
 				<td>{{ count }}</td>
 				<td>{{ record.email }}</td>
-				{% if userType == "owner" %} 
+				{% if userType == "owner" and projectStatus == "DRAFT" %} 
 					<td>
 						<form action ="/{{projectID}}/manage_administrators" method="post">
 							<input type="hidden" name="projectID" value="{{ projectID }}"/>
