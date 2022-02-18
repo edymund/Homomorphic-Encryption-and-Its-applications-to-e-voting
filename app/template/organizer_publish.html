@@ -52,7 +52,7 @@
 			{% if projectDetails.status == 'PENDING APPROVAL' %}
 			<div class = "flexbox-container" >
 				<div class = "flexbox-item">
-					<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Verify the project details and approve the project</button>
+					<button type="submit" name="action" value="verify" {% if errorMessages|length > 0 %} disabled {% endif %}>Approve project</button>
 					<button type="button" onclick="reject()" >Reject project</button>
 				</div>
 				<textarea id="feedback" rows="6" cols="50" name ="feedback" hidden></textarea>

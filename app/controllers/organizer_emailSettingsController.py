@@ -66,9 +66,3 @@ class organizer_emailSettingsController:
         self.email.sendEmail()
     
     
-    def check_proj_status(self):
-        proj_entity = ProjectDetails(self.projID)
-        if proj_entity.getStatus == "ONGOING":
-            return True
-        else:
-            return False

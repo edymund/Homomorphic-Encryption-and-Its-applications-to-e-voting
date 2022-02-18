@@ -35,3 +35,42 @@ input {
 .content {
     margin-top:5%;
 }
+
+.flexbox-container{
+  display: flex;
+  min-width: 400px;
+  min-height: 600px;
+  /* flex-wrap: wrap; */
+  justify-content: left;
+  align-content: left;
+  flex-direction: row;
+  /* padding-left: 5px; */
+  /* border: 3px solid #333; */
+      
+  }
+  .flexbox-container-sub{
+    display: flex;
+    min-width: 550px;
+    min-height: 200px;
+    max-height: 1000px;
+    max-width: 1000px;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-content: left;
+    flex-direction: column;
+    /* border: 3px solid #333; */
+        
+    }
+    .flexbox-container-sub2{
+      display: flex;
+      min-width: 400px;
+      min-height: 200px;
+      max-height: 1000px;
+      max-width: 500px;
+      /* flex-wrap: wrap; */
+      justify-content: center;
+      align-content: left;
+      flex-direction: column;
+      /* border: 3px solid #333; */
+          
+      }

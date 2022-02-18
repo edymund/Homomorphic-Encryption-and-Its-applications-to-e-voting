@@ -1,5 +1,6 @@
 from flask import render_template, redirect, flash, session
 from app.controllers.projectOwner_overviewController import projectOwner_overviewController
+from ..entity.Projectdetails import ProjectDetails
 
 class admin_overviewBoundary:
 	def __init__(self):
@@ -28,7 +29,7 @@ class admin_overviewBoundary:
 		return self.displayPage(projectID)
 
 	def displayError(self, projectID, message): 
-		flash(message)
+		flash(message,'error')
 		return self.displayPage(projectID)
 
 	def deleteProject(self, projectID):
@@ -37,3 +38,8 @@ class admin_overviewBoundary:
 			return redirect("/mainballot")
 		else:
 			self.displayError("Failed to delete project")
+	
+	def getProjectStatus(self,projectID):
+		controller = ProjectDetails(projectID)
+		return controller.getStatus()
+	
