@@ -1,70 +1,99 @@
 /* adding inline block to bold elements so that textbox are align */
 b {
-    display: inline-block;
-    width: 200px;
+	display: inline-block;
+	width: 200px;
 }
-  
+
 /* input box and password */
-input[type=text], input[type=password] {
-    width: 80%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
-    display: inline-block;
-    border: none;
-    background: #FFFFFF;
-    max-height: 20px; 
-    max-width:  300px;
+input[type="text"],
+input[type="password"] {
+	width: 80%;
+	padding: 15px;
+	margin: auto;
+	display: inline-block;
+	border: none;
+	background: #ffffff;
+	max-height: 20px;
+	max-width: 300px;
 }
 
 /* Textarea */
 .result {
-    overflow-wrap: break-word;
-    width: 100%;
-    height: 200px;
-    border: none;
-    resize: none;
-    overflow: hidden;
-    /* rowspan : 4; */
+	overflow-wrap: break-word;
+	width: 100%;
+	height: 200px;
+	border: none;
+	resize: none;
+	overflow: hidden;
+	/* rowspan : 4; */
 }
-
 
 /* Adjust placeholder of textarea to be center */
 .feedback::-webkit-input-placeholder {
-    line-height:250px;
+	line-height: 250px;
 }
 
 /* login button */
 button {
-    border: none;
-    outline: 0;
-    display: inline-block;
-    padding: 10px;
-    color: black;
-    background-color: #ddd;
-    text-align: center;
-    cursor: pointer;
+	border: none;
+	outline: 0;
+	display: inline-block;
+	padding: 10px;
+	color: black;
+	background-color: #ddd;
+	text-align: center;
+	cursor: pointer;
+	margin: 5px 0px;
 }
 
 button:hover {
-    background-color: #555;
-    color: white;
+	background-color: #555;
+	color: white;
 }
 
 .content {
-    margin-top:5%;
+	margin-top: 5%;
 }
 
-table, tr, td {
-    border: 1px solid black;
-    max-width: 1000px;
-    max-height: 500px;
-    
-  }
+table,
+tr,
+td {
+	border:0px solid black;
+	border-collapse: collapse;
+	padding: 0px 10px;
+}
+
 .flex-container {
-flex-direction: column;
-flex-wrap: wrap;
-justify-content: center;
-align-items: center;
-/* border: solid black; */
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	/* border: solid black; */
 }
 
+#results {
+	width: 80%;
+	height: 0px;
+	overflow-y: scroll;
+	padding: 20px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.col1 {
+	width: 10%;
+	padding: 20px;
+	padding-left: 0px;
+	min-width: 120px;
+}
+
+.submit {
+	align-items: center;
+	width: 100%;
+	max-width: 500px;
+}
+
+.warning {
+	margin-top:-20px;
+	font-size:11px;
+	margin: 0px;
+}

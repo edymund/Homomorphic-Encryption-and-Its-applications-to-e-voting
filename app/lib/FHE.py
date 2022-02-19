@@ -153,8 +153,13 @@ class FHE:
 		return cipherText
 
 	@staticmethod
-	def decrypt(secretKey, c):
+	def decrypt(secretKey: int, c):
 		# print("\n\n===========Performing Decryption===========")
+
+		# Secret Key must be odd
+		if (secretKey % 2 == 0):
+			return randint(0, 1)
+
 		plaintext = (c % secretKey) % 2
 		# print("m is", plaintext)
 		return plaintext
@@ -174,7 +179,7 @@ class FHE:
 		return binaryList
 	
 	@staticmethod
-	def getDecryptedResult(encryptedBinaryList, sk):
+	def getDecryptedResult(encryptedBinaryList, sk: int):
 		binaryString = ""
 		for value in encryptedBinaryList:
 			plaintext = FHE.decrypt(sk, value)

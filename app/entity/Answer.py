@@ -72,7 +72,6 @@ class Answer:
 		# Insert vote into database
 		db.execute("""INSERT INTO answer(voterID, candidateID, encryptedAnswer)
 							VALUES (?, ?, ?)""", (voterID, candidateID, encryptedAnswer))
-
 		connection.commit()
 		dbDisconnect(connection)
 		return True
@@ -124,4 +123,7 @@ class Answer:
 
 		dbDisconnect(connection)
 		
-		return result
+		encryptedAnswers = []
+		for row in result:
+			encryptedAnswers.append(int(row[0]))
+		return encryptedAnswers
