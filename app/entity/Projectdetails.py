@@ -63,7 +63,7 @@ class ProjectDetails:
 	def getPublicKey(self):
 		return self.__publicKey
 
-	# Verify if the user is an admin and authorized to view the page
+	# Verify if the user is a verifier and authorized to view the page
 	def insertNewProject(self):
 		connection = dbConnect()
 		db = connection.cursor()

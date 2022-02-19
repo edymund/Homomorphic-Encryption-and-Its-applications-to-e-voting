@@ -21,7 +21,7 @@ class EditVerifierControllerTestCases(unittest.TestCase):
 
 	def test_getVerifier(self):
 		with self.app.test_request_context() as c:
-            #projectID, userID - admin ,email - verifier
+            #projectID, userID - owner ,email - verifier
 			result = self.controller.getVerifier("1")
 			expectedResult = [{'recordID': 2, 'organizerID': 2, 'email': 'john@hotmail.com'}, {'recordID': 12, 'organizerID': 4, 'email': 'abcdefg@hotmail.com'}]
 			errorMessage = "Unable to retrieve Verifier"
@@ -30,7 +30,7 @@ class EditVerifierControllerTestCases(unittest.TestCase):
 	#test if able to continue voting if voted
 	def test_addVerifier(self):
 		with self.app.test_request_context() as c:
-            #projectID, userID - admin ,email - verifier
+            #projectID, userID - owner ,email - verifier
 			result = self.controller.addVerify("1","1","abcdefg@hotmail.com")
 			expectedResult = True
 			errorMessage = 'Unable to add verifier'

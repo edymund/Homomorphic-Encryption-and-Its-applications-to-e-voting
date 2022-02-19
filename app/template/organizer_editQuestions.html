@@ -2,7 +2,7 @@
 
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_editQuestions.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_editQuestions.css') }}" />
 {% endblock %} 
 
 {% block body %}
@@ -20,7 +20,7 @@
 			   	{% else %}
 					""
 			   	{% endif %}
-			   	{% if userType == "sub-admin" or projectStatus != "DRAFT"%} readonly {% endif %}/> <br />
+			   	{% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}/> <br />
 		<div>
 			Answers (Click to view options):
 			{% if userType == "owner" and projectStatus == "DRAFT"%}

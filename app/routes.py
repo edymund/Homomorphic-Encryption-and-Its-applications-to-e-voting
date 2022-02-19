@@ -14,8 +14,8 @@ from .boundary.generateKeysBoundary import generateKeysBoundary
 from .boundary.user_decryptBoundary import user_decryptBoundary
 
 # Organizer Imports
-from .boundary.organizer_overviewBoundary import admin_overviewBoundary
-from .boundary.organizer_manageAdministratorsBoundary import projectOwner_manageAdministratorsBoundary
+from .boundary.organizer_overviewBoundary import organizer_overviewBoundary
+from .boundary.organizer_manageVerifiersBoundary import projectOwner_manageVerifiersBoundary
 from .boundary.organizer_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
 from .boundary.organizer_editQuestionsBoundary import projectOwner_editQuestionsBoundary
 from .boundary.organizer_editAnswersBoundary import projectOwner_editAnswersBoundary
@@ -90,7 +90,7 @@ def publishPage(projectID):
 @authorisationRequired
 def projectOverviewPage(projectID):
 	# Create a boundary object
-	boundary = admin_overviewBoundary()
+	boundary = organizer_overviewBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
@@ -103,12 +103,12 @@ def projectOverviewPage(projectID):
 			endDateTime = request.form['endDateTime']
 			return boundary.onSubmit(projectID, title, startDateTime, endDateTime)
 
-@app.route('/<projectID>/manage_administrators', methods = ['GET', 'POST'])
+@app.route('/<projectID>/manage_verifiers', methods = ['GET', 'POST'])
 @loginRequired
 @authorisationRequired
-def projectManageAdministrator(projectID):
+def projectManageVerifier(projectID):
 	# Create boundary object
-	boundary = projectOwner_manageAdministratorsBoundary()
+	boundary = projectOwner_manageVerifiersBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 

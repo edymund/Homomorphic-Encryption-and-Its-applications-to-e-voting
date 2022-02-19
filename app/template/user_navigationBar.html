@@ -5,7 +5,7 @@
 
 	{% if projectID %}
 		<a href="/{{ projectID }}/overview">Overview</a>
-		<a href="/{{ projectID }}/manage_administrators">Manage Verifiers</a>
+		<a href="/{{ projectID }}/manage_verifiers">Manage Verifiers</a>
 		<a href="/{{ projectID }}/view_questions">Manage Questions</a>
 		<a href="/{{ projectID }}/view_electionMessage">Manage Election Messages</a>
 		<a href="/{{ projectID }}/view_importList">Manage Voters</a>
@@ -21,7 +21,7 @@
 				{% endif %}
 			</a>
 		{% endif %}
-		<!-- Allow admin to view results when project is completed -->
+		<!-- Allow organizers to view results when project is completed -->
 		{% if projectStatus == "COMPLETED" or projectStatus == "ONGOING"%}
 			<a href="/{{ projectID }}/downloadResults"><b>Download Results</b></a>
 		{% endif %}
