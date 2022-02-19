@@ -2,7 +2,7 @@ from pickle import FALSE, TRUE
 from ..entity.ProjectRoles import ProjectRoles
 from ..entity.Projectdetails import ProjectDetails
 
-class projectOwner_manageAdministratorsController:
+class organizer_manageVerifiersController:
 	def __init__(self):
 		pass
 
@@ -29,12 +29,12 @@ class projectOwner_manageAdministratorsController:
 				return True
 		return False
 	
-	def removeVerifier(self, projectID, userID, administratorID):
+	def removeVerifier(self, projectID, userID, organizerID):
 		projectOwnerEntity = ProjectRoles()
 		print("entered remove verifier")
 		if projectOwnerEntity.checkUserHasOwnerRights(projectID, userID):
 			print("TRUE")
-			if projectOwnerEntity.deleteVerifier(projectID, administratorID):
+			if projectOwnerEntity.deleteVerifier(projectID, organizerID):
 				return True
 		print("FALSE-----------------------")
 		return False

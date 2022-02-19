@@ -2,7 +2,7 @@
 
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_manageAdministrators.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_manageVerifiers.css') }}" />
 {% endblock %} 
 
 {% block body %}
@@ -12,10 +12,10 @@
 	</p>
 
 	{% if projectStatus == "DRAFT" %}  
-		<form action ="/{{projectID}}/manage_administrators" method="post">
+		<form action ="/{{projectID}}/manage_verifiers" method="post">
 			
-			<label for="addSubAdminField">Add Verifier:</label>
-			<input type="email" id="addSubAdminField" placeholder="Enter Email Address" name="addEmail" {% if userType == "verifier" %} readonly {% endif %}/>
+			<label for="addVerifierField">Add Verifier:</label>
+			<input type="email" id="addVerifierField" placeholder="Enter Email Address" name="addEmail" {% if userType == "verifier" %} readonly {% endif %}/>
 			{% if userType == "owner" %}
 				<button name="action" type="submit" value="addVerifier">Add</button>
 			{% endif %}
@@ -31,13 +31,13 @@
 			{% endif %}
 		</tr>
 		{% set count = 1 %}
-		{% for record in subAdministrators %}
+		{% for record in verifiers %}
 			<tr>
 				<td>{{ count }}</td>
 				<td>{{ record.email }}</td>
 				{% if userType == "owner" and projectStatus == "DRAFT" %} 
 					<td>
-						<form action ="/{{projectID}}/manage_administrators" method="post">
+						<form action ="/{{projectID}}/manage_verifiers" method="post">
 							<input type="hidden" name="projectID" value="{{ projectID }}"/>
 							<input type="hidden" name="deleteID" value ={{ record.recordID }} />
 							<button name="action" class="cross_button" type="submit" value="deleteVerifier"><img class="cross" src={{ url_for('static',filename='images/cross.png') }} /></button>

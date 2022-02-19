@@ -2,7 +2,6 @@
 import os
 from datetime import datetime
 from functools import wraps
-import sqlite3
 import traceback
 
 # Environment Imports
@@ -156,4 +155,3 @@ scheduler.start()
 job = scheduler.add_job(updateProjectStatus, trigger='cron', minute="*")
 
 from app import routes
-

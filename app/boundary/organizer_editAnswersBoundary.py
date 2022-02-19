@@ -1,20 +1,19 @@
-from ..controllers.projectOwner_editAnswersController import projectOwner_editAnswersController
+from ..controllers.organizer_editAnswersController import organizer_editAnswersController
 from flask import render_template, flash, redirect, session
-from ..entity.Projectdetails import ProjectDetails
 
-class projectOwner_editAnswersBoundary:
+class organizer_editAnswersBoundary:
 	def __init__(self):
 		self.ERROR_UNAUTHROIZED = "Not authorized to access the requested resource"
 
 	def hasPermission(self, projectID, questionID, candidateID):
-		controller = projectOwner_editAnswersController()
+		controller = organizer_editAnswersController()
 		return controller.checkPermission(projectID, questionID, candidateID)
 
 	def displayPage(self, projectID, questionID, candidateID):
 		if not self.hasPermission(projectID, questionID, candidateID):
 			return self.displayError(projectID,questionID, self.ERROR_UNAUTHROIZED)
 
-		controller = projectOwner_editAnswersController()
+		controller = organizer_editAnswersController()
 		projectName = controller.getProjectName(projectID)
 		projectStatus = controller.getProjectStatus(projectID)
 		candidateDetails = controller.getCandidateDetails(candidateID)
@@ -29,7 +28,7 @@ class projectOwner_editAnswersBoundary:
 		if not self.hasPermission(projectID, questionID, candidateID):
 			return self.displayError(projectID,questionID, self.ERROR_UNAUTHROIZED)
 		
-		controller = projectOwner_editAnswersController()
+		controller = organizer_editAnswersController()
 		# existingFilename = controller.getCandidateDetails(candidateID)["imageFilename"]
 		controller.updateCandidate(candidateID, candidateName, candidateDescription, filename)
 		
@@ -46,20 +45,20 @@ class projectOwner_editAnswersBoundary:
 		if not self.hasPermission(projectID, questionID, candidateID):
 			return self.displayError(projectID,questionID, self.ERROR_UNAUTHROIZED)
 
-		controller = projectOwner_editAnswersController()
+		controller = organizer_editAnswersController()
 		if controller.deleteCandidate(projectID, questionID, candidateID):
 			return self.displaySuccess(projectID, questionID)
 		else:
 			return self.displayError(projectID,questionID, "Failed to delete candidate")
 
 	def getNewCandidateID(self):
-		controller = projectOwner_editAnswersController()
+		controller = organizer_editAnswersController()
 		return controller.getNewCandidateID()
 	
 	def addNewCandidate(self, projectID, questionID, candidateName, candidateDescription, filename):
-		controller = projectOwner_editAnswersController()
+		controller = organizer_editAnswersController()
 		return controller.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
 
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_editAnswersController()
+		return controller.getProjectStatus(projectID)

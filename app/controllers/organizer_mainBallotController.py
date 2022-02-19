@@ -12,11 +12,11 @@ class organizer_mainBallotController:
 	
 	def addNewProject(self, organizers_id):
 		projectDetails = ProjectDetails()
-		administrator = ProjectRoles()
+		projectRoles = ProjectRoles()
 		electionMessage = ElectionMessage()
 
 		projectID = projectDetails.insertNewProject()
-		administrator = administrator.addOwner(projectID, organizers_id)
+		organizer = projectRoles.addOwner(projectID, organizers_id)
 		electionMessage.createNewRecord(projectID)
 
 		return 

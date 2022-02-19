@@ -1,7 +1,6 @@
 from flask import render_template, redirect, session, flash
 import pandas as pd
 from ..controllers.organizer_ImportVoterListController import organizer_importVoterListController
-from ..entity.Projectdetails import ProjectDetails
 
 class organizer_importVoterListBoundary:
 	# Constructor
@@ -61,8 +60,8 @@ class organizer_importVoterListBoundary:
 		return True
 
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_importVoterListController(projID = self.projectID)
+		return controller.getProjectStatus(projectID)
 	
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage,'error')

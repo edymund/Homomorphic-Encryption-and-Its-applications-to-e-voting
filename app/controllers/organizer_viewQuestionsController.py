@@ -2,7 +2,7 @@ from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
 from ..entity.Projectdetails import ProjectDetails
 
-class projectOwner_viewQuestionsController():
+class organizer_viewQuestionsController():
 	def __init__(self):
 		pass
 

@@ -1,8 +1,6 @@
 from flask import render_template, redirect, session, flash
-from ast import And
 from flask import render_template
-from app.controllers.voters_ViewVotingPageController import voters_ViewVotingPageController
-import re
+from ..controllers.voters_ViewVotingPageController import voters_ViewVotingPageController
 
 
 class voters_ViewVotingPage:
@@ -84,9 +82,11 @@ class voters_ViewVotingPage:
 		
 		#display success
 	def displaySuccess(self,projID):
+		flash("Voting Completed")
 		return redirect('/'+ str(projID) + '/ViewSubmittedVotePage')
 
 	def displayError(self, projID):
+		flash("Voting Failed")
 		return redirect('/'+ str(projID) + '/ViewSubmittedVotePage')
 
 	def checkEmptyArray(self,array):

@@ -1,6 +1,5 @@
 from flask import render_template, redirect, session, flash
 from ..controllers.organizer_emailSettingsController import organizer_emailSettingsController
-from ..entity.Projectdetails import ProjectDetails
 
 class organizer_emailSettingBoundary:
 	# Constructor
@@ -64,8 +63,8 @@ class organizer_emailSettingBoundary:
 
 	
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_emailSettingsController(projectID)
+		return controller.getProjectStatus(projectID)
 	
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage,'error')

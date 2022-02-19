@@ -2,8 +2,8 @@
 
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_editAnswers.css') }}" />
-	<script type=text/javascript src="/static/js/admin_editAnswers.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_editAnswers.css') }}" />
+	<script type=text/javascript src="/static/js/organizer_editAnswers.js"></script>
 {% endblock %} 
 
 {% block body %}
@@ -15,7 +15,7 @@
 		
 		<!-- Display Question -->
 		<label for="candidateName">Candidate's Name: </label>
-		<input type="text" id="candidateName" name="candidateName" value="{% if candidate is not none %}{{candidate.candidateOption}}{% endif %}" {% if userType == "sub-admin" or projectStatus != "DRAFT"%} readonly {% endif %}/>
+		<input type="text" id="candidateName" name="candidateName" value="{% if candidate is not none %}{{candidate.candidateOption}}{% endif %}" {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}/>
 		<br/>
 
 		<!-- Display Upload Image button -->

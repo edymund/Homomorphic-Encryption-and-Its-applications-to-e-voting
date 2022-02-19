@@ -1,13 +1,13 @@
-from ..controllers.projectOwner_viewQuestionsController import projectOwner_viewQuestionsController
+from ..controllers.organizer_viewQuestionsController import organizer_viewQuestionsController
 from flask import render_template, flash, session
 
 
-class projectOwner_viewQuestionsBoundary:
+class organizer_viewQuestionsBoundary:
 	def __init__(self):
 		pass
 
 	def displayPage(self, projectID):
-		controller = projectOwner_viewQuestionsController()
+		controller = organizer_viewQuestionsController()
 		projectName = controller.getProjectName(projectID)
 		projectStatus = controller.getProjectStatus(projectID)
 		questionSet = controller.getQuestionsAndAnswers(projectID)
