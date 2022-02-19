@@ -21,14 +21,14 @@ class Voter:
 			if result is not None:
 				hasResult = True
 				self.voterID    = result[0]
-				self.voterNuber = result[1]
+				self.voterNumber = result[1]
 				self.email      = result[2]
 				self.projectID  = result[3]
 			
 
 		if not hasResult:
 			self.voterID    = None
-			self.voterNuber = None
+			self.voterNumber = None
 			self.email      = None
 			self.projectID  = None
 		
@@ -37,7 +37,7 @@ class Voter:
 
 	#accessor
 	def get_email(self):
-		return self.__email
+		return self.email
 
 	#insert 
 	def insert_to_table(self, hash,email,projectID,password=0):
@@ -82,7 +82,7 @@ class Voter:
 
 		# Close the connection to the database
 		dbDisconnect(connection)
-
+		print(result)
 		return result
 		
 	def get_all_voters_id(self, projID ):
@@ -116,7 +116,7 @@ class Voter:
 		db.execute(""" 
 						DELETE FROM
 						Answer where
-						Answer.voterID in
+						Answer.answerID in
 						(select answer.answerID
 						FROM answer 
 						INNER JOIN voter

@@ -1,4 +1,4 @@
-from ..boundary.organizer_settingsBoundary import organizer_settingsBoundary
+from ...boundary.organizer_settingsBoundary import organizer_settingsBoundary
 from flask import Flask, render_template, redirect, session, flash
 import os
 
