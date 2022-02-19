@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, flash, url_for
-from ..controllers.projectOwner_publishController import projectOwner_publishController
+from ..controllers.organizer_publishController import organizer_publishController
 from ..entity.Projectdetails import ProjectDetails
 
 class publishBoundary:
@@ -9,7 +9,7 @@ class publishBoundary:
 
 	# Other Methods
 	def displayPage(self,projectID):
-		controller = projectOwner_publishController()
+		controller = organizer_publishController()
 		projectDetails = controller.getProjectDetails(projectID)
 		preElectionMessage = controller.getPreElectionMessage(projectID)
 		invitationMessage = controller.getInvitationMessage(projectID)
@@ -27,7 +27,7 @@ class publishBoundary:
 
 	# For Project Owner to Request Verification from Verifiers
 	def requestVerification(self, projectID):
-		controller = projectOwner_publishController()
+		controller = organizer_publishController()
 		
 		# Owner Requests for verification & update status to pending verification if possible
 		# 
@@ -40,7 +40,7 @@ class publishBoundary:
 
 	# For Project Verifiers Upon Approving Project
 	def verifyProject(self, projectID):
-		controller = projectOwner_publishController()
+		controller = organizer_publishController()
 		# Set user's approval to True
 		if controller.verifyProject(projectID, session['organizerID']):
 			# Check if all user has approved, if yes change status of project
@@ -49,7 +49,7 @@ class publishBoundary:
 		return self.displayPage(projectID)
 	
 	def rejectProject(self, projectID, message):
-		controller = projectOwner_publishController()
+		controller = organizer_publishController()
 		if message.strip() != "":
 			controller.notify_projectOwner(projectID, message)
 			controller.return_default(projectID)

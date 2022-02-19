@@ -10,7 +10,7 @@ from ..lib.FHE import FHE
 from flask import url_for, current_app
 import random 
 
-class projectOwner_publishController():
+class organizer_publishController():
 	def __init__(self):
 		self.email = SendEmailService()
 		self.email.setLoginDetails(current_app.config['EMAIL']['USER'], current_app.config['EMAIL']['PASSWORD'])
