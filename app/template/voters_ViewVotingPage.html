@@ -16,25 +16,25 @@
 		<span><b>{{questions.question.questionNo}}</b></span>
 		
 		<!-- Display Candidate Information -->
-		<table>
+		<table class="candidateTable">
 			<tr>
 				{% for candidate in questions.option %}
 				<td class="candidateInfo">
-					<img src={{candidate.imageFilename}} >
+					{% if candidate.imageFilename is not none and candidate.imageFilename != "" %}<img class="candidateImg" src="{{url_for('static', filename='images/uploads')}}/{{candidate.candidateID}}/{{candidate.imageFilename}}">{% endif %}
 				</td>
 				{% endfor %}
 			</tr>
 			<tr>
 				{% for candidate in questions.option %}
 				<td class="candidateInfo">
-					{{ candidate.candidateOption }}
+					<b>{{ candidate.candidateOption }}</b>
 				</td>
 				{% endfor %}
 			</tr>
 			<tr>
 				{% for candidate in questions.option %}
 				<td class="candidateInfo">
-					{{ candidate.description }}
+					{{candidate.description}}
 				</td>
 				{% endfor %}
 			</tr>
@@ -45,7 +45,7 @@
 			<!-- Display Question -->
 			<tr>
 				<td class="questionInfo">
-					{{questions.question.question}}
+					<b>{{questions.question.question}}</b>
 				</td>
 			</tr>
 			<!-- Display Candidate Choices -->
