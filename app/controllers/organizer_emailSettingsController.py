@@ -14,34 +14,32 @@ class organizer_emailSettingsController:
         self.errors = []
 
     def check_msg(self,msg):
-        if msg == "" or msg == None:
+        if msg == "" or msg == None or msg == "None":
             return False
-        elif msg != "" or msg != None:
+        elif msg != "" or msg != None or msg =="None":
             return True
 
-    def update_inv_msg(self,msg):
-        entity = ElectionMessage(projID= self.projID)
-        entity.setInviteMsg(msg)
+    def update_inv_msg(self,msg,projectID):
+        entity = ElectionMessage(projectID)
+        entity.setInviteMsg(msg,projectID)
     
-    def update_rmd_msg(self,msg):
-        entity = ElectionMessage(projID= self.projID)
-        entity.setReminderMsg(msg)
+    def update_rmd_msg(self,msg,projectID):
+        entity = ElectionMessage(projectID)
+        entity.setReminderMsg(msg,projectID)
         
 
-    def retrieve_inv_msg(self):
-        entity = ElectionMessage(projID= self.projID)
-        self.invMsg = entity.getInviteMsg()
-        return self.invMsg
+    def retrieve_inv_msg(self,projectID):
+        entity = ElectionMessage(projectID)
+        return entity.getInviteMsg()
 
-    def retrieve_rmd_msg(self):
-        entity = ElectionMessage(projID= self.projID)
-        self.rmdMsg = entity.getReminderMsg()
-        return self.rmdMsg
+    def retrieve_rmd_msg(self,projectID):
+        entity = ElectionMessage(projectID)
+        return entity.getReminderMsg()
         
-    def send_reminder(self):
-        voter_entity = Voter(self.projID)
-        Election_entity = ElectionMessage(self.projID)
-        proj_entity = ProjectDetails(self.projID)
+    def send_reminder(self,projectID):
+        voter_entity = Voter(projectID)
+        Election_entity = ElectionMessage(projectID)
+        proj_entity = ProjectDetails(projectID)
         proj_title = proj_entity.getTitle()
         start_date = proj_entity.getStartDate()
         start_time = proj_entity.getStartTime()
@@ -51,8 +49,8 @@ class organizer_emailSettingsController:
             '\n'+f" Please be reminded to vote from  \nSTART: {start_date}, {start_time} \nEND:   {end_date}, {end_time}.\n\nRegards,\nFYP-21-s4-03" 
         
         #get Reminder message
-        rmd_msg = Election_entity.getReminderMsg()
-        all_voters = voter_entity.get_all_voters(self.projID)
+        rmd_msg = Election_entity.getReminderMsg(projectID)
+        all_voters = voter_entity.get_all_voters(projectID)
 
         final_msg = rmd_msg+ "\n" + compul_msg
 
