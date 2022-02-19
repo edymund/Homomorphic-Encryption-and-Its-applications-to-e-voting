@@ -34,5 +34,5 @@ class voters_loginBoundary:
 		return redirect(f'/{projectID}/VotingMessage')
 
 	def loginFail(self, error):
-		flash(error)
+		flash(error, 'error')
 		return redirect("/")

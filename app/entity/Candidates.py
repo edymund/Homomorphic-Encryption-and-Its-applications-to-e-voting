@@ -239,3 +239,26 @@ class Candidates:
 		dbDisconnect(connection)
 		
 		return str(db.lastrowid)
+
+	def getCandidateIDsByQuestion(self, questionID):
+		# Connect to database
+		connection = dbConnect()
+		db = connection.cursor()
+
+		if questionID is not None:
+			# Select User from database and populate instance variables
+			result = db.execute("""SELECT candidateID
+								FROM candidates
+								WHERE questionID = (?)
+								ORDER BY candidateID ASC""", (questionID,)).fetchall()
+		
+		
+		dbDisconnect(connection)
+		
+		if result is None:
+			return []
+		else:
+			finalResult = []
+			for item in result:
+				finalResult.append(item[0])
+			return finalResult

@@ -46,10 +46,10 @@ class organizer_editQuestionsController:
 		questions = Questions()
 		return questions.addQuestion(projectID, question)
 	
-	def deleteCandidatesByQuestionID(projectID, questionID):
+	def deleteCandidatesByQuestionID(self, projectID, questionID):
 		candidates = Candidates()
-		candidates.addNewCandidatedeleteCandidatesByQuestionID(projectID, questionID)
+		candidates.deleteCandidatesByQuestionID(projectID, questionID)
 
-	def deleteQuestionByQuestionID(projectID, questionID):
+	def deleteQuestionByQuestionID(self, projectID, questionID):
 		questions = Questions()
 		questions.deleteQuestionByQuestionID(projectID, questionID)

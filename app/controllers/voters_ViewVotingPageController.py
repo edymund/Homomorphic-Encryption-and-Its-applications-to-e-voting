@@ -9,6 +9,33 @@ class voters_ViewVotingPageController:
 	def __init__(self):
 		pass
 	
+	def submitAnswers(self, answers, projectID, voterID):
+		questions = Questions()
+		candidates = Candidates()
+
+		successfullyRecorded = True
+
+		projectQuestions = questions.getQuestions(projectID)
+		# Check if questionID is part of userSubmitted questionID
+		for questionID in projectQuestions:
+			questionCandidates = candidates.getCandidateIDsByQuestion(questionID['questionID'])
+			try:
+				questionID = str(questionID['questionID'])
+				for candidateID in questionCandidates:
+					# If user's answer == candidateID, count vote as 1
+					if answers[questionID] == str(candidateID):
+						successfullyRecorded = successfullyRecorded and self.insertVoterAns(candidateID, 1, voterID, projectID)
+					# If user's anwer != candidateID, store vote as 0
+					else:
+						successfullyRecorded = successfullyRecorded and self.insertVoterAns(candidateID, 0, voterID, projectID)
+
+			# If user did not submit a answer for questionID
+			except:
+				for candidateID in questionCandidates:
+					successfullyRecorded = successfullyRecorded and self.insertVoterAns(candidateID, 0, voterID, projectID)
+		
+		return successfullyRecorded
+	
 	def getQuestionNCandidate(self,projID):
 		questionEntity = Questions()
 		CandidateEntity = Candidates()
@@ -28,35 +55,19 @@ class voters_ViewVotingPageController:
 
 		return questionArray
 
-	def getNumberOfQuestions(self,projID):
-		questionEntity = Questions()
-		questions = questionEntity.getQuestions(projID)
+	def insertVoterAns(self, candidateID, answer, voterID, projectID):
 		
-		count = 0 
-		for item in questions:
-			count = count + 1
-		return count
-
-	def insertVoterAns(self,answers,voterID, projectID):
-		
-		inserted = True
 		entity = Answer()
 		projectDetails = ProjectDetails(projectID)
 		projectPublicKey = projectDetails.getPublicKey()
 		fhe = FHE()
 
+		print(f'candidateAnswer: {candidateID}, answer:{answer}')
+		# Encrypt vote
+		encryptedVote = FHE.encrypt(projectPublicKey, answer)
 
-		for items in answers:
-			if inserted == True:
-				for item in items:	
-					encryptedVote = FHE.encrypt(projectPublicKey, item["choice"])
-					if entity.insertVoterAnswer(voterID,item["candidateID"], encryptedVote) == inserted:
-						None
-					else:
-						inserted = False
-						break
-			else:
-				break
-		return inserted
-			
-					
+		# print(f'candidateID = {candidateID}')
+
+		# Record Vote
+		return entity.insertVoterAnswer(voterID, candidateID, encryptedVote)
+
