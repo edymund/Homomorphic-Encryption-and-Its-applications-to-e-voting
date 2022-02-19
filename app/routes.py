@@ -72,16 +72,18 @@ def publishPage(projectID):
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 	if request.method == 'POST':
-		if boundary.getProjectStatus(projectID) == "DRAFT":
+		projectStatus = boundary.getProjectStatus(projectID)
+		if projectStatus == "DRAFT":
 			if request.form['action'] == "requestVerification":
 				return boundary.requestVerification(projectID)
-			elif request.form['action'] == "verify":
+		elif projectStatus == "PENDING VERIFICATION":
+			if request.form['action'] == "verify":
 				return boundary.verifyProject(projectID)
 			elif request.form['action'] == "reject":
 				feedback_msg =  request.form['feedback']
 				return boundary.rejectProject(projectID, feedback_msg)
-		else:
-			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")
+		
+		return boundary.displayError(projectID,"Unable to edit project")
 				
 @app.route('/<projectID>/overview', methods = ['GET', 'POST'])
 @loginRequired

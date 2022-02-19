@@ -19,7 +19,7 @@
         
 		{% if projectStatus == "COMPLETED" %}
         	<a href="/{{ projectID }}/downloadResults/EncryptedResult"><button>Download</button></a> <br> <br>
-		{% else if projectStatus == "ONGOING" %}
+		{% elif projectStatus == "ONGOING" %}
 			<button>Unable to download results</button>
 		{% endif %}
 {% endblock %}
