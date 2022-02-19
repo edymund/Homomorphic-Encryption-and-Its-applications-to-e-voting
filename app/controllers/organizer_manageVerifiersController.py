@@ -2,7 +2,7 @@ from pickle import FALSE, TRUE
 from ..entity.ProjectRoles import ProjectRoles
 from ..entity.Projectdetails import ProjectDetails
 
-class projectOwner_manageAdministratorsController:
+class organizer_manageVerifiersController:
 	def __init__(self):
 		pass
 

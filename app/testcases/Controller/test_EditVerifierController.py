@@ -1,5 +1,5 @@
 from pickle import TRUE
-from ...controllers.projectOwner_manageAdministratorsController import projectOwner_manageAdministratorsController
+from ...controllers.organizer_manageVerifiersController import organizer_manageVerifiersController
 from flask import Flask, render_template, redirect, session, flash
 import os
 
@@ -8,7 +8,7 @@ import unittest
 class EditVerifierControllerTestCases(unittest.TestCase):
 	def setUp(self):
 		# Create boundary object
-		self.controller = projectOwner_manageAdministratorsController()
+		self.controller = organizer_manageVerifiersController()
 
 		# Set up application settings
 		template_dir = os.path.abspath('./app/template')

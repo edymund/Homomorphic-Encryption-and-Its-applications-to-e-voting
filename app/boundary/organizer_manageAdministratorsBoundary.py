@@ -1,6 +1,6 @@
 from distutils.log import error
 from flask import render_template, flash, session
-from app.controllers.projectOwner_manageAdministratorsController import projectOwner_manageAdministratorsController
+from app.controllers.organizer_manageVerifiersController import organizer_manageVerifiersController
 from ..entity.Projectdetails import ProjectDetails
 
 class projectOwner_manageAdministratorsBoundary:
@@ -8,7 +8,7 @@ class projectOwner_manageAdministratorsBoundary:
 		pass
 
 	def displayPage(self, projectID):
-		controller = projectOwner_manageAdministratorsController()
+		controller = organizer_manageVerifiersController()
 		
 		projectStatus = controller.getProjectStatus(projectID)
 		verifier = controller.getVerifier(projectID)
@@ -23,7 +23,7 @@ class projectOwner_manageAdministratorsBoundary:
 		return self.displayPage(projectID)
 
 	def addVerify(self, projectID, email):
-		controller = projectOwner_manageAdministratorsController()
+		controller = organizer_manageVerifiersController()
 		
 		# Prevents users from adding themself as sub-administrator
 		if email == session['user']:
@@ -42,7 +42,7 @@ class projectOwner_manageAdministratorsBoundary:
 
 	def deleteVerifier(self, projectID, administratorID):
 		# print("Entered Delete Verifier")
-		controller = projectOwner_manageAdministratorsController()
+		controller = organizer_manageVerifiersController()
 		# print("Complete Constructor")
 		# print("Stored Session Value is:", session['organizerID'])
 		if controller.removeVerifier(projectID, session['organizerID'], administratorID):
