@@ -195,7 +195,7 @@ projectrolesInsertvalues = [
    (1, 7, "owner",None),
    (1, 8, "owner",None),
    (1, 9, "owner",None),
-   (1, 10, "owner",None)
+   (2, 10, "owner",None)
 ]
 
 ## executing the query with values
