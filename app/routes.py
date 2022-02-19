@@ -265,12 +265,12 @@ def view_emailSetting(projectID):
 		
 		if request.form["action"] =="Update":
 			if boundary.getProjectStatus(projectID) == "DRAFT":
-				boundary.onSubmit(invMsg,rmdMsg)
+				boundary.onSubmit(invMsg,rmdMsg,projectID)
 			else:
 				return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")
 		if request.form["action"] =="SendEmail":
 			if boundary.getProjectStatus(projectID) == "PUBLISHED":
-				boundary.send_reminder(rmdMsg)
+				boundary.send_reminder(rmdMsg,projectID)
 			else:
 				return boundary.displayError(projectID,"Unable to send reminder, project is not in published mode")
 		

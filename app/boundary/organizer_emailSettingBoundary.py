@@ -1,6 +1,5 @@
 from flask import render_template, redirect, session, flash
 from ..controllers.organizer_emailSettingsController import organizer_emailSettingsController
-import json
 from ..entity.Projectdetails import ProjectDetails
 
 class organizer_emailSettingBoundary:
@@ -18,51 +17,47 @@ class organizer_emailSettingBoundary:
 	# Other Methods
 	def displayPage(self,projectID):
 		controller = organizer_emailSettingsController(projectID)
-		invMsg = controller.retrieve_inv_msg()
-		rmdMsg = controller.retrieve_rmd_msg()
-		self.process_inv_msg(invMsg)
-		self.process_rmd_msg(rmdMsg)
-		return render_template('organizer_emailSetting.html',invMsg =json.dumps(invMsg), 
-															rmdMsg =json.dumps(rmdMsg), 
-															projectID = self.projectID,
+		invMsg = controller.retrieve_inv_msg(projectID)
+		rmdMsg = controller.retrieve_rmd_msg(projectID)
+		self.process_inv_msg(invMsg,projectID)
+		self.process_rmd_msg(rmdMsg,projectID)
+		return render_template('organizer_emailSetting.html',invMsg =invMsg, 
+															rmdMsg =rmdMsg, 
+															projectID = projectID,
 															userType = session['userType'])
 	
-	def onSubmit(self,invMsg,rmdMsg):
-		self.process_inv_msg(invMsg)
-		self.process_rmd_msg(rmdMsg)
+	def onSubmit(self,invMsg,rmdMsg,projectID):
+		self.process_inv_msg(invMsg,projectID)
+		self.process_rmd_msg(rmdMsg,projectID)
 
-	def send_reminder(self, msg):
-		controller = organizer_emailSettingsController(projID = self.getProjID())
+	def send_reminder(self, msg,projectID):
+		controller = organizer_emailSettingsController(projectID)
 		if controller.check_msg(msg):
 			self.rmdMsg = msg
-			controller.update_rmd_msg(msg)
+			controller.update_rmd_msg(msg,projectID)
 		else: 
 			self.rmdMsg = "Remember to vote!"
-			controller.update_rmd_msg(self.rmdMsg)
-		controller.send_reminder()
+			controller.update_rmd_msg(self.rmdMsg,projectID)
+		controller.send_reminder(projectID)
 		flash("Reminder message is sent")
 			
 	# check if msg is valid
-	def process_rmd_msg(self, rmdMsg):
-		controller = organizer_emailSettingsController(projID = self.projectID)
+	def process_rmd_msg(self, rmdMsg,projectID):
+		controller = organizer_emailSettingsController(projectID)
 		if controller.check_msg(rmdMsg):
-			self.preMsg = rmdMsg
-			controller.update_rmd_msg(rmdMsg)
+			controller.update_rmd_msg(rmdMsg,projectID)
 		elif not controller.check_msg(rmdMsg):
 			msg = "Remember to vote!"
-			self.preMsg = msg
-			controller.update_rmd_msg(msg)
+			controller.update_rmd_msg(msg,projectID)
 
 	# check if msg is valid
-	def process_inv_msg(self, invMsg):
-		controller = organizer_emailSettingsController(projID = self.projectID)
+	def process_inv_msg(self, invMsg,projectID):
+		controller = organizer_emailSettingsController(projectID)
 		if controller.check_msg(invMsg):
-			self.postMsg = invMsg
-			controller.update_inv_msg(invMsg)
+			controller.update_inv_msg(invMsg,projectID)
 		elif not controller.check_msg(invMsg):
 			msg = "You are invited!"
-			self.postMsg = msg
-			controller.update_inv_msg(msg)
+			controller.update_inv_msg(msg,projectID)
 
 	
 	def getProjectStatus(self,projectID):

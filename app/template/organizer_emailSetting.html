@@ -2,7 +2,6 @@
 <!-- Updates the <head> of the webpage -->
 	{% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_emailSettings.css') }}"/>
-	<script type=text/javascript src="{{ url_for('static',filename='js/organizer_emailSettings.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
@@ -15,11 +14,11 @@
 		
 			<span>Custom invite message:</span>
 			<div class = "flexbox-item flexbox-item-1">
-				<textarea spellcheck="True" wrap= hard placeholder="{{invMsg}}" name = InvMsg id ="InvMsg" {% if userType == "sub-admin" %} readonly {% endif %}></textarea>
+				<input class = "msgview" spellcheck="True" wrap= hard value="{{invMsg}}" name = InvMsg id ="InvMsg" {% if userType == "sub-admin" %} readonly {% endif %}></input>
 			</div>
 				<span> Custom reminder message:</span>
 				<div class = "flexbox-item flexbox-item-2">
-					<textarea spellcheck="True" wrap= hard placeholder="{{rmdMsg}}" name ="RmdMsg" id ="RmdMsg" {% if userType == "sub-admin" %} readonly {% endif %}></textarea>
+					<input class = "msgview" spellcheck="True" wrap= hard value="{{rmdMsg}}" name ="RmdMsg" id ="RmdMsg" {% if userType == "sub-admin" %} readonly {% endif %}></input>
 				</div>
 				<div>
 				{% if userType == "owner" %} 
@@ -29,9 +28,5 @@
 			</div>
 			<div class ="space"></div>
 		</form>
-		<script>
-			// onload = fillTA("InvMsg",{{invMsg | safe}});
-			// onload = fillTA("RmdMsg",{{rmdMsg | safe }});
-		</script>
 	</div>
 	{% endblock %} 

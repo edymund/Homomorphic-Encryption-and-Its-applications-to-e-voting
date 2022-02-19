@@ -26,17 +26,17 @@ class organizer_viewElectionMessageBoundary:
 
 	def process_pre_msg(self, preMsg,projectID):
 		controller = ElectionMsgController(projectID)
-		if controller.check_election_msg(preMsg):
+		if controller.check_msg(preMsg):
 			controller.update_pre_election_msg(preMsg,projectID)
-		elif not controller.check_election_msg(preMsg):
+		elif not controller.check_msg(preMsg):
 			msg = "Enjoy your voting"
 			controller.update_pre_election_msg(msg,projectID)
 
 	def process_post_msg(self, postMsg,projectID):
 		controller = ElectionMsgController(projectID)
-		if controller.check_election_msg(postMsg):
+		if controller.check_msg(postMsg):
 			controller.update_post_election_msg(postMsg,projectID)
-		elif not controller.check_election_msg(postMsg):
+		elif not controller.check_msg(postMsg):
 			msg = "Hope you enjoyed your vote"
 			controller.update_post_election_msg(msg,projectID)
 	

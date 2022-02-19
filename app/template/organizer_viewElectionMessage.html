@@ -2,7 +2,6 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_electionMessage.css') }}"/>
-	<script type=text/javascript src="{{ url_for('static',filename='js/organizer_viewElectionMsg.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
@@ -25,9 +24,5 @@
 		<div class ="space"></div>
 
 	</form>
-		<script>
-			// onload = fillTA("postMsg",{{postMsg | safe}});
-			// onload = fillTA("preMsg",{{preMsg | safe }});
-		</script>
 	
 	{% endblock %} 

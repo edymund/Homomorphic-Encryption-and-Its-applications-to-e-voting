@@ -8,10 +8,10 @@ class ElectionMsgController:
     def getProjID(self):
         return self.projectID
 
-    def check_election_msg(self,msg):
-        if msg == "" or msg ==None:
+    def check_msg(self,msg):
+        if msg == "" or msg == None or msg == "None":
             return False
-        elif msg != "" and msg != None:
+        elif msg != "" or msg != None or msg =="None":
             return True
 
     def update_pre_election_msg(self,msg,projectID):
