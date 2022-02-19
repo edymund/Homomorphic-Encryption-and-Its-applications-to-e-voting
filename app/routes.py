@@ -228,7 +228,7 @@ def view_electionMessage(projectID):
 		if boundary.getProjectStatus(projectID) == "DRAFT":
 			preMsg = request.form['preMsg']
 			postMsg = request.form['postMsg']
-			boundary.onSubmit(preMsg, postMsg)
+			boundary.onSubmit(preMsg, postMsg, projectID)
 			return boundary.displayPage(projectID)
 		else:
 			return boundary.displayError(projectID,"Unable to edit, project is not in draft mode")	
