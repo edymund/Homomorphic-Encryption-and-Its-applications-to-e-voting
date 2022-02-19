@@ -1,7 +1,6 @@
 from ..entity.ElectionMessage import ElectionMessage
 from ..entity.Voter import Voter
 from ..entity.Projectdetails import ProjectDetails
-from email.message import EmailMessage
 from ..lib.service_email import SendEmailService
 from flask import current_app
 
