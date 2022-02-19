@@ -19,13 +19,6 @@ class voters_ViewVotingPage:
 		return render_template('voters_ViewVotingPage.html', question=question,
 															 projID=projID,
 															 imagePath=imagePath)
-
-	def getNumberofQuestion(self,projID):
-
-		controller = voters_ViewVotingPageController()
-		numberOfQuestion = controller.getNumberOfQuestions(projID)
-
-		return numberOfQuestion
 	
 	def onSubmit(self, answers, projectID):
 		controller = voters_ViewVotingPageController()
