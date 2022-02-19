@@ -21,8 +21,8 @@ static_dir = os.path.abspath('./app/static')
 
 # Configure app to run from this file
 application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
-application.config['UPLOAD_FOLDER'] = r"static\images\uploads"
-application.config['DOWNLOAD_FOLDER'] = r"static\downloads"
+application.config['UPLOAD_FOLDER'] = os.path.join("static", "images", "uploads")
+application.config['DOWNLOAD_FOLDER'] = os.path.join("static", "downloads")
 application.config['EMAIL'] = {}
 application.config['EMAIL']['SERVER'] = "smtp.gmail.com"
 application.config['EMAIL']['PORT'] = 587
