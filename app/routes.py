@@ -10,7 +10,6 @@ from .boundary.loginBoundary import loginBoundary
 from .boundary.registrationBoundary import registrationBoundary
 from .boundary.contactUsBoundary import contactUsBoundary
 from .boundary.aboutUsBoundary import aboutUsBoundary
-from .boundary.generateKeysBoundary import generateKeysBoundary
 from .boundary.user_decryptBoundary import user_decryptBoundary
 
 # Organizer Imports
@@ -528,10 +527,3 @@ def logout():
 
 	# Redirect to login page
 	return user_logout.redirectToLogin()
-
-@app.route('/generatekeys', methods=['GET','POST'])
-def generateKeysPage():
-	# Creates a boundary object
-	boundary = generateKeysBoundary()
-
-	return boundary.displayPage()
