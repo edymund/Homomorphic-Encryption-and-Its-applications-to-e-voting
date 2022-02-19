@@ -84,9 +84,11 @@ class voters_ViewVotingPage:
 		
 		#display success
 	def displaySuccess(self,projID):
+		flash("Voting Completed")
 		return redirect('/'+ str(projID) + '/ViewSubmittedVotePage')
 
 	def displayError(self, projID):
+		flash("Voting Failed")
 		return redirect('/'+ str(projID) + '/ViewSubmittedVotePage')
 
 	def checkEmptyArray(self,array):
