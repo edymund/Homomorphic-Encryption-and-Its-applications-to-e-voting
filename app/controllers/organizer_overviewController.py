@@ -9,7 +9,7 @@ class organizer_overviewController:
 		projectDetails = ProjectDetails()
 		return projectDetails.getProjectDetails(projectID)
 
-	def updateProject(self, projectID, organizerID, title, startDateTime, endDateTime):
+	def updateProject(self, projectID, title, startDateTime, endDateTime):
 		ProjectDetailsEntity = ProjectDetails()
 		if startDateTime == "":
 			startDate = None
