@@ -1,6 +1,5 @@
 from ..controllers.organizer_editAnswersController import organizer_editAnswersController
 from flask import render_template, flash, redirect, session
-from ..entity.Projectdetails import ProjectDetails
 
 class projectOwner_editAnswersBoundary:
 	def __init__(self):
@@ -61,5 +60,5 @@ class projectOwner_editAnswersBoundary:
 		return controller.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
 
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_editAnswersController()
+		return controller.getProjectStatus(projectID)

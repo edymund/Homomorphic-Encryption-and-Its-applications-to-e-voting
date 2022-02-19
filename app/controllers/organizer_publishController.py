@@ -17,6 +17,10 @@ class organizer_publishController():
 		self.email.setServer(current_app.config['EMAIL']['SERVER'], current_app.config['EMAIL']['PORT'])
 		self.errors = []
 	
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
+	
 	def getProjectDetails(self, projectID):
 		projectDetails = ProjectDetails()
 		return projectDetails.getProjectDetails(projectID)

@@ -1,5 +1,5 @@
 from flask import render_template
-from app.controllers.voters_ViewSubmittedVotePageController import voters_ViewSubmittedVotePageController
+from ..controllers.voters_ViewSubmittedVotePageController import voters_ViewSubmittedVotePageController
 class voters_ViewSubmittedVotePage:
 	# Constructor
 	def __init__(self):

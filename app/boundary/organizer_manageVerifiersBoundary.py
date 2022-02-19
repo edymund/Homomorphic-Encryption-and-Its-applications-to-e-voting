@@ -1,7 +1,6 @@
 from distutils.log import error
 from flask import render_template, flash, session
 from app.controllers.organizer_manageVerifiersController import organizer_manageVerifiersController
-from ..entity.Projectdetails import ProjectDetails
 
 class projectOwner_manageVerifiersBoundary:
 	def __init__(self):
@@ -36,8 +35,8 @@ class projectOwner_manageVerifiersBoundary:
 		return self.displayError(projectID, "Failed to add verifier")
 	
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_manageVerifiersController()
+		return controller.getProjectStatus(projectID)
 
 
 	def deleteVerifier(self, projectID, organizerID):

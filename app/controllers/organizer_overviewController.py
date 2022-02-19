@@ -9,6 +9,10 @@ class organizer_overviewController:
 		projectDetails = ProjectDetails()
 		return projectDetails.getProjectDetails(projectID)
 
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
+
 	def updateProject(self, projectID, title, startDateTime, endDateTime):
 		ProjectDetailsEntity = ProjectDetails()
 		if startDateTime == "":

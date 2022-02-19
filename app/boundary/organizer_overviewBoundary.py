@@ -1,6 +1,6 @@
 from flask import render_template, redirect, flash, session
 from app.controllers.organizer_overviewController import organizer_overviewController
-from ..entity.Projectdetails import ProjectDetails
+
 
 class organizer_overviewBoundary:
 	def __init__(self):
@@ -41,6 +41,6 @@ class organizer_overviewBoundary:
 			self.displayError("Failed to delete project")
 	
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_overviewController()
+		return controller.getProjectStatus(projectID)
 	

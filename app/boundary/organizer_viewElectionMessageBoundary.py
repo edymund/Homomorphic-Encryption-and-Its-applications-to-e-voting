@@ -1,5 +1,4 @@
 from flask import render_template, flash, redirect, session
-from ..entity.Projectdetails import ProjectDetails
 from ..controllers.organizer_ElectionMsgController import ElectionMsgController
 import json
 
@@ -44,8 +43,8 @@ class organizer_viewElectionMessageBoundary:
 			controller.update_post_election_msg(msg,projectID)
 	
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = ElectionMsgController(projectID)
+		return controller.getProjectStatus(projectID)
 	
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage,'error')

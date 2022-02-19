@@ -6,6 +6,10 @@ class organizer_editAnswersController():
 	def __init__(self):
 		pass
 
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
+
 	def checkPermission(self, projectID, questionID, candidateID):
 		candidates = Candidates()
 		questions = Questions()

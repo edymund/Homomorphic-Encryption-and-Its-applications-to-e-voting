@@ -1,8 +1,5 @@
 from flask import render_template, flash, redirect, url_for, session
 from app.controllers.organizer_editQuestionsController import organizer_editQuestionsController
-from app.entity.Candidates import Candidates
-from app.entity.Questions import Questions
-from ..entity.Projectdetails import ProjectDetails
 
 class organizer_editQuestionsBoundary:
 	def __init__(self):
@@ -55,18 +52,16 @@ class organizer_editQuestionsBoundary:
 		if not self.checkPermission(projectID, questionID):
 			return self.displayError(projectID, self.ERROR_NO_PERMISSION)
 
-		# Create Controllers	
-		questions = Questions()
-		candidates = Candidates()
-
-		candidates.deleteCandidatesByQuestionID(projectID, questionID)
-		questions.deleteQuestionByQuestionID(projectID, questionID)
+		# Create Controllers
+		controller = organizer_editQuestionsController()
+		controller.deleteCandidatesByQuestionID(projectID, questionID)
+		controller.deleteQuestionByQuestionID(projectID, questionID)
 
 		return self.displaySuccess(projectID)
 	
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_editQuestionsController()
+		return controller.getProjectStatus(projectID)
 		
 	def displayError(self, projectID, error):
 		flash(error,'error')

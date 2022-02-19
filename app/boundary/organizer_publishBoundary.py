@@ -1,6 +1,6 @@
 from flask import render_template, redirect, session, flash, url_for
 from ..controllers.organizer_publishController import organizer_publishController
-from ..entity.Projectdetails import ProjectDetails
+
 
 class publishBoundary:
 	# Constructor
@@ -63,6 +63,6 @@ class publishBoundary:
 		return self.displayPage(projectID)
 		
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_publishController()
+		return controller.getProjectStatus(projectID)
 	
