@@ -48,9 +48,15 @@ class organizer_importVoterListBoundary:
 		return 2 if email wrong format
 		return 3 if csv not in correct format
 		"""
+		temp_arr = []
 		for email in vList:
 			if email.find("@") < 0:
 				self.displayError(self.projectID,"Invalid email in CSV, please rectify and re-upload")
+				return False
+			if email not in temp_arr:
+				temp_arr.append(email)
+			else:
+				self.displayError(self.projectID,"Duplicated email in CSV, please rectify and re-upload")
 				return False
 		return True
 
