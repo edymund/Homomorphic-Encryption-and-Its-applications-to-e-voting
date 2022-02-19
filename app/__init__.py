@@ -78,14 +78,14 @@ def authorisationRequired(function):
 
 			else: 
 				print("User not authorized, Redirecting")
-				flash("Not authorized to access this resource")
+				flash("Not authorized to access this resource", 'error')
 				return redirect('/mainballot')
 
 		except KeyError as e:
 			print(traceback.format_exc())
 			print(e)
 		print("User not authorized, Redirecting")
-		flash("Not authorized to access this resource")
+		flash("Not authorized to access this resource", "error")
 		return redirect('/mainballot')
 	return decorated_function
 
@@ -110,7 +110,7 @@ def voterLoginRequired(function):
 		except KeyError as e:
 			print(e)
 			print("User not authenticated, Redirecting")
-			flash("User not authenticated, Redirecting")
+			flash("User not authenticated, Redirecting", "error")
 		return redirect('/')
 	return decorated_function
 
@@ -127,13 +127,13 @@ def voterAuthorisationRequired(function):
 			if controller.checkVoterAuthorised(session['voterID'], accessedResource):
 				return function(*args, **kwargs)
 			else: 
-				flash("You have voted for this event")
+				flash("Voting Event Is Over / You have voted for this event", 'error')
 				return redirect('/')
 
 		except KeyError as e:
 			print(e)
 		print("User not authorized, Redirecting")
-		flash("Not authorized to access this resource")
+		flash("Not authorized to access this resource", "error")
 		return redirect('/')
 	return decorated_function
 

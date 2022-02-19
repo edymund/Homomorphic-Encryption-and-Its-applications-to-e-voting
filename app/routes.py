@@ -171,43 +171,6 @@ def projectEditAnswer(projectID, questionID ,candidateID):
 
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID, candidateID)
-	
-	if request.method == 'POST':
-		action = request.form['action']
-		if action == "Save":
-			# Get Form Fields
-			candidateName = request.form['candidateName']
-			candidateDescription = request.form['candidateDescription']
-
-			newCandidate = False
-			if candidateID == "new_candidate":
-				newCandidate = True
-
-			# Store image and filename
-			filename = None
-			if not boundary.hasPermission(projectID, questionID, candidateID):
-				return boundary.displayError(projectID, boundary.ERROR_UNAUTHROIZED)
-			
-			file = request.files['candidateImageFile']
-			if file.filename != '':
-				filename = secure_filename(file.filename)
-
-			if newCandidate:
-				candidateID = boundary.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
-			else:
-				boundary.updateCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
-			
-			if filename is not None:
-				# Create Directory if it does not exists
-				print("candidate ID is ", candidateID)
-				if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
-					os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
-
-				# Save file to directory
-				if filename is not None:
-					file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
-			
-			return boundary.displaySuccess(projectID, questionID)
 		
 	if request.method == 'POST':
 		if boundary.getProjectStatus(projectID) == "DRAFT":
@@ -428,24 +391,7 @@ def viewVotingPage(projectID):
 		return boundary.displayPage(projectID)
 	if request.method == "POST":
 		boundary = voters_ViewVotingPage()
-		noOfQues = boundary.getNumberofQuestion(projectID)
-
-		answerArray = []
-		print("Answer Array Route1", answerArray)
-		for i in range(1, noOfQues + 1):
-			answer = None
-			if 'candidate' + '[' + str(i) + ']' in request.form:
-				answer = request.form['candidate' + '[' + str(i) + ']']
-			else:
-				if i != noOfQues + 1:
-					answer = f"none_{i}_-1"
-			answerArray.append(answer)
-		print("Answer Array Route", answerArray)
-
-		if boundary.onSubmit(answerArray,projectID):
-			return boundary.displaySuccess(projectID)
-		else:
-			return boundary.displayError(projectID)
+		return boundary.onSubmit(request.form, projectID)
 
 
 @app.route('/<projectID>/ViewSubmittedVotePage', methods=['GET'])
