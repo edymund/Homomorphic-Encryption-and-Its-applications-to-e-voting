@@ -1,8 +1,7 @@
 from ..entity.Projectdetails import ProjectDetails
-from ..entity.ProjectRoles import ProjectRoles
 import datetime
 
-class projectOwner_overviewController:
+class organizer_overviewController:
 	def __init__(self):
 		pass
 	

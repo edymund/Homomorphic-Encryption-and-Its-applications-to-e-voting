@@ -1,14 +1,14 @@
 from flask import render_template, redirect, flash, session
-from app.controllers.projectOwner_overviewController import projectOwner_overviewController
+from app.controllers.organizer_overviewController import organizer_overviewController
 from ..entity.Projectdetails import ProjectDetails
 
-class admin_overviewBoundary:
+class organizer_overviewBoundary:
 	def __init__(self):
 		self.RESPONSE_SUCCESS = "Success"
 		pass
 
 	def displayPage(self, projectID):
-		controller = projectOwner_overviewController()
+		controller = organizer_overviewController()
 		projectDetails = controller.getProjectDetails(projectID)
 		# print(projectDetails)
 		return render_template('organizer_overview.html', projectID=projectID, 
@@ -18,7 +18,7 @@ class admin_overviewBoundary:
 
 	def onSubmit(self, projectID, title, startDateTime, endDateTime):
 		organizerID = session['organizerID'];   
-		controller = projectOwner_overviewController()
+		controller = organizer_overviewController()
 		if controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime):
 			return self.displaySuccess(projectID)
 		else:
@@ -34,7 +34,7 @@ class admin_overviewBoundary:
 		return self.displayPage(projectID)
 
 	def deleteProject(self, projectID):
-		controller = projectOwner_overviewController()
+		controller = organizer_overviewController()
 		if controller.deleteProject(projectID):
 			return redirect("/mainballot")
 		else:
