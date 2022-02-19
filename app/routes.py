@@ -1,7 +1,7 @@
 import os
 import shutil
 from app import application as app, boundary, loginRequired, authorisationRequired, voterLoginRequired, voterAuthorisationRequired
-from flask import request
+from flask import request, current_app
 from werkzeug.utils import secure_filename
 
 # User Imports
@@ -238,18 +238,18 @@ def projectEditAnswer(projectID, questionID ,candidateID):
 				if filename is not None:
 					# Create Directory if it does not exists
 					print("candidate ID is ", candidateID)
-					if not os.path.exists(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID)):
-						os.makedirs(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID))
+					if not os.path.exists(os.path.join(app.root_path, current_app.config["UPLOAD_FOLDER"], candidateID)):
+						os.makedirs(os.path.join(app.root_path, current_app.config["UPLOAD_FOLDER"], candidateID))
 
 					# Save file to directory
 					if filename is not None:
-						file.save(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID, filename))
+						file.save(os.path.join(app.root_path, current_app.config["UPLOAD_FOLDER"], candidateID, filename))
 				
 				return boundary.displaySuccess(projectID, questionID)
 				
 			if action == "Delete":
 				# Detele candidate
-				shutil.rmtree(os.path.join(app.root_path, 'static', 'images', 'uploads', candidateID), ignore_errors=True)
+				shutil.rmtree(os.path.join(app.root_path, current_app.config["UPLOAD_FOLDER"], candidateID), ignore_errors=True)
 				return boundary.deleteCandidate(projectID, questionID, candidateID)
 		else:
 			return boundary.displayError(projectID,questionID,"Unable to edit, project is not in draft mode")	

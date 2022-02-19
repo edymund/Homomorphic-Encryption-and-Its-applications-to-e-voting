@@ -1,5 +1,6 @@
 from flask import render_template, redirect, session, flash
-from flask import render_template
+from flask import render_template, current_app
+import os
 from ..controllers.voters_ViewVotingPageController import voters_ViewVotingPageController
 
 
@@ -13,8 +14,11 @@ class voters_ViewVotingPage:
 		controller = voters_ViewVotingPageController()
 		
 		question = controller.getQuestionNCandidate(projID)
+		imagePath = os.path.join(current_app.root_path, current_app.config["UPLOAD_FOLDER"])
 
-		return render_template('voters_ViewVotingPage.html',question=question,projID=projID)
+		return render_template('voters_ViewVotingPage.html', question=question,
+															 projID=projID,
+															 imagePath=imagePath)
 
 	def getNumberofQuestion(self,projID):
 
