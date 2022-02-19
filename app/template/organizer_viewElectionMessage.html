@@ -2,7 +2,6 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_electionMessage.css') }}"/>
-	<script type=text/javascript src="{{ url_for('static',filename='js/organizer_viewElectionMsg.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
@@ -12,24 +11,24 @@
 		<h2><b>Election Message</b></h2>
 		<form method="POST" action="/{{projectID}}/view_electionMessage" >
 		<div class = "flexbox-container">
+      
 			<span>Pre-Election Message:</span>
 			<div class = "flexbox-item flexbox-item-1">
-				<textarea id = "preMsg" name ="preMsg" spellcheck="True" wrap=hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}></textarea><br>
+				<textarea class = "msgview" id = "preMsg" name ="preMsg" spellcheck="True" wrap=hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{{preMsg}}</textarea><br>
 			</div>
+      
 			<span> Post-Election Message:</span>
 			<div class = "flexbox-item flexbox-item-2">
-				<textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}></textarea><br>
+				<textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{{postMsg}}</textarea><br>
 			</div>
+      
 			{% if userType == "owner" and projectStatus == "DRAFT" %}
 				<button type="submit">Save</button>
 			{% endif %}
+      
 		</div>
 		<div class ="space"></div>
 
 	</form>
-		<script>
-			onload = fillTA("postMsg",{{postMsg | safe}});
-			onload = fillTA("preMsg",{{preMsg | safe }});
-		</script>
 	
 	{% endblock %} 

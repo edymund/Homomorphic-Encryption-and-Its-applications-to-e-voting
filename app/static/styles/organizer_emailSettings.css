@@ -69,3 +69,10 @@ font-weight: bold;
 .space{
 padding: 80px;
 }
+
+.msgview{
+  min-width: 550px;
+  min-height:200px;
+  text-align: center;
+  /* font-size: 30px;  */
+}
