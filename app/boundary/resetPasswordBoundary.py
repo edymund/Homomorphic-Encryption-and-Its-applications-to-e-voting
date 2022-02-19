@@ -4,12 +4,18 @@ from ..controllers.resetPasswordController import resetPasswordController
 import random
 import smtplib
 import string
+from ..lib.service_email import SendEmailService
+from flask import current_app
 
 class resetPasswordBoundary:
 	# Constructor
 	def __init__(self):
 		self.RESPONSE_SUCCESS = "Success"
 		self.RESPONSE_INCORRECT_EMAIL = "Email Does not Exist"
+		self.email = SendEmailService()
+		self.email.setLoginDetails(current_app.config['EMAIL']['USER'], current_app.config['EMAIL']['PASSWORD'])
+		self.email.setServer(current_app.config['EMAIL']['SERVER'], current_app.config['EMAIL']['PORT'])
+		self.errors = []
 
 	# Other Methods
 	def displayPage(self):
@@ -25,15 +31,20 @@ class resetPasswordBoundary:
 		new_random_password = ''.join(random_list)
 		return new_random_password	
 	
-	def send_reset_pw(self,new_password):
-		email_address = "fyp21s403@gmail.com"
-		server = smtplib.SMTP("smtp.gmail.com",587)
-		server.starttls()
-		# login(email address, password)
-		server.login(email_address, "eccqringtcgtolnf")
-		msg = 'From: ' + email_address + '\r\nTo: ' + email_address + '\r\nSubject: Reset Password \r\n\r\nYour Password has been reset to: ' + str(new_password)
+	def send_reset_pw(self,new_password,email):
+		# email_address = "fyp21s403@gmail.com"
+		# server = smtplib.SMTP("smtp.gmail.com",587)
+		# server.starttls()
+		# # login(email address, password)
+		# server.login(email_address, "eccqringtcgtolnf")
+		# msg = 'From: ' + email_address + '\r\nTo: ' + email_address + '\r\nSubject: Reset Password \r\n\r\nYour Password has been reset to: ' + str(new_password)
 		# sendmail(sender,receiver,message)
-		server.sendmail(email_address,email_address,msg)
+
+		subject = "Reset Password"
+		self.email.setMessage(subject, new_password)
+		self.email.setRecepientEmail(email)
+		self.email.sendEmail()
+
 
 	def onSubmit(self,email):
 		controller = resetPasswordController()
@@ -42,7 +53,7 @@ class resetPasswordBoundary:
 			new_password = self.random_pw(5,3) 
 			controller.resetPw(email,new_password)
 			# send random password to user via email
-			self.send_reset_pw(new_password)
+			self.send_reset_pw(new_password,email)
 			return self.RESPONSE_SUCCESS
 		else:
 			return self.RESPONSE_INCORRECT_EMAIL
