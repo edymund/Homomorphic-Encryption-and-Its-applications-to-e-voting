@@ -25,10 +25,10 @@ class user_decryptBoundary:
 			decryptedData = controller.format(decryptedData)
 			return self.displayPage(decryptedData)
 		except:
-			return self.displayError("Encrypted File has been tampered")
+			return self.displayError("Failed To Decrypt File")
 		
 	
 	def displayError(self, error):
-		flash(error)
+		flash(error, 'error')
 		return self.displayPage()
 
