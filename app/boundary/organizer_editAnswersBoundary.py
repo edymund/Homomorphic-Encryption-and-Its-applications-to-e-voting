@@ -54,9 +54,9 @@ class projectOwner_editAnswersBoundary:
 		controller = projectOwner_editAnswersController()
 		return controller.getNewCandidateID()
 	
-	def addNewCandidate(self, projectID, questionID, candidateID, candidateName, candidateDescription, filename):
+	def addNewCandidate(self, projectID, questionID, candidateName, candidateDescription, filename):
 		controller = projectOwner_editAnswersController()
-		return controller.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+		return controller.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
 
 	def getProjectStatus(self,projectID):
 		controller = ProjectDetails(projectID)

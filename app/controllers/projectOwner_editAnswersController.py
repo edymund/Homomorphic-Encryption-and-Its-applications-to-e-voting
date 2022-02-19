@@ -29,9 +29,9 @@ class projectOwner_editAnswersController():
 		candidates = Candidates()
 		return candidates.deleteCandidateByCandidateID(projectID, questionID, candidateID)
 	
-	def addNewCandidate(self, projectID, questionID, candidateID, candidateName, candidateDescription, filename):
+	def addNewCandidate(self, projectID, questionID, candidateName, candidateDescription, filename):
 		candidates = Candidates()
-		return candidates.addNewCandidate(projectID, questionID, candidateID, candidateName, candidateDescription, filename)
+		return candidates.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
 
 	def getNewCandidateID(self):
 		candidates = Candidates()
