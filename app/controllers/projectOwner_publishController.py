@@ -146,7 +146,7 @@ class projectOwner_publishController():
 	def generate_inv_msg(self,projectID, url):
 		projDetails_entity = ProjectDetails(projectID)
 		projectOwner_entity = ProjectRoles(projectID)
-		electionMsg_entity = ElectionMessage(projID= projectID)
+		electionMsg_entity = ElectionMessage(projectID)
 		voter_entity = Voter(projectID)	
 
 		proj_title = projDetails_entity.getTitle()

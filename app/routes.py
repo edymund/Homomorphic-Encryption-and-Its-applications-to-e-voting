@@ -76,7 +76,7 @@ def publishPage(projectID):
 		if projectStatus == "DRAFT":
 			if request.form['action'] == "requestVerification":
 				return boundary.requestVerification(projectID)
-		elif projectStatus == "PENDING VERIFICATION":
+		elif projectStatus == "PENDING APPROVAL":
 			if request.form['action'] == "verify":
 				return boundary.verifyProject(projectID)
 			elif request.form['action'] == "reject":
