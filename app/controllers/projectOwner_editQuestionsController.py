@@ -10,6 +10,10 @@ class projectOwner_editQuestionsController:
 		projectDetails = ProjectDetails(projectID)
 		# print(projectDetails.getTitle())
 		return projectDetails.getTitle()
+	
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
 
 	def getQuestion(self, questionID=None):
 		questions = Questions()

@@ -12,7 +12,7 @@
 		<a href="/{{ projectID }}/view_emailSettings">Manage Email Notifications</a>
 		
 		<!-- Display Publish Button if project is not completed -->
-		{% if projectStatus != "COMPLETED" %}
+		{% if projectStatus != "COMPLETED" and projectStatus != "ONGOING"%}
 			<a href="/{{ projectID }}/publish">
 				{% if userType == "owner" %}
 					Publish Event
@@ -22,7 +22,7 @@
 			</a>
 		{% endif %}
 		<!-- Allow admin to view results when project is completed -->
-		{% if projectStatus == "COMPLETED" %}
+		{% if projectStatus == "COMPLETED" or projectStatus == "ONGOING"%}
 			<a href="/{{ projectID }}/downloadResults"><b>Download Results</b></a>
 		{% endif %}
 	{% endif %}

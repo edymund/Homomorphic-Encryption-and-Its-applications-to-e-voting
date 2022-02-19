@@ -15,12 +15,12 @@
 		
 		<!-- Display Question -->
 		<label for="candidateName">Candidate's Name: </label>
-		<input type="text" id="candidateName" name="candidateName" value="{% if candidate is not none %}{{candidate.candidateOption}}{% endif %}" {% if userType == "sub-admin" %} readonly {% endif %}/>
+		<input type="text" id="candidateName" name="candidateName" value="{% if candidate is not none %}{{candidate.candidateOption}}{% endif %}" {% if userType == "sub-admin" or projectStatus != "DRAFT"%} readonly {% endif %}/>
 		<br/>
 
 		<!-- Display Upload Image button -->
 		<label>Candidate's Image (JPEG only*): </label>
-		{% if userType == "owner" %}
+		{% if userType == "owner" and projectStatus == "DRAFT" %}
 			<input id="candidateImage" type="file" name="candidateImageFile" accept="image/jpeg" onChange="handleImageUpload()"/>
 		{% endif %}
 		<br/>
@@ -30,11 +30,11 @@
 
 		<!-- Display Candidate's Description Entered -->
 		<label for="candidateDescription">Candidate's Description: </label>
-		<textarea id="candidateDescription" name="candidateDescription" {% if userType == "sub-admin" %} readonly {% endif %}>{% if candidate is not none %}{{candidate.description}}{% endif %}</textarea> 
+		<textarea id="candidateDescription" name="candidateDescription" {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{% if candidate is not none %}{{candidate.description}}{% endif %}</textarea> 
 		<br />
 
 		<!-- Save & Delete Candidates Button -->
-		{% if userType == "owner" %}
+		{% if userType == "owner" and projectStatus == "DRAFT"%}
 			<input type="submit" name="action" value="Save" /> </br>
 			<input type="submit" name="action" value="Delete" />
 		{% endif %}

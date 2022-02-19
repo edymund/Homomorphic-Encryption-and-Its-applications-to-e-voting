@@ -17,6 +17,8 @@ class organizer_emailSettingBoundary:
 	# Other Methods
 	def displayPage(self,projectID):
 		controller = organizer_emailSettingsController(projectID)
+    
+		projectStatus = controller.getProjectStatus(projectID)
 		invMsg = controller.retrieve_inv_msg(projectID)
 		rmdMsg = controller.retrieve_rmd_msg(projectID)
 		self.process_inv_msg(invMsg,projectID)
@@ -24,6 +26,7 @@ class organizer_emailSettingBoundary:
 		return render_template('organizer_emailSetting.html',invMsg =invMsg, 
 															rmdMsg =rmdMsg, 
 															projectID = projectID,
+															projectStatus=projectStatus,
 															userType = session['userType'])
 	
 	def onSubmit(self,invMsg,rmdMsg,projectID):

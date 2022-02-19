@@ -20,10 +20,10 @@
 			   	{% else %}
 					""
 			   	{% endif %}
-			   	{% if userType == "sub-admin" %} readonly {% endif %}/> <br />
+			   	{% if userType == "sub-admin" or projectStatus != "DRAFT"%} readonly {% endif %}/> <br />
 		<div>
-			Answers (Click to edit options):
-			{% if userType == "owner" %}
+			Answers (Click to view options):
+			{% if userType == "owner" and projectStatus == "DRAFT"%}
 				<a href="../edit_answers/{{ questionID }}/new_candidate"><img class="newQuestionImage" src={{ url_for('static',filename='images/plus.png') }}/></a>
 			{% endif %}
 		</div>
@@ -38,7 +38,7 @@
 				{% endfor %}
 			</ol>
 		</div> 
-		{% if userType == "owner" %} 
+		{% if userType == "owner" and projectStatus == "DRAFT"%} 
 			<input type="submit" name="action" value="Save" /> </br>
 			<input type="submit" name="action" value="Delete" />
 		{% endif %}

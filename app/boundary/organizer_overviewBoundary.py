@@ -12,8 +12,9 @@ class admin_overviewBoundary:
 		projectDetails = controller.getProjectDetails(projectID)
 		# print(projectDetails)
 		return render_template('organizer_overview.html', projectID=projectID, 
-													  projectDetails=projectDetails, 
-													  userType = session['userType'])
+													  	  projectDetails=projectDetails,
+														  projectStatus=projectDetails['status'], 
+													  	  userType = session['userType'])
 
 	def onSubmit(self, projectID, title, startDateTime, endDateTime):
 		organizerID = session['organizerID'];   

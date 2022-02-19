@@ -11,15 +11,21 @@
 		<h2><b>Election Message</b></h2>
 		<form method="POST" action="/{{projectID}}/view_electionMessage" >
 		<div class = "flexbox-container">
+      
 			<span>Pre-Election Message:</span>
 			<div class = "flexbox-item flexbox-item-1">
-				<input class = "msgview" id = "preMsg" name ="preMsg" value="{{preMsg}}" spellcheck="True" wrap= hard ></textarea><br>
+				<textarea class = "msgview" id = "preMsg" name ="preMsg" spellcheck="True" wrap=hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{{preMsg}}</textarea><br>
 			</div>
+      
 			<span> Post-Election Message:</span>
 			<div class = "flexbox-item flexbox-item-2">
-				<input class = "msgview" id = "postMsg" name ="postMsg" value="{{postMsg}}"spellcheck="True" wrap= hard ></textarea><br>
+				<textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{{postMsg}}</textarea><br>
 			</div>
-			<button type="submit">Save</button>
+      
+			{% if userType == "owner" and projectStatus == "DRAFT" %}
+				<button type="submit">Save</button>
+			{% endif %}
+      
 		</div>
 		<div class ="space"></div>
 

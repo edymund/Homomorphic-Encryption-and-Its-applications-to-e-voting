@@ -8,16 +8,16 @@
 	<h2>Project Details</h2>
 	<form method="POST" action="">
 		<label for="name">Project:</label>
-		<input type="text" id="name" name="name" {% if projectDetails %} value="{{projectDetails.title}}"" {% endif %} {% if userType == "verifier" %} readonly {% endif %}/><br />
+		<input type="text" id="name" name="name" {% if projectDetails %} value="{{projectDetails.title}}"" {% endif %} {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}/><br />
 		
 		<label for="status">Status:</label>
 		<input type="text" id="status" {% if projectDetails %} value="{{projectDetails.status}}"" {% endif %} readonly /> <br />
 		
 		<label for="startDateTime">Start Date & Time:</label>
-		<input type="datetime-local" id="startDateTime" name="startDateTime" {% if projectDetails %} value="{% if projectDetails.startDateTime %}{{projectDetails.startDateTime}}{% endif %}" {% endif %} {% if userType == "verifier" %} readonly {% endif %}/> <br />
+		<input type="datetime-local" id="startDateTime" name="startDateTime" {% if projectDetails %} value="{% if projectDetails.startDateTime %}{{projectDetails.startDateTime}}{% endif %}" {% endif %} {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}/> <br />
 		
 		<label for="endDateTime">End Date & Time:</label>
-		<input type="datetime-local" id="endDateTime" name="endDateTime" {% if projectDetails %} value="{% if projectDetails.endDateTime %}{{projectDetails.endDateTime}}{% endif %}" {% endif %} {% if userType == "verifier" %} readonly {% endif %}/> <br />
+		<input type="datetime-local" id="endDateTime" name="endDateTime" {% if projectDetails %} value="{% if projectDetails.endDateTime %}{{projectDetails.endDateTime}}{% endif %}" {% endif %} {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}/> <br />
 		
 		<!-- <div class="form-group">
 			<label for="publicKey">Public Key:</label>

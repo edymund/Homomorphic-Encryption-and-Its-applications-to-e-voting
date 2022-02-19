@@ -9,12 +9,14 @@ class projectOwner_viewQuestionsBoundary:
 	def displayPage(self, projectID):
 		controller = projectOwner_viewQuestionsController()
 		projectName = controller.getProjectName(projectID)
+		projectStatus = controller.getProjectStatus(projectID)
 		questionSet = controller.getQuestionsAndAnswers(projectID)
 
 		return render_template('organizer_viewQuestions.html', projectID=projectID, 
-														   projectName=projectName, 
-														   questionSet=questionSet,
-														   userType = session['userType'])
+														  	   projectName=projectName,
+															   projectStatus=projectStatus, 
+														  	   questionSet=questionSet,
+														  	   userType = session['userType'])
 
 	
 	def displayError(self, projectID, error):

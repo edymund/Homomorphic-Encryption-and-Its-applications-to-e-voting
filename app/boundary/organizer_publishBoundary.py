@@ -17,11 +17,12 @@ class publishBoundary:
 		print("Error Messages(Boundary)", errorMessages)
 
 		return render_template('organizer_publish.html', projectID=projectID,
-													 projectDetails=projectDetails,
-													 preElectionMessage=preElectionMessage,
-													 invitationMessage=invitationMessage,
-													 errorMessages=errorMessages,
-													 userType = session['userType'])
+													 	 projectDetails=projectDetails,
+														 projectStatus=projectDetails["status"],
+													 	 preElectionMessage=preElectionMessage,
+													 	 invitationMessage=invitationMessage,
+													 	 errorMessages=errorMessages,
+													 	 userType = session['userType'])
 	
 
 	# For Project Owner to Request Verification from Verifiers
