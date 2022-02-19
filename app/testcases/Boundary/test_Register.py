@@ -1,4 +1,4 @@
-from ..boundary.registrationBoundary import registrationBoundary
+from ...boundary.registrationBoundary import registrationBoundary
 from flask import Flask, render_template, redirect, session, flash
 import os
 

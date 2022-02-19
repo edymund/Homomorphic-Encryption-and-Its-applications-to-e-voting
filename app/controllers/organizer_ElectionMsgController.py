@@ -9,12 +9,6 @@ class ElectionMsgController:
 	def getProjID(self):
 		return self.projectID
 
-	def getPreMsg(self):
-		return self.preMsg
-
-	def getPostMsg(self):
-		return self.postMsg
-
 	def getProjectStatus(self, projectID):
 		projectDetails = ProjectDetails(projectID)
 		return projectDetails.getStatus()
@@ -24,32 +18,23 @@ class ElectionMsgController:
 		self.projID = projectID
 
 	def check_election_msg(self,msg):
-		if msg == "" or msg ==None:
+		if msg == "" or msg == None or msg == "None":
 			return False
-		elif msg != "" and msg != None:
+		elif msg != "" or msg != None or msg =="None":
 			return True
 
-	def update_pre_election_msg(self,msg):
-		entity = ElectionMessage(projID= self.projectID)
-		entity.setPreMsg(msg)
+	def update_pre_election_msg(self,msg,projectID):
+		entity = ElectionMessage(projectID)
+		entity.setPreMsg(msg,projectID)
 	
-	def update_post_election_msg(self,msg):
-		entity = ElectionMessage(projID= self.projectID)
-		entity.setPostMsg(msg)
+	def update_post_election_msg(self,msg,projectID):
+		entity = ElectionMessage(projectID)
+		entity.setPostMsg(msg,projectID)
 
-	def retrieve_pre_election_msg(self):
-		entity = ElectionMessage(projID= self.projectID)
-		self.preMsg = entity.getPreMsg()
-		return self.preMsg
-
-	def retrieve_post_election_msg(self):
-		entity = ElectionMessage(projID= self.projectID)
-		self.postMsg = entity.getPostMsg()
-		return self.postMsg
-
-	
-	
-	
-
-
-	
+	def retrieve_pre_election_msg(self,projectID):
+    entity = ElectionMessage(projectID)
+    return entity.getPreMsg()
+  
+  def retrieve_post_election_msg(self,projectID):
+    entity = ElectionMessage(projectID)
+    return entity.getPostMsg()
