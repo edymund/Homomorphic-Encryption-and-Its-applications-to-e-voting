@@ -20,7 +20,7 @@ class organizer_emailSettingsController:
 	def check_msg(self,msg):
 		if msg == "" or msg == None or msg == "None":
 			return False
-		elif msg != "" or msg != None or msg =="None":
+		elif msg != "" and msg != None and msg !="None":
 			return True
 
 	def update_inv_msg(self,msg,projectID):
