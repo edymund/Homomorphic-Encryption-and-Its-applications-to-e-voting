@@ -1,7 +1,6 @@
 from flask import render_template, redirect, session, flash
 import pandas as pd
 from ..controllers.organizer_ImportVoterListController import organizer_importVoterListController
-from ..entity.Projectdetails import ProjectDetails
 
 class organizer_importVoterListBoundary:
 	# Constructor
@@ -10,13 +9,16 @@ class organizer_importVoterListBoundary:
 
 	# Other Methods
 	def displayPage(self,projectID):
+		controller = organizer_importVoterListController(projID = self.projectID)
+		projectStatus = controller.getProjectStatus(projectID)
 		vList = self.getVoterList()
 		status = self.check_validity(vList)
 		return render_template('organizer_ImportVotersList.html', voterList =vList, 
-															 projectID =projectID,
-															 userType=session['userType'],
-															 status= status
-															 )
+															 	  projectID=projectID,
+															 	  projectStatus=projectStatus,
+															 	  userType=session['userType'],
+															 	  status= status
+															 	  )
 	
 	def onSubmit(self, fileName):
 		controller = organizer_importVoterListController(projID = self.projectID)
@@ -45,15 +47,21 @@ class organizer_importVoterListBoundary:
 		return 2 if email wrong format
 		return 3 if csv not in correct format
 		"""
+		temp_arr = []
 		for email in vList:
 			if email.find("@") < 0:
 				self.displayError(self.projectID,"Invalid email in CSV, please rectify and re-upload")
 				return False
+			if email not in temp_arr:
+				temp_arr.append(email)
+			else:
+				self.displayError(self.projectID,"Duplicated email in CSV, please rectify and re-upload")
+				return False
 		return True
 
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_importVoterListController(projID = self.projectID)
+		return controller.getProjectStatus(projectID)
 	
 	def displayError(self, projectID, errorMessage):
 		flash(errorMessage,'error')

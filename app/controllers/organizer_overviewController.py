@@ -1,8 +1,7 @@
 from ..entity.Projectdetails import ProjectDetails
-from ..entity.ProjectRoles import ProjectRoles
 import datetime
 
-class projectOwner_overviewController:
+class organizer_overviewController:
 	def __init__(self):
 		pass
 	
@@ -10,7 +9,11 @@ class projectOwner_overviewController:
 		projectDetails = ProjectDetails()
 		return projectDetails.getProjectDetails(projectID)
 
-	def updateProject(self, projectID, organizerID, title, startDateTime, endDateTime):
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
+
+	def updateProject(self, projectID, title, startDateTime, endDateTime):
 		ProjectDetailsEntity = ProjectDetails()
 		if startDateTime == "":
 			startDate = None

@@ -13,35 +13,34 @@
 		<form method="POST" action="/{{ projectID }}/view_importList" enctype="multipart/form-data">
 
 		<div class = "flexbox-container" >
-			<div class = "flexbox-container-sub">
-				<div class = "flexbox-item flexbox-item-upload">
-					<span>Upload file:</span>
-					<input type="text" id ="voter-list-tb" readonly>
-					<input type="file" id="myFile" name= "filename" onchange = "showname();" accept =".csv" hidden>
-					{% if userType == "owner" %}
-						<input type="button" name="filename-btn" value ="File" onclick="openfile();" >
-					{% endif %}
-					{% if userType == "owner" %}
-					<button type="submit">Upload</button>
-				{% endif %}
+			{% if userType == "owner" and projectStatus == "DRAFT" %}
+				<div class = "flexbox-container-sub">
+					<div class = "flexbox-item flexbox-item-upload">
+						<span>Upload file:</span>
+						<input type="text" id ="voter-list-tb" readonly>
+						<input type="file" id="myFile" name= "filename" onchange = "showname();" accept =".csv" hidden>
+						
+							<input type="button" name="filename-btn" value ="File" onclick="openfile();" >
+						<button type="submit">Upload</button>
+					</div>
+					
+					<div class = "flexbox-item flexbox-item-image">
+						<span>Sample CSV file</span>
+						<!-- trigger modal -->
+						<img id="myImg" src={{ url_for('static',filename='images/voterlist-sample.JPG') }}  alt="voterlist" onclick= "imgclick()">
+						<!-- modal -->
+						<div id="myModal" class="modal">
+							<!-- The Close Button -->
+							<span class="close" onclick = "spanclose()">&times;</span>
+							<!-- Modal Content (The Image) -->
+							<img class="modal-content" id="imgVL">
 
-				</div>
-				<div class = "flexbox-item flexbox-item-image">
-					<span>Sample CSV file</span>
-					<!-- trigger modal -->
-					<img id="myImg" src={{ url_for('static',filename='images/voterlist-sample.JPG') }}  alt="voterlist" onclick= "imgclick()">
-					<!-- modal -->
-					<div id="myModal" class="modal">
-						<!-- The Close Button -->
-						<span class="close" onclick = "spanclose()">&times;</span>
-						<!-- Modal Content (The Image) -->
-						<img class="modal-content" id="imgVL">
-
-						<!-- Modal Caption (Image Text) -->
-						<div id="caption"></div>
+							<!-- Modal Caption (Image Text) -->
+							<div id="caption"></div>
+						</div>
 					</div>
 				</div>
-			</div>
+			{% endif %}
 			<div class = "flexbox-item flexbox-item-list">
 				<span>Voters</span>
 				<ol>

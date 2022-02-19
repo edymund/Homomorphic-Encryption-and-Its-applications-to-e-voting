@@ -1,5 +1,5 @@
 from flask import render_template, redirect, session, flash, current_app
-
+import traceback
 from ..controllers.user_decryptController import User_DecryptController
 
 class user_decryptBoundary:
@@ -16,7 +16,7 @@ class user_decryptBoundary:
 
 		# If no file is uploaded
 		if file.filename == '':
-			return redirect(redirect.url)
+			return self.displayError("No File Uploaded")
 
 		# If file is uploaded
 		encryptedData = file.read()
@@ -24,11 +24,12 @@ class user_decryptBoundary:
 			decryptedData = controller.decrypt(encryptedData, int(secretKey_FHE), current_app.config.get("AES_KEY"))
 			decryptedData = controller.format(decryptedData)
 			return self.displayPage(decryptedData)
-		except:
-			return self.displayError("Encrypted File has been tampered")
+		except Exception:
+			print (traceback.format_exc())
+			return self.displayError("Failed To Decrypt File")
 		
 	
 	def displayError(self, error):
-		flash(error)
+		flash(error, 'error')
 		return self.displayPage()
 

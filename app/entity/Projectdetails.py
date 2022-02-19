@@ -63,7 +63,7 @@ class ProjectDetails:
 	def getPublicKey(self):
 		return self.__publicKey
 
-	# Verify if the user is an admin and authorized to view the page
+	# Verify if the user is a verifier and authorized to view the page
 	def insertNewProject(self):
 		connection = dbConnect()
 		db = connection.cursor()
@@ -97,7 +97,7 @@ class ProjectDetails:
 		else:
 			projectDetails['startDateTime'] = result[3] + "T" + result[4]
 
-		if result[3] is None or result[4] is None:
+		if result[5] is None or result[6] is None:
 			projectDetails['endDateTime'] = None
 		else:
 			projectDetails['endDateTime'] = result[5] + "T" + result[6]
@@ -282,18 +282,6 @@ class ProjectDetails:
 		return False
 
 	def updatePublicKey(self, projectID, publicKey):
-		connection = dbConnect()
-		db = connection.cursor()
-
-		result = db.execute("""UPDATE projDetails SET publicKey = (?)
-							   WHERE projDetailsID = (?)
-							   """, 
-								(publicKey, projectID))
-		connection.commit()
-		dbDisconnect(connection)
-		return
-
-	def getVotingData(self, projectID):
 		connection = dbConnect()
 		db = connection.cursor()
 

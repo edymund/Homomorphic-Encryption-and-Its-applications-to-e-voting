@@ -1,24 +1,25 @@
 from flask import render_template, redirect, flash, session
-from app.controllers.projectOwner_overviewController import projectOwner_overviewController
-from ..entity.Projectdetails import ProjectDetails
+from app.controllers.organizer_overviewController import organizer_overviewController
 
-class admin_overviewBoundary:
+
+class organizer_overviewBoundary:
 	def __init__(self):
 		self.RESPONSE_SUCCESS = "Success"
 		pass
 
 	def displayPage(self, projectID):
-		controller = projectOwner_overviewController()
+		controller = organizer_overviewController()
 		projectDetails = controller.getProjectDetails(projectID)
 		# print(projectDetails)
 		return render_template('organizer_overview.html', projectID=projectID, 
-													  projectDetails=projectDetails, 
-													  userType = session['userType'])
+													  	  projectDetails=projectDetails,
+														  projectStatus=projectDetails['status'], 
+													  	  userType = session['userType'])
 
 	def onSubmit(self, projectID, title, startDateTime, endDateTime):
 		organizerID = session['organizerID'];   
-		controller = projectOwner_overviewController()
-		if controller.updateProject(projectID, organizerID, title, startDateTime, endDateTime):
+		controller = organizer_overviewController()
+		if controller.updateProject(projectID, title, startDateTime, endDateTime):
 			return self.displaySuccess(projectID)
 		else:
 			return self.displayError(projectID, "Failed to update details")
@@ -33,13 +34,13 @@ class admin_overviewBoundary:
 		return self.displayPage(projectID)
 
 	def deleteProject(self, projectID):
-		controller = projectOwner_overviewController()
+		controller = organizer_overviewController()
 		if controller.deleteProject(projectID):
 			return redirect("/mainballot")
 		else:
 			self.displayError("Failed to delete project")
 	
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_overviewController()
+		return controller.getProjectStatus(projectID)
 	

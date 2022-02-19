@@ -2,13 +2,17 @@ from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
 from ..entity.Projectdetails import ProjectDetails
 
-class projectOwner_viewQuestionsController():
+class organizer_viewQuestionsController():
 	def __init__(self):
 		pass
 
 	def getProjectName(self, projectID):
 		projectDetails = ProjectDetails(projectID)
 		return projectDetails.getTitle()
+	
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
 
 	def getQuestionsAndAnswers(self, projectID):
 		questionEntity = Questions()

@@ -2,7 +2,8 @@ from ..entity.Projectdetails import ProjectDetails
 from ..entity.Questions import Questions
 from ..entity.Candidates import Candidates
 
-class projectOwner_editQuestionsController:
+
+class organizer_editQuestionsController:
 	def __init__(self):
 		pass
 
@@ -10,6 +11,10 @@ class projectOwner_editQuestionsController:
 		projectDetails = ProjectDetails(projectID)
 		# print(projectDetails.getTitle())
 		return projectDetails.getTitle()
+	
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
 
 	def getQuestion(self, questionID=None):
 		questions = Questions()
@@ -40,3 +45,11 @@ class projectOwner_editQuestionsController:
 	def addQuestion(self, projectID, question):
 		questions = Questions()
 		return questions.addQuestion(projectID, question)
+	
+	def deleteCandidatesByQuestionID(projectID, questionID):
+		candidates = Candidates()
+		candidates.addNewCandidatedeleteCandidatesByQuestionID(projectID, questionID)
+
+	def deleteQuestionByQuestionID(projectID, questionID):
+		questions = Questions()
+		questions.deleteQuestionByQuestionID(projectID, questionID)

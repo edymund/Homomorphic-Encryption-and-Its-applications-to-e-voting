@@ -12,6 +12,5 @@ function downloadKey(filename, elId, mimeType) {
 }
 
 function downloadKeys() {
-	downloadKey('public_key', 'publickey', 'text/plain');
-	downloadKey('secret_key', 'secretkey', 'text/plain');
+	downloadKey('Voting Results', 'decrypted_results', 'text/plain');
 }

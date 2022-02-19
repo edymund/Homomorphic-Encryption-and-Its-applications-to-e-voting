@@ -2,7 +2,6 @@
 import os
 from datetime import datetime
 from functools import wraps
-import sqlite3
 import traceback
 
 # Environment Imports
@@ -22,8 +21,8 @@ static_dir = os.path.abspath('./app/static')
 
 # Configure app to run from this file
 application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
-application.config['UPLOAD_FOLDER'] = "./static/images/projectImages/{}"
-application.config['DOWNLOAD_FOLDER'] = "static\downloads"
+application.config['UPLOAD_FOLDER'] = r"static\images\uploads"
+application.config['DOWNLOAD_FOLDER'] = r"static\downloads"
 application.config['EMAIL'] = {}
 application.config['EMAIL']['SERVER'] = "smtp.gmail.com"
 application.config['EMAIL']['PORT'] = 587
@@ -156,4 +155,3 @@ scheduler.start()
 job = scheduler.add_job(updateProjectStatus, trigger='cron', minute="*")
 
 from app import routes
-

@@ -1,39 +1,38 @@
 from flask import render_template, flash, redirect, url_for, session
-from app.controllers.projectOwner_editQuestionsController import projectOwner_editQuestionsController
-from app.entity.Candidates import Candidates
-from app.entity.Questions import Questions
-from ..entity.Projectdetails import ProjectDetails
+from app.controllers.organizer_editQuestionsController import organizer_editQuestionsController
 
-class projectOwner_editQuestionsBoundary:
+class organizer_editQuestionsBoundary:
 	def __init__(self):
 		self.ERROR_NO_PERMISSION = "Not authorised to access this resource"
 
 	def checkPermission(self, projectID, questionID):
-		controller = projectOwner_editQuestionsController()
+		controller = organizer_editQuestionsController()
 		if questionID == "new_question":
 			return True
 		return controller.checkPermission(projectID, questionID)
 
 	def displayPage(self, projectID, questionID):
-		controller = projectOwner_editQuestionsController()
+		controller = organizer_editQuestionsController()
 
 		# Check if user has permission to save to this link
 		if not self.checkPermission(projectID, questionID):
 			return self.displayError(projectID, self.ERROR_NO_PERMISSION)
 		
 		projectName = controller.getProjectName(projectID)
+		projectStatus = controller.getProjectStatus(projectID)
 		questionDetails = controller.getQuestion(questionID)
 		candidateDetails = controller.getCandidates(questionID)
 
 		return render_template('organizer_editQuestions.html', projectID=projectID, 
-														   projectName=projectName,
-														   questionID=questionID,
-														   question=questionDetails,
-														   candidates=candidateDetails,
-														   userType=session['userType'])
+														       projectName=projectName,
+														       projectStatus=projectStatus,
+														       questionID=questionID,
+														       question=questionDetails,
+														       candidates=candidateDetails,
+														       userType=session['userType'])
 
 	def addQuestion(self, projectID, question):
-		controller = projectOwner_editQuestionsController()
+		controller = organizer_editQuestionsController()
 		questionID = controller.addQuestion(projectID, question)
 		return self.displaySuccess(projectID)
 
@@ -43,7 +42,7 @@ class projectOwner_editQuestionsBoundary:
 			return self.displayError(projectID, self.ERROR_NO_PERMISSION)
 
 		# Create controller
-		controller = projectOwner_editQuestionsController()
+		controller = organizer_editQuestionsController()
 		if controller.saveQuestion(projectID, questionID, question):
 			return self.displaySuccess(projectID)
 		return render_template(projectID, "Failed to update question")
@@ -53,18 +52,16 @@ class projectOwner_editQuestionsBoundary:
 		if not self.checkPermission(projectID, questionID):
 			return self.displayError(projectID, self.ERROR_NO_PERMISSION)
 
-		# Create Controllers	
-		questions = Questions()
-		candidates = Candidates()
-
-		candidates.deleteCandidatesByQuestionID(projectID, questionID)
-		questions.deleteQuestionByQuestionID(projectID, questionID)
+		# Create Controllers
+		controller = organizer_editQuestionsController()
+		controller.deleteCandidatesByQuestionID(projectID, questionID)
+		controller.deleteQuestionByQuestionID(projectID, questionID)
 
 		return self.displaySuccess(projectID)
 	
 	def getProjectStatus(self,projectID):
-		controller = ProjectDetails(projectID)
-		return controller.getStatus()
+		controller = organizer_editQuestionsController()
+		return controller.getProjectStatus(projectID)
 		
 	def displayError(self, projectID, error):
 		flash(error,'error')

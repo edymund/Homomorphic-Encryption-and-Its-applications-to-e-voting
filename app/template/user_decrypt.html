@@ -3,7 +3,7 @@
 <!-- Updates the <head> of the webpage -->
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/user_decrypt.css') }}"/>
-    <!-- <script type=text/javascript src="{{ url_for('static',filename='js/user_importVoterList.js') }}"></script> -->
+    <script type=text/javascript src="{{ url_for('static',filename='js/guest_downloadDecryptedFile.js') }}"></script>
 {% endblock %} 
 <!--Change CSS-->
 
@@ -20,11 +20,11 @@
                             <label>Secret key:</label>
                         </td>
                         <td class="col2">	
-                            <input type="text" id = "secret_key"name ="secretKey">
+                            <input type="text" id = "secret_key" name ="secretKey" autocomplete="off">
                         </td>
 						{% if decryptedData %}
                         <td rowspan=5 id="results">
-							<pre>{{decryptedData}}</pre>
+							<pre id="decrypted_results">{{decryptedData}}</pre>
                         </td>
 						{% endif %}
                     </tr>
@@ -42,16 +42,18 @@
                     </tr>
                     <tr>
                         <td colspan="2" id="buttonCell">
-                            <button class="submit" type="submit">Decrypt</button>
+                            <button class="button" type="submit">Decrypt</button>
                         </td>
                         <!-- <td></td> -->
                     </tr>
+					{% if decryptedData %}
 					<tr>
                         <td colspan="2" id="buttonCell">
-                            <button class="submit">Generate File</button>
+                            <button type="button" class="button" onclick="downloadKeys()">Generate File</button>
                         </td>
                         <!-- <td></td> -->
                     </tr>
+					{% endif %}
                 </table>
 
 				

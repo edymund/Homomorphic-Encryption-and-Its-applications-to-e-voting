@@ -2,7 +2,7 @@
 
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/formFields.css') }}" />
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_viewQuestions.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_viewQuestions.css') }}" />
 {% endblock %} 
 
 {% block body %}
@@ -11,7 +11,7 @@
 		<form action="edit_questions/new_question" method="GET">
 			<label for="projectNameField">Project Name:</label>
 			<input type="text" id="projectNameField" value="{{ projectName }}" readonly/>
-			{% if userType == "owner" %}
+			{% if userType == "owner" and projectStatus == "DRAFT" %}
 				<button type="submit" value="addNewQuestion"><img id="buttonImg" src={{ url_for('static',filename='images/plus.png') }}/></button>
 			{% endif %}
 			<!-- <input class="newQuestionImage" type="image" src="{{ url_for('static',filename='images/plus.png') }}"> -->
@@ -28,7 +28,7 @@
 			</span>
 			<ol>
 				{% for candidate in record.option %}
-					<li>{{candidate.description}}</li>
+					<li>{{candidate.candidateOption}}</li>
 				{% endfor %}
 			</ol>
 		</div>

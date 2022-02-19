@@ -1,8 +1,8 @@
 {% extends "user_baseTemplate.html" %} 
 
 {% block head %}
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/admin_publish.css') }}" />
-	<script type=text/javascript src="{{ url_for('static',filename='js/admin_publish.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/organizer_publish.css') }}" />
+	<script type=text/javascript src="{{ url_for('static',filename='js/organizer_publish.js') }}"></script>
 {% endblock %} 
 
 {% block body %}
@@ -42,8 +42,9 @@
 			
 		</p>
 		{% endif %}
-		<p>Project will be published automatically when all sub-admins have approved the project details</p>
-		
+		{% if projectDetails.status == 'DRAFT' or projectDetails.status == 'PENDING APPROVAL' %}
+			<p>Project will be published automatically when all verifiers have approved the project details</p>
+		{% endif %}
 		{% if userType == "owner" %}
 			{% if projectDetails.status == 'DRAFT' %}
 				<button type="submit" name="action" value="requestVerification" {% if errorMessages|length > 0 %} disabled {% endif %}>Request Verification</button>

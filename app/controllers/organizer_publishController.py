@@ -10,12 +10,16 @@ from ..lib.FHE import FHE
 from flask import url_for, current_app
 import random 
 
-class projectOwner_publishController():
+class organizer_publishController():
 	def __init__(self):
 		self.email = SendEmailService()
 		self.email.setLoginDetails(current_app.config['EMAIL']['USER'], current_app.config['EMAIL']['PASSWORD'])
 		self.email.setServer(current_app.config['EMAIL']['SERVER'], current_app.config['EMAIL']['PORT'])
 		self.errors = []
+	
+	def getProjectStatus(self, projectID):
+		projectDetails = ProjectDetails(projectID)
+		return projectDetails.getStatus()
 	
 	def getProjectDetails(self, projectID):
 		projectDetails = ProjectDetails()
@@ -93,8 +97,8 @@ class projectOwner_publishController():
 		return projectDetails.isPendingVerification(projectID)
 	
 	def verifyProject(self, projectID, organizerID):
-		administrator = ProjectRoles()
-		return administrator.setVerified(projectID, organizerID)
+		projectRoles = ProjectRoles()
+		return projectRoles.setVerified(projectID, organizerID)
 	
 	def requestVerification(self, projectID):
 		projectDetails = ProjectDetails()
@@ -120,12 +124,12 @@ class projectOwner_publishController():
 		
 	def updateProjectStatusToPublished(self, projectID):
 		projectDetails = ProjectDetails()
-		administrator = ProjectRoles()
+		projectRoles = ProjectRoles()
 		fhe = FHE()
 		fhe.keyGen()
 
 		# Check if all verifiers has approved
-		if administrator.allVerifierApprovedProject(projectID):
+		if projectRoles.allVerifierApprovedProject(projectID):
 			
 			# Sends Email to Voters
 			self.generate_inv_msg(projectID, url_for("voterLoginPage",_external=True))
@@ -146,7 +150,7 @@ class projectOwner_publishController():
 	def generate_inv_msg(self,projectID, url):
 		projDetails_entity = ProjectDetails(projectID)
 		projectOwner_entity = ProjectRoles(projectID)
-		electionMsg_entity = ElectionMessage(projID= projectID)
+		electionMsg_entity = ElectionMessage(projectID)
 		voter_entity = Voter(projectID)	
 
 		proj_title = projDetails_entity.getTitle()
@@ -155,9 +159,9 @@ class projectOwner_publishController():
 		proj_end_date = projDetails_entity.getEndDate()
 		proj_end_time = projDetails_entity.getEndTime()
 		
-		admin_info   = 	projectOwner_entity.get_organizer_info(projectID)
-		admin_name = f"{admin_info[0]} {admin_info[1]}" 
-		company_name = admin_info[2]
+		organizer_info   = 	projectOwner_entity.get_organizer_info(projectID)
+		organizer_name = f"{organizer_info[0]} {organizer_info[1]}" 
+		company_name = organizer_info[2]
 		
 		invt_msg= electionMsg_entity.getInviteMsg()
 		
@@ -178,7 +182,7 @@ Dear Voter,
 
 {invt_msg}
 
-This email is to inform you that you are invited to participate in the voting event -"{proj_title}" by {admin_name}, {company_name}.
+This email is to inform you that you are invited to participate in the voting event -"{proj_title}" by {organizer_name}, {company_name}.
 The voting event will start from {proj_start_date},{proj_start_time} to {proj_end_date},{proj_end_time}.
 
 Your voter ID is {voters_No}

@@ -8,7 +8,7 @@
 {% block body %}
 	<h2>Download Results</h2>
 
-		<b>Number of Voters voted: </b>
+		<b>Total Number of Voters Invited: </b>
         <span>{{ totalVotes }}</span> <br> <br>
 
         <b>Number of Voters voted: </b>
@@ -17,5 +17,9 @@
         <b>Number of Voters did not vote: </b>
         <span>{{totalVotes - uniqueVotes}}</span> <br> <br>
         
-        <a href="/{{ projectID }}/downloadResults/EncryptedResult"><button>Download</button></a> <br> <br>
+		{% if projectStatus == "COMPLETED" %}
+        	<a href="/{{ projectID }}/downloadResults/EncryptedResult"><button>Download</button></a> <br> <br>
+		{% elif projectStatus == "ONGOING" %}
+			<button>Unable to download results</button>
+		{% endif %}
 {% endblock %}

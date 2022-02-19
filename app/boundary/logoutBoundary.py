@@ -9,12 +9,6 @@ class logoutBoundary:
 		"""
 		Updates the session of the current user to logged off
 		"""
-		session['organizer'] = None
-		session['organizerID'] = None
-		session['adminProjectID'] = None
-		session['subAdminProjectID'] = None
-
-		print(session['organizer'])
 		session.clear()
 
 	def redirectToLogin(self):

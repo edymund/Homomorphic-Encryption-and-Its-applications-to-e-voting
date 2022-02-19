@@ -1,5 +1,5 @@
 from pickle import TRUE
-from ...controllers.projectOwner_manageAdministratorsController import projectOwner_manageAdministratorsController
+from ...controllers.organizer_manageVerifiersController import organizer_manageVerifiersController
 from flask import Flask, render_template, redirect, session, flash
 import os
 
@@ -8,7 +8,7 @@ import unittest
 class EditVerifierControllerTestCases(unittest.TestCase):
 	def setUp(self):
 		# Create boundary object
-		self.controller = projectOwner_manageAdministratorsController()
+		self.controller = organizer_manageVerifiersController()
 
 		# Set up application settings
 		template_dir = os.path.abspath('./app/template')
@@ -21,7 +21,7 @@ class EditVerifierControllerTestCases(unittest.TestCase):
 
 	def test_getVerifier(self):
 		with self.app.test_request_context() as c:
-            #projectID, userID - admin ,email - verifier
+            #projectID, userID - owner ,email - verifier
 			result = self.controller.getVerifier("1")
 			expectedResult = [{'recordID': 2, 'organizerID': 2, 'email': 'john@hotmail.com'}, {'recordID': 12, 'organizerID': 4, 'email': 'abcdefg@hotmail.com'}]
 			errorMessage = "Unable to retrieve Verifier"
@@ -30,7 +30,7 @@ class EditVerifierControllerTestCases(unittest.TestCase):
 	#test if able to continue voting if voted
 	def test_addVerifier(self):
 		with self.app.test_request_context() as c:
-            #projectID, userID - admin ,email - verifier
+            #projectID, userID - owner ,email - verifier
 			result = self.controller.addVerify("1","1","abcdefg@hotmail.com")
 			expectedResult = True
 			errorMessage = 'Unable to add verifier'
