@@ -1,8 +1,7 @@
-from distutils.log import error
 from flask import render_template, flash, session
-from app.controllers.organizer_manageVerifiersController import organizer_manageVerifiersController
+from ..controllers.organizer_manageVerifiersController import organizer_manageVerifiersController
 
-class projectOwner_manageVerifiersBoundary:
+class organizer_manageVerifiersBoundary:
 	def __init__(self):
 		pass
 

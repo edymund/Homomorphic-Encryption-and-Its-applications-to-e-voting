@@ -15,17 +15,17 @@ from .boundary.user_decryptBoundary import user_decryptBoundary
 
 # Organizer Imports
 from .boundary.organizer_overviewBoundary import organizer_overviewBoundary
-from .boundary.organizer_manageVerifiersBoundary import projectOwner_manageVerifiersBoundary
-from .boundary.organizer_viewQuestionsBoundary import projectOwner_viewQuestionsBoundary
-from .boundary.organizer_editQuestionsBoundary import projectOwner_editQuestionsBoundary
-from .boundary.organizer_editAnswersBoundary import projectOwner_editAnswersBoundary
+from .boundary.organizer_manageVerifiersBoundary import organizer_manageVerifiersBoundary
+from .boundary.organizer_viewQuestionsBoundary import organizer_viewQuestionsBoundary
+from .boundary.organizer_editQuestionsBoundary import organizer_editQuestionsBoundary
+from .boundary.organizer_editAnswersBoundary import organizer_editAnswersBoundary
 from .boundary.organizer_importVoterListBoundary import organizer_importVoterListBoundary
 from .boundary.organizer_viewElectionMessageBoundary import organizer_viewElectionMessageBoundary
 from .boundary.organizer_emailSettingBoundary import organizer_emailSettingBoundary
 from .boundary.organizer_changePasswordBoundary import organizer_changePasswordBoundary
 from .boundary.organizer_mainBallotBoundary import organizer_mainBallotBoundary
 from .boundary.organizer_settingsBoundary import organizer_settingsBoundary
-from .boundary.organizer_publishBoundary import publishBoundary
+from .boundary.organizer_publishBoundary import organizer_publishBoundary
 from .boundary.organizer_downloadResultsBoundary import organizer_downloadResultsBoundary
 from .boundary.resetPasswordBoundary import resetPasswordBoundary
 from .boundary.logoutBoundary import logoutBoundary
@@ -68,7 +68,7 @@ def downloadEncryptedFile(projectID):
 def publishPage(projectID):
 	print("Entered Route")
 	# Creates a boundary object
-	boundary = publishBoundary()
+	boundary = organizer_publishBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 	if request.method == 'POST':
@@ -108,7 +108,7 @@ def projectOverviewPage(projectID):
 @authorisationRequired
 def projectManageVerifier(projectID):
 	# Create boundary object
-	boundary = projectOwner_manageVerifiersBoundary()
+	boundary = organizer_manageVerifiersBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
@@ -134,7 +134,7 @@ def projectManageVerifier(projectID):
 @authorisationRequired
 def projectViewQuestions(projectID):
 	# Create boundary object
-	boundary = projectOwner_viewQuestionsBoundary()
+	boundary = organizer_viewQuestionsBoundary()
 	if request.method == 'GET':
 		return boundary.displayPage(projectID)
 
@@ -143,7 +143,7 @@ def projectViewQuestions(projectID):
 @authorisationRequired
 def projectEditQuestions(projectID, questionID):
 	# Create boundary object
-	boundary = projectOwner_editQuestionsBoundary()
+	boundary = organizer_editQuestionsBoundary()
 	
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID)
@@ -168,7 +168,7 @@ def projectEditQuestions(projectID, questionID):
 @authorisationRequired
 def projectEditAnswer(projectID, questionID ,candidateID):
 		# Crate boundary object
-	boundary = projectOwner_editAnswersBoundary()
+	boundary = organizer_editAnswersBoundary()
 
 	if request.method == 'GET':
 		return boundary.displayPage(projectID, questionID, candidateID)

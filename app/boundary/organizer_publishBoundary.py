@@ -2,7 +2,7 @@ from flask import render_template, redirect, session, flash, url_for
 from ..controllers.organizer_publishController import organizer_publishController
 
 
-class publishBoundary:
+class organizer_publishBoundary:
 	# Constructor
 	def __init__(self):
 		self.votingPageURL = url_for("voterLoginPage",_external=True)

@@ -1,7 +1,7 @@
 from ..controllers.organizer_editAnswersController import organizer_editAnswersController
 from flask import render_template, flash, redirect, session
 
-class projectOwner_editAnswersBoundary:
+class organizer_editAnswersBoundary:
 	def __init__(self):
 		self.ERROR_UNAUTHROIZED = "Not authorized to access the requested resource"
 

@@ -2,7 +2,7 @@ from ..controllers.organizer_viewQuestionsController import organizer_viewQuesti
 from flask import render_template, flash, session
 
 
-class projectOwner_viewQuestionsBoundary:
+class organizer_viewQuestionsBoundary:
 	def __init__(self):
 		pass
 
