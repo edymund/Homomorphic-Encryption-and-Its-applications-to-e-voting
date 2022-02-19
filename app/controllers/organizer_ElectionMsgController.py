@@ -32,9 +32,9 @@ class ElectionMsgController:
 		entity.setPostMsg(msg,projectID)
 
 	def retrieve_pre_election_msg(self,projectID):
-    entity = ElectionMessage(projectID)
-    return entity.getPreMsg()
-  
-  def retrieve_post_election_msg(self,projectID):
-    entity = ElectionMessage(projectID)
-    return entity.getPostMsg()
+		entity = ElectionMessage(projectID)
+		return entity.getPreMsg()
+	
+	def retrieve_post_election_msg(self,projectID):
+		entity = ElectionMessage(projectID)
+		return entity.getPostMsg()
