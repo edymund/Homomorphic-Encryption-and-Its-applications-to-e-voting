@@ -36,7 +36,3 @@ class organizer_editAnswersController():
 	def addNewCandidate(self, projectID, questionID, candidateName, candidateDescription, filename):
 		candidates = Candidates()
 		return candidates.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
-
-	def getNewCandidateID(self):
-		candidates = Candidates()
-		return candidates.getNewCandidateID()
