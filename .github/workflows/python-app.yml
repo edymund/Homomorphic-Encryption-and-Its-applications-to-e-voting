@@ -29,32 +29,32 @@ jobs:
         
     - name: Test Answer
       run: |
-        python -m app.testcases.test_AnswerEntity -vvv
+        python -m app.testcases.Entity.test_AnswerEntity -vvv
         
     - name: Test Candidate
       run: |
-        python -m app.testcases.test_CandidateEntity -vvv
+        python -m app.testcases.Entity.test_CandidateEntity -vvv
         
     - name: Test Election Message
       run: |
-        python -m app.testcases.test_ElectionMessageEntity -vvv
+        python -m app.testcases.Entity.test_ElectionMessageEntity -vvv
         
     - name: Test Organizer
       run: |
-        python -m app.testcases.test_OrganizerEntity -vvv
+        python -m app.testcases.Entity.test_OrganizerEntity -vvv
     
     - name: Test Project Details
       run: |
-        python -m app.testcases.test_ProjectDetailsEntity -vvv
+        python -m app.testcases.Entity.test_ProjectDetailsEntity -vvv
     
     - name: Test Project Roles
       run: |
-        python -m app.testcases.test_ProjectRolesEntity -vvv
+        python -m app.testcases.Entity.test_ProjectRolesEntity -vvv
         
     - name: Test Questions
       run: |
-        python -m app.testcases.test_QuestionsEntity -vvv
+        python -m app.testcases.Entity.test_QuestionsEntity -vvv
     
     - name: Test Voter
       run: |
-        python -m app.testcases.test_VoterEntity -vvv
+        python -m app.testcases.Entity.test_VoterEntity -vvv
