@@ -25,7 +25,7 @@ jobs:
         
     - name: Generate Database
       run: |
-        python repopulateDatabase.py
+        python testDatabase.py
         
     - name: Test Answer
       run: |
