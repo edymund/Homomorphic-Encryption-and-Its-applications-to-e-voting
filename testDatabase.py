@@ -195,7 +195,7 @@ projectrolesInsertvalues = [
    (1, 7, "owner",None),
    (1, 8, "owner",None),
    (1, 9, "owner",None),
-   (1, 10, "owner",None)
+   (2, 10, "owner",None)
 ]
 
 ## executing the query with values
@@ -212,11 +212,11 @@ voterInsertvalues = [
    ("213ggq","emily@hotmail.com",2,"sss"),
    ("sgshh9","yvonne@gmail.com",2,"ddd"),
    ("iop905","bryan@hotmail.com",2,"eee"),
-   ("itn7","7@hotmail.com",1,"ttt"),
+   ("itn7","7@hotmail.com",3,"ttt"),
    #in Question 1: it88 did not submit any votes
-   ("it88","8@hotmail.com",1,"ttt123"),
+   ("it88","8@hotmail.com",3,"ttt123"),
    #in Question 2: it99 did not submit any votes
-   ("it99","9@hotmail.com",2,"ttabc123")
+   ("it99","9@hotmail.com",4,"a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3")
 ]
 
 ## executing the query with values
