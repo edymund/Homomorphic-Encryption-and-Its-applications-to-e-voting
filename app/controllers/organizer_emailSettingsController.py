@@ -1,7 +1,6 @@
 from ..entity.ElectionMessage import ElectionMessage
 from ..entity.Voter import Voter
 from ..entity.Projectdetails import ProjectDetails
-from email.message import EmailMessage
 from ..lib.service_email import SendEmailService
 from flask import current_app
 
@@ -52,7 +51,7 @@ class organizer_emailSettingsController:
             '\n'+f" Please be reminded to vote from  \nSTART: {start_date}, {start_time} \nEND:   {end_date}, {end_time}.\n\nRegards,\nFYP-21-s4-03" 
 		
 		#get Reminder message
-		rmd_msg = Election_entity.getReminderMsg(projectID)
+		rmd_msg = Election_entity.getReminderMsg()
 		all_voters = voter_entity.get_all_voters(projectID)
 
 		final_msg = rmd_msg+ "\n" + compul_msg

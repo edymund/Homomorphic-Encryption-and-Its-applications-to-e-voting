@@ -14,12 +14,12 @@
       
 			<span>Pre-Election Message:</span>
 			<div class = "flexbox-item flexbox-item-1">
-				<textarea class = "msgview" id = "preMsg" name ="preMsg" spellcheck="True" wrap=hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{{preMsg}}</textarea><br>
+				<textarea class = "msgview" id = "preMsg" name ="preMsg" spellcheck="True" wrap=hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{% if preMsg %}{{preMsg}}{% endif %}</textarea><br>
 			</div>
       
 			<span> Post-Election Message:</span>
 			<div class = "flexbox-item flexbox-item-2">
-				<textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{{postMsg}}</textarea><br>
+				<textarea id = "postMsg" name ="postMsg" spellcheck="True" wrap= hard {% if userType == "verifier" or projectStatus != "DRAFT"%} readonly {% endif %}>{% if postMsg %}{{postMsg}}{% endif %}</textarea><br>
 			</div>
       
 			{% if userType == "owner" and projectStatus == "DRAFT" %}
