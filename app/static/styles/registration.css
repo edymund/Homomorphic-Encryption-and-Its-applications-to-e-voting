@@ -36,15 +36,19 @@ input {
     margin-top:5%;
 }
 
-.info{
-  margin-left:50%;
-  margin-top:-30%;
-}
-
-@media only screen and (min-width: 2000px) 
+@media only screen and (min-width: 2001px) 
 {
   .info{
-    display:none;
+    margin-left:60%;
+    margin-top:-30%;
+  }
+}
+
+@media only screen and (max-width: 2000px) 
+{
+  .info{
+    margin-left:60%;
+    margin-top:-30%;
   }
 }
 
@@ -56,17 +60,13 @@ input {
   }
 }
 
-@media only screen and (max-width: 1200px) 
+@media only screen and (max-width: 1000px) 
 {
   .info{
-    margin-left:60%;
-    margin-top:-40%;
+    margin-left:70%;
+    margin-top:-50%;
   }
 }
 
-@media only screen and (max-width: 1050px) 
-{
-  .info{
-  display:none;
-  }
-}
+
+
