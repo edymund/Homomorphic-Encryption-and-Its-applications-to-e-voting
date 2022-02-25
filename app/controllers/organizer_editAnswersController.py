@@ -21,10 +21,6 @@ class organizer_editAnswersController():
 		projectDetails = ProjectDetails(projectID)
 		return projectDetails.getTitle()
 	
-	def getProjectStatus(self, projectID):
-		projectDetails = ProjectDetails(projectID)
-		return projectDetails.getStatus()
-	
 	def getCandidateDetails(self, candidateID):
 		candidates = Candidates()
 		return candidates.getCandidateDetails(candidateID)
@@ -40,7 +36,3 @@ class organizer_editAnswersController():
 	def addNewCandidate(self, projectID, questionID, candidateName, candidateDescription, filename):
 		candidates = Candidates()
 		return candidates.addNewCandidate(projectID, questionID, candidateName, candidateDescription, filename)
-
-	def getNewCandidateID(self):
-		candidates = Candidates()
-		return candidates.getNewCandidateID()
