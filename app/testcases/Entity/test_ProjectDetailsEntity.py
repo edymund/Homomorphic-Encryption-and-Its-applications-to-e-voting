@@ -134,25 +134,6 @@ class ProjectDetailsTestCases(unittest.TestCase):
 			errorMessage = 'Project unable to set status to DRAFT'
 			self.assertEqual(result, expectedResult, errorMessage)
 
-	# def test_updateProjectsStatus_Ongoing(self):
-	# 	with self.app.test_request_context() as c:
-	# 		tz = pytz.timezone('Asia/Singapore')
-	# 		now = datetime.now(tz)
-	# 		result = self.entity3.updateProjectsStatus_Ongoing(now)
-	# 		expectedResult = None
-	# 		errorMessage = 'Project unable to set status to Ongoing'
-	# 		self.assertEqual(result, expectedResult, errorMessage)
-
-	# def test_updateProjectsStatus_Completed(self):
-	# 	with self.app.test_request_context() as c:
-	# 		tz = pytz.timezone('Asia/Singapore')
-	# 		now = datetime.now(tz)
-	# 		result = self.entity3.updateProjectsStatus_Completed(now)
-	# 		expectedResult = None
-	# 		errorMessage = 'Project unable to set to Completed'
-	# 		self.assertEqual(result, expectedResult, errorMessage)
-
-
 
 if __name__ == "__main__":
 	unittest.main()

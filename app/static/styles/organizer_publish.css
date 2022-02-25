@@ -7,7 +7,7 @@ b {
 
 /* input box and password */
 input {
-    width: 30%;
+    width: 50%;
     padding: 15px;
     margin: 5px 0 22px 0;
     display: inline-block;
@@ -35,7 +35,7 @@ button:hover {
 
 .custom_msg {
     overflow-wrap: break-word;
-    width: 30%;
+    width: 50%;
     border: none;
     resize: none;
     height:250px;
@@ -49,7 +49,7 @@ button:hover {
 
 .custom_invitation_msg {
     overflow-wrap: break-word;
-    width: 30%;
+    width: 50%;
     border: none;
     resize: none;
     height:250px;
