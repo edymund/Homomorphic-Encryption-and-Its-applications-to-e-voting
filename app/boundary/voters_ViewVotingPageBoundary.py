@@ -26,14 +26,14 @@ class voters_ViewVotingPage:
 		if controller.submitAnswers(answers, projectID, session['voterID']):
 			return self.displaySuccess(projectID)
 		else:
-			return self.displayError(projectID)
+			return self.displayError()
 
 
 	def displaySuccess(self,projID):
 		print("Success")
 		return redirect('/'+ str(projID) + '/ViewSubmittedVotePage')
 
-	def displayError(self, projID):
+	def displayError(self):
 		print("Failed")
 		return redirect('/')
 

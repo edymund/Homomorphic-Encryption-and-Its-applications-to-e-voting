@@ -50,10 +50,6 @@ class organizer_editAnswersBoundary:
 			return self.displaySuccess(projectID, questionID)
 		else:
 			return self.displayError(projectID,questionID, "Failed to delete candidate")
-
-	def getNewCandidateID(self):
-		controller = organizer_editAnswersController()
-		return controller.getNewCandidateID()
 	
 	def addNewCandidate(self, projectID, questionID, candidateName, candidateDescription, filename):
 		controller = organizer_editAnswersController()

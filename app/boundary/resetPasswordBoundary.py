@@ -2,7 +2,6 @@ from sqlite3.dbapi2 import IntegrityError
 from flask import render_template, session, redirect, request, flash
 from ..controllers.resetPasswordController import resetPasswordController
 import random
-import smtplib
 import string
 from ..lib.service_email import SendEmailService
 from flask import current_app

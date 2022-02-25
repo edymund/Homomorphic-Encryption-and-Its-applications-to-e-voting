@@ -1,4 +1,3 @@
-from signal import raise_signal
 from ..lib.AES_CBC import AES_CBC
 from ..lib.FHE import FHE
 

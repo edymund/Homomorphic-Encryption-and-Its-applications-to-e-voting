@@ -1,6 +1,5 @@
 from ..entity.Voter import Voter
 from ..entity.Projectdetails import ProjectDetails
-import pandas as pd
 import random 
 
 class organizer_importVoterListController:
