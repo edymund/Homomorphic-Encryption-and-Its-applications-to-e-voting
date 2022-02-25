@@ -10,7 +10,11 @@
 	<h2>{{title}}</h2>
 	<h3>Your vote has been successfully submitted</h3>
 	<textarea readonly class="message-boxsize" >
+{% if message %}
 {{message}}
+{% else %}
+Thank you for your participation.
+{% endif %}
 	</textarea> <br>
 	<div class="center">
 		<a href="/"><button class= "button" type="button">Finish Voting</button></a>

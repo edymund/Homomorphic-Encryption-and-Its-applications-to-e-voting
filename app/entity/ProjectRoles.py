@@ -254,7 +254,8 @@ class ProjectRoles:
 								FROM projectroles 
 								WHERE projID = (?) AND
 									  role = 'verifier' AND
-									  approval IS NULL
+									  (approval IS NULL or
+									  approval IS FALSE)
 								""", 
 								(projectID, )).fetchone()
 		
