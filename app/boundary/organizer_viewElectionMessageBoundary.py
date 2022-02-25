@@ -14,8 +14,6 @@ class organizer_viewElectionMessageBoundary:
 		projectStatus = controller.getProjectStatus(projectID)
 		preMsg = controller.retrieve_pre_election_msg(projectID)
 		postMsg = controller.retrieve_post_election_msg(projectID)
-		self.process_pre_msg(preMsg,projectID)
-		self.process_post_msg(postMsg,projectID)
 		return render_template('organizer_viewElectionMessage.html', preMsg = preMsg, 
 																	 postMsg= postMsg, 
 																	 projectID=projectID,
@@ -23,24 +21,11 @@ class organizer_viewElectionMessageBoundary:
 																	 userType=session['userType'])
 
 	def onSubmit(self, preMsg, postMsg,projectID):
-		self.process_pre_msg(preMsg,projectID)
-		self.process_post_msg(postMsg,projectID)
-
-	def process_pre_msg(self, preMsg,projectID):
 		controller = ElectionMsgController(projectID)
-		if controller.check_election_msg(preMsg):
-			controller.update_pre_election_msg(preMsg,projectID)
-		elif not controller.check_election_msg(preMsg):
-			msg = "Enjoy your voting"
-			controller.update_pre_election_msg(msg,projectID)
+		controller.update_pre_election_msg(preMsg,projectID)
+		controller.update_post_election_msg(postMsg,projectID)
 
-	def process_post_msg(self, postMsg,projectID):
-		controller = ElectionMsgController(projectID)
-		if controller.check_election_msg(postMsg):
-			controller.update_post_election_msg(postMsg,projectID)
-		elif not controller.check_election_msg(postMsg):
-			msg = "Hope you enjoyed your vote"
-			controller.update_post_election_msg(msg,projectID)
+
 	
 	def getProjectStatus(self,projectID):
 		controller = ElectionMsgController(projectID)
