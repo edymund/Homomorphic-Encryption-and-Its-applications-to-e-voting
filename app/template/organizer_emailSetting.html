@@ -14,12 +14,12 @@
 		
 			<span>Custom invite message:</span>
 			<div class = "flexbox-item flexbox-item-1">
-				<textarea spellcheck="True" wrap= hard name = InvMsg id ="InvMsg" {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}>{{invMsg}}</textarea>
+				<textarea spellcheck="True" wrap= hard name = InvMsg id ="InvMsg" {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}>{% if invMsg %}{{invMsg}}{% endif %}</textarea>
 			</div>
       
       <span> Custom reminder message:</span>
       <div class = "flexbox-item flexbox-item-2">
-        <textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg" {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}>{{rmdMsg}}</textarea>
+        <textarea spellcheck="True" wrap= hard name ="RmdMsg" id ="RmdMsg" {% if userType == "verifier" or projectStatus != "DRAFT" %} readonly {% endif %}>{% if rmdMsg %}{{rmdMsg}}{% endif %}</textarea>
       </div>
       
       <div>

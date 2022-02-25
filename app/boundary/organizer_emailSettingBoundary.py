@@ -16,12 +16,9 @@ class organizer_emailSettingBoundary:
 	# Other Methods
 	def displayPage(self,projectID):
 		controller = organizer_emailSettingsController(projectID)
-    
 		projectStatus = controller.getProjectStatus(projectID)
 		invMsg = controller.retrieve_inv_msg(projectID)
 		rmdMsg = controller.retrieve_rmd_msg(projectID)
-		self.process_inv_msg(invMsg,projectID)
-		self.process_rmd_msg(rmdMsg,projectID)
 		return render_template('organizer_emailSetting.html',invMsg =invMsg, 
 															rmdMsg =rmdMsg, 
 															projectID = projectID,
@@ -29,8 +26,9 @@ class organizer_emailSettingBoundary:
 															userType = session['userType'])
 	
 	def onSubmit(self,invMsg,rmdMsg,projectID):
-		self.process_inv_msg(invMsg,projectID)
-		self.process_rmd_msg(rmdMsg,projectID)
+		controller = organizer_emailSettingsController(projectID)
+		controller.update_rmd_msg(rmdMsg,projectID)
+		controller.update_inv_msg(invMsg,projectID)
 
 	def send_reminder(self, msg,projectID):
 		controller = organizer_emailSettingsController(projectID)
@@ -42,24 +40,6 @@ class organizer_emailSettingBoundary:
 			controller.update_rmd_msg(self.rmdMsg,projectID)
 		controller.send_reminder(projectID)
 		flash("Reminder message is sent")
-			
-	# check if msg is valid
-	def process_rmd_msg(self, rmdMsg,projectID):
-		controller = organizer_emailSettingsController(projectID)
-		if controller.check_msg(rmdMsg):
-			controller.update_rmd_msg(rmdMsg,projectID)
-		elif not controller.check_msg(rmdMsg):
-			msg = "Remember to vote!"
-			controller.update_rmd_msg(msg,projectID)
-
-	# check if msg is valid
-	def process_inv_msg(self, invMsg,projectID):
-		controller = organizer_emailSettingsController(projectID)
-		if controller.check_msg(invMsg):
-			controller.update_inv_msg(invMsg,projectID)
-		elif not controller.check_msg(invMsg):
-			msg = "You are invited!"
-			controller.update_inv_msg(msg,projectID)
 
 	
 	def getProjectStatus(self,projectID):
