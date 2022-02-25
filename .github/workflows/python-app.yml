@@ -1,0 +1,60 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python application
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+    - name: Generate Database
+      run: |
+        python testDatabase.py
+        
+    - name: Test Answer
+      run: |
+        python -m app.testcases.Entity.test_AnswerEntity -vvv
+        
+    - name: Test Candidate
+      run: |
+        python -m app.testcases.Entity.test_CandidateEntity -vvv
+        
+    - name: Test Election Message
+      run: |
+        python -m app.testcases.Entity.test_ElectionMessageEntity -vvv
+        
+    - name: Test Organizer
+      run: |
+        python -m app.testcases.Entity.test_OrganizerEntity -vvv
+    
+    - name: Test Project Details
+      run: |
+        python -m app.testcases.Entity.test_ProjectDetailsEntity -vvv
+    
+    - name: Test Project Roles
+      run: |
+        python -m app.testcases.Entity.test_ProjectRolesEntity -vvv
+        
+    - name: Test Questions
+      run: |
+        python -m app.testcases.Entity.test_QuestionsEntity -vvv
+    
+    - name: Test Voter
+      run: |
+        python -m app.testcases.Entity.test_VoterEntity -vvv
