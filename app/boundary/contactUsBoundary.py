@@ -31,7 +31,7 @@ class contactUsBoundary:
 		return True
 
 	def send_email(self,sender_email,name,subject,feedback):
-		subject = "Event has been rejected by a verifier "
+		subject = "Feedback "
 		message = f"{sender_email}+ '\r\n\r\nName: ' + {name} + '\r\n\r\nFeedback: ' + {feedback}" 
 		self.email.setMessage(subject, feedback)
 		self.email.setRecepientEmail(current_app.config['EMAIL']['USER'])
